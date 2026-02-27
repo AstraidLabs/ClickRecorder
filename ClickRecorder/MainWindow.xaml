@@ -142,6 +142,22 @@
 
                     <Separator/>
 
+                    <TextBlock Text="SEKVENCE / TEST CASE" Style="{StaticResource Sec}"/>
+                    <TextBlock Text="Název" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                    <TextBox x:Name="TxtSequenceName" Text="Moje sekvence" Margin="0,0,0,6"/>
+                    <Button x:Name="BtnSaveSequence" Content="💾 Uložit sekvenci" Style="{StaticResource BBlue}"
+                            Click="BtnSaveSequence_Click" HorizontalAlignment="Stretch" IsEnabled="False" Margin="0,0,0,6"/>
+                    <Button x:Name="BtnSaveAsTestCase" Content="🧪 Uložit jako Test Case" Style="{StaticResource BPurple}"
+                            Click="BtnSaveAsTestCase_Click" HorizontalAlignment="Stretch" IsEnabled="False" Margin="0,0,0,6"/>
+                    <Button x:Name="BtnAddToTestCase" Content="➕ (editor zavřen)" Style="{StaticResource BGray}"
+                            Click="BtnAddToTestCase_Click" HorizontalAlignment="Stretch" IsEnabled="False" Margin="0,0,0,6"/>
+                    <Button Content="🗂 Otevřít Test Cases" Style="{StaticResource BGray}"
+                            Click="BtnOpenTestCases_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
+                    <Button Content="⏰ Otevřít Jobs" Style="{StaticResource BGray}"
+                            Click="BtnOpenJobs_Click" HorizontalAlignment="Stretch"/>
+
+                    <Separator/>
+
                     <TextBlock Text="PŘEHRÁVÁNÍ" Style="{StaticResource Sec}"/>
                     <Grid Margin="0,0,0,6">
                         <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>

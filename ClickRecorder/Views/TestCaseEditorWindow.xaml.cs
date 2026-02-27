@@ -59,7 +59,7 @@ namespace ClickRecorder.Views
         {
             _pendingClicks = clicks;
             TxtRecorderInfo.Text = clicks.Count > 0
-                ? $"📥 {clicks.Count} kliků z nahrávky „{recordingName}""
+                ? $"📥 {clicks.Count} kliků z nahrávky „{recordingName}“"
                 : "Žádná kliknutí z recorderu";
             BtnPasteClicks.IsEnabled = clicks.Count > 0 && _secIdx >= 0;
         }
@@ -81,7 +81,7 @@ namespace ClickRecorder.Views
             SetDirty();
 
             TxtFooter.Text =
-                $"✓ Přidána sekce „{sectionName}" s {sec.Steps.Count} kroky — ulož pro uložení do DB";
+                $"✓ Přidána sekce „{sectionName}“ s {sec.Steps.Count} kroky — ulož pro uložení do DB";
         }
 
         // ── Bind model → UI ───────────────────────────────────────────────────
@@ -186,7 +186,7 @@ namespace ClickRecorder.Views
         {
             if (_secIdx < 0 || _secIdx >= _tc.Sections.Count) return;
             string n = _tc.Sections[_secIdx].Name;
-            if (MessageBox.Show($"Smazat sekci „{n}" i se všemi kroky?", "Potvrdit",
+            if (MessageBox.Show($"Smazat sekci „{n}“ i se všemi kroky?", "Potvrdit",
                     MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
             _tc.Sections.RemoveAt(_secIdx);
             RenumberSections();
@@ -239,7 +239,7 @@ namespace ClickRecorder.Views
             RefreshSections(_secIdx);
             SetDirty();
             TxtFooter.Text =
-                $"✓ Přidáno {added.Steps.Count} kroků do sekce „{sec.Name}"";
+                $"✓ Přidáno {added.Steps.Count} kroků do sekce „{sec.Name}“";
 
             // Clear pending to avoid double-paste
             _pendingClicks = new();
