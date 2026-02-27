@@ -78,7 +78,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     private string _attachedAppText = "Nejprve připoj cílovou aplikaci";
     public string AttachedAppText { get => _attachedAppText; set => SetProperty(ref _attachedAppText, value); }
 
-    public bool CanRecord => true;
+    public bool CanRecord => _attachedProcessId.HasValue && !_isAttachArmed;
 
     public string RepeatText { get; set; } = "1";
     public string SpeedText { get; set; } = "1.0";
@@ -132,7 +132,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _playback.PlaybackFinished += OnPlaybackFinished;
         _scheduler = new JobSchedulerService(_db, _playback);
         _scheduler.JobFinished += (_, args) => FooterText = $"⏰ Job dokončen: {args.Job.Name} – {args.Message}";
-        FooterText = "FlaUI inicializováno. Nahrávání je připravené pro kliknutí kdekoliv.";
+        FooterText = "FlaUI inicializováno. Nejprve připoj cílovou aplikaci, teprve potom můžeš nahrávat.";
     }
 
     public bool IsPlaying
@@ -159,6 +159,11 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         if (_isAttachArmed)
         {
             FooterText = "Nejdřív dokonči výběr cílové aplikace kliknutím mimo ClickRecorder.";
+            return;
+        }
+        if (!CanRecord)
+        {
+            FooterText = "Nejdřív připoj cílovou aplikaci přes tlačítko 🎯 Připojit aplikaci.";
             return;
         }
         _isRecording = true;
@@ -188,6 +193,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         {
             _isAttachArmed = false;
             AttachButtonText = "🎯 Připojit aplikaci";
+            OnPropertyChanged(nameof(CanRecord));
             FooterText = "Výběr cílové aplikace zrušen.";
             if (!_isRecording)
             {
@@ -199,6 +205,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _hook.Start();
         _isAttachArmed = true;
         AttachButtonText = "❌ Zrušit výběr";
+        OnPropertyChanged(nameof(CanRecord));
         FooterText = "Klikni do cílové aplikace – další klik nastaví omezení nahrávání.";
     }
 
