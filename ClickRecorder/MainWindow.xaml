@@ -88,6 +88,15 @@
             </Style.Triggers>
         </Style>
         <Style TargetType="Separator"><Setter Property="Background" Value="#45475A"/><Setter Property="Margin" Value="0,8"/></Style>
+        <Style x:Key="PanelExpander" TargetType="Expander">
+            <Setter Property="Foreground" Value="#CDD6F4"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Background" Value="#313244"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -134,9 +143,10 @@
             </Grid.ColumnDefinitions>
 
             <!-- ── COL 0: Recording panel ──────────────────────────────────── -->
-            <Border Style="{StaticResource Card}" Margin="0,0,8,0">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel>
+            <Expander Header="NAHRÁVÁNÍ" IsExpanded="True" Style="{StaticResource PanelExpander}">
+                <Border Style="{StaticResource Card}" Margin="0,8,0,0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
                         <TextBlock Text="NAHRÁVÁNÍ" Style="{StaticResource Sec}"/>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                             <Button x:Name="BtnRecord"     Content="⏺ Nahrát" Style="{StaticResource BRed}"
@@ -179,14 +189,16 @@
                                 Click="BtnOpenTestCases_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
                         <Button Content="⏰ Otevřít Jobs" Style="{StaticResource BGray}"
                                 Click="BtnOpenJobs_Click" HorizontalAlignment="Stretch"/>
-                    </StackPanel>
-                </ScrollViewer>
-            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+            </Expander>
 
             <!-- ── COL 1: Playback panel ───────────────────────────────────── -->
-            <Border Grid.Column="1" Style="{StaticResource Card}" Margin="0,0,8,0">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel>
+            <Expander Grid.Column="1" Header="PŘEHRÁVÁNÍ" IsExpanded="True" Style="{StaticResource PanelExpander}">
+                <Border Style="{StaticResource Card}" Margin="0,8,0,0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
                         <TextBlock Text="PŘEHRÁVÁNÍ" Style="{StaticResource Sec}"/>
                         <TextBlock Text="Spuštění aplikace (název / AUMID / exe / MSIX package)" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
                         <TextBox x:Name="TxtAppToLaunch" Text="{Binding AppToLaunch, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
@@ -234,9 +246,10 @@
                                 <TextBlock x:Name="TxtDur"   Text="{Binding DurationText}" Foreground="#6C7086" FontSize="11"/>
                             </StackPanel>
                         </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+            </Expander>
 
             <!-- ── COL 2: Recorded list + selected element inspector ─────── -->
             <Grid Grid.Column="2" Margin="0,0,8,0">
