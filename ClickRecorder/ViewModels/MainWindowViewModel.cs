@@ -72,7 +72,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     private string _recordCount = "0";
     public string RecordCount { get => _recordCount; set => SetProperty(ref _recordCount, value); }
 
-    private string _attachButtonText = "🎯 Připojit aplikaci";
+    private string _attachButtonText = "🎯 Vybrat cílovou aplikaci";
     public string AttachButtonText { get => _attachButtonText; set => SetProperty(ref _attachButtonText, value); }
 
     private string _attachedAppText = "Žádná aplikace není připojená.";
@@ -180,7 +180,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         }
         if (!CanRecord)
         {
-            FooterText = "Nejdřív připoj cílovou aplikaci přes tlačítko 🎯 Připojit aplikaci.";
+            FooterText = "Nejdřív připoj cílovou aplikaci přes tlačítko 🎯 Vybrat cílovou aplikaci.";
             return;
         }
         _isRecording = true;
@@ -209,7 +209,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         if (_isAttachArmed)
         {
             _isAttachArmed = false;
-            AttachButtonText = "🎯 Připojit aplikaci";
+            AttachButtonText = "🎯 Vybrat cílovou aplikaci";
             OnPropertyChanged(nameof(CanRecord));
             FooterText = "Výběr cílové aplikace zrušen.";
             if (!_isRecording)
@@ -466,7 +466,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         if (_isAttachArmed)
         {
             _isAttachArmed = false;
-            AttachButtonText = "🎯 Připojit aplikaci";
+            AttachButtonText = "🎯 Vybrat cílovou aplikaci";
             _attachedWindowHandle = e.RootWindowHandle;
             _attachedProcessId = e.ProcessId;
             _attachedProcessName = ResolveProcessName(e.ProcessId);
