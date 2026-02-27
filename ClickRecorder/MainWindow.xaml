@@ -113,6 +113,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel>
                     <TextBlock Text="🖱️  Slaveclicker" FontSize="18" FontWeight="Bold" Foreground="#CDD6F4"/>
@@ -120,13 +121,20 @@
                                Text="1. Krok - Napojení aplikace do nahrávání · 2. Nahrát test do přehrávání · 3. Spustit test"/>
                 </StackPanel>
 
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <Button Content="🗂 Editor sekvencí" Style="{StaticResource BGray}"
+                            Click="BtnOpenTestCases_Click" Margin="0,0,8,0"/>
+                    <Button Content="⏰ Editor jobů" Style="{StaticResource BGray}"
+                            Click="BtnOpenJobs_Click"/>
+                </StackPanel>
+
                 <!-- FlaUI badge -->
-                <Border Grid.Column="1" Background="#1a2a44" CornerRadius="6" Padding="10,5" Margin="0,0,10,0" VerticalAlignment="Center">
+                <Border Grid.Column="2" Background="#1a2a44" CornerRadius="6" Padding="10,5" Margin="0,0,10,0" VerticalAlignment="Center">
                     <TextBlock x:Name="TxtFlaUIStatus" Text="{Binding FlaUiStatus}"
                                Foreground="#89B4FA" FontSize="11" FontWeight="SemiBold"/>
                 </Border>
 
-                <Border Grid.Column="2" x:Name="StatusPill" Background="#252535" CornerRadius="20" Padding="14,6" VerticalAlignment="Center">
+                <Border Grid.Column="3" x:Name="StatusPill" Background="#252535" CornerRadius="20" Padding="14,6" VerticalAlignment="Center">
                     <TextBlock x:Name="TxtStatus" Text="{Binding StatusText}" FontSize="13" FontWeight="Bold" Foreground="{Binding StatusColor}"/>
                 </Border>
             </Grid>
@@ -202,11 +210,7 @@
                         <Button x:Name="BtnSaveAsTestCase" Content="🧪 Uložit jako Test Case" Style="{StaticResource BPurple}"
                                 Click="BtnSaveAsTestCase_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
                         <Button x:Name="BtnAddToTestCase" Content="➕ (editor zavřen)" Style="{StaticResource BGray}"
-                                Click="BtnAddToTestCase_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
-                        <Button Content="🗂 Otevřít Test Cases" Style="{StaticResource BGray}"
-                                Click="BtnOpenTestCases_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
-                            <Button Content="⏰ Otevřít Jobs" Style="{StaticResource BGray}"
-                                    Click="BtnOpenJobs_Click" HorizontalAlignment="Stretch"/>
+                                Click="BtnAddToTestCase_Click" HorizontalAlignment="Stretch"/>
                             </StackPanel>
                         </ScrollViewer>
                     </Border>
