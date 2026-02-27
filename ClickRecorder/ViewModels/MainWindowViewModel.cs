@@ -444,7 +444,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     {
         _globalExData.Add(detail);
         var source = string.IsNullOrWhiteSpace(detail.Source) ? "Global" : detail.Source;
-        GlobalExceptions.Add($"[{DateTime.Now:HH:mm:ss}] {source}: {detail.TypeName}: {detail.Message}");
+        GlobalExceptions.Add($"[{detail.CapturedAt:HH:mm:ss}] {source}: {detail.TypeName}: {detail.Message}");
     }
 
     private void LoadSteps(List<ClickAction> steps, string footerFmt)
