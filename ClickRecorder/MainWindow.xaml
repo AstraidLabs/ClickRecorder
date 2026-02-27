@@ -117,7 +117,7 @@
                 <StackPanel>
                     <TextBlock Text="🖱️  Slaveclicker" FontSize="18" FontWeight="Bold" Foreground="#CDD6F4"/>
                     <TextBlock Foreground="#6C7086" FontSize="11" Margin="0,3,0,0"
-                               Text="Nahraj kliknutí · FlaUI inspectuje elementy · Přehraj spolehlivě · Zachyť výjimky + call stack · HTML report"/>
+                               Text="1. Krok - Napojení aplikace do nahrávání · 2. Nahrát test do přehrávání · 3. Spustit test"/>
                 </StackPanel>
 
                 <!-- FlaUI badge -->
