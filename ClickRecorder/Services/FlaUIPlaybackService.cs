@@ -41,6 +41,14 @@ namespace ClickRecorder.Services
         [DllImport("user32.dll")]
         private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
+        [DllImport("user32.dll")]
+        private static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        private static extern bool IsWindowVisible(IntPtr hWnd);
+
+        private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
         private const uint MOUSEEVENTF_LEFTDOWN   = 0x0002;
         private const uint MOUSEEVENTF_LEFTUP     = 0x0004;
         private const uint MOUSEEVENTF_RIGHTDOWN  = 0x0008;
@@ -364,6 +372,7 @@ namespace ClickRecorder.Services
         private List<AutomationElement> GetSearchRoots(string? processName, uint? targetProcessId)
         {
             var roots = new List<AutomationElement>();
+            var seenHandles = new HashSet<IntPtr>();
             try
             {
                 IEnumerable<System.Diagnostics.Process> procs = Enumerable.Empty<System.Diagnostics.Process>();
@@ -385,12 +394,15 @@ namespace ClickRecorder.Services
 
                 foreach (var p in procs)
                 {
-                    if (p.MainWindowHandle == IntPtr.Zero) continue;
-                    try
+                    AddRootIfValid(roots, seenHandles, p.MainWindowHandle);
+
+                    if (targetProcessId.HasValue)
                     {
-                        roots.Add(_automation.FromHandle(p.MainWindowHandle));
+                        foreach (var hwnd in EnumerateTopLevelWindowsByProcessId(targetProcessId.Value))
+                        {
+                            AddRootIfValid(roots, seenHandles, hwnd);
+                        }
                     }
-                    catch { }
                 }
             }
             catch { }
@@ -402,6 +414,45 @@ namespace ClickRecorder.Services
             }
 
             return roots;
+        }
+
+        private void AddRootIfValid(List<AutomationElement> roots, HashSet<IntPtr> seenHandles, IntPtr handle)
+        {
+            if (handle == IntPtr.Zero || !seenHandles.Add(handle))
+            {
+                return;
+            }
+
+            try
+            {
+                roots.Add(_automation.FromHandle(handle));
+            }
+            catch
+            {
+                seenHandles.Remove(handle);
+            }
+        }
+
+        private static IEnumerable<IntPtr> EnumerateTopLevelWindowsByProcessId(uint processId)
+        {
+            var windows = new List<IntPtr>();
+            EnumWindows((hwnd, _) =>
+            {
+                if (!IsWindowVisible(hwnd))
+                {
+                    return true;
+                }
+
+                _ = GetWindowThreadProcessId(hwnd, out uint ownerPid);
+                if (ownerPid == processId)
+                {
+                    windows.Add(hwnd);
+                }
+
+                return true;
+            }, IntPtr.Zero);
+
+            return windows;
         }
 
 
