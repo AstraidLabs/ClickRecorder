@@ -173,6 +173,33 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         FooterText = $"Report uložen: {path}";
     }
 
+    public ClickAction? GetRecordedActionAt(int index) =>
+        index >= 0 && index < _recorded.Count ? _recorded[index] : null;
+
+    public StepResult? GetStepResultAt(int index) =>
+        index >= 0 && index < _stepResults.Count ? _stepResults[index] : null;
+
+    public ExceptionDetail? GetGlobalExceptionAt(int index) =>
+        index >= 0 && index < _globalExData.Count ? _globalExData[index] : null;
+
+    public List<ClickAction> GetRecordedActionsSnapshot() => new(_recorded);
+
+    public TestSession GetTicketSession() => _lastSession ?? new TestSession();
+
+    public void ClearResults()
+    {
+        Results.Clear();
+        _stepResults.Clear();
+        UpdateStats(0, 0, 0, 0);
+    }
+
+    public void NotifyGlobalException(ExceptionDetail ex)
+    {
+        _globalExData.Add(ex);
+        GlobalExceptions.Add($"🔥 {ex.CapturedAt:HH:mm:ss}  {ex.ShortType}: {ex.Message}");
+        _lastSession?.UnhandledExceptions.Add(ex);
+    }
+
     private void LoadSteps(List<ClickAction> steps, string footerFmt)
     {
         _recorded.Clear();
