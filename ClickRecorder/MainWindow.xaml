@@ -65,6 +65,11 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
+        <Style TargetType="RadioButton">
+            <Setter Property="Foreground" Value="#CDD6F4"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
         <Style TargetType="ListBox">
             <Setter Property="Background" Value="#181825"/>
             <Setter Property="BorderBrush" Value="#45475A"/>
@@ -142,6 +147,11 @@
                     <Button x:Name="BtnDetachApp" Content="🔓 Zrušit omezení aplikace" Style="{StaticResource BGray}"
                             Click="BtnDetachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
                     <TextBlock Text="{Binding AttachedAppText}" Foreground="#6C7086" FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
+                    <TextBlock Text="Režim zachytávání" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                    <RadioButton Content="Podle UI elementu (FlaUI)" GroupName="CaptureMode"
+                                 IsChecked="{Binding CaptureByElement}" Margin="0,0,0,2"/>
+                    <RadioButton Content="Podle souřadnic" GroupName="CaptureMode"
+                                 IsChecked="{Binding CaptureByCoordinates}" Margin="0,0,0,6"/>
                     <Button x:Name="BtnClear" Content="🗑  Vymazat záznamy" Style="{StaticResource BOrange}"
                             Click="BtnClear_Click" HorizontalAlignment="Stretch"/>
 

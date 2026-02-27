@@ -48,6 +48,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     private DateTime? _lastClickTime;
     private int _clickId;
     private bool _isPlaying;
+    private bool _captureByElement = true;
 
     public ObservableCollection<string> Clicks { get; } = new();
     public ObservableCollection<string> Results { get; } = new();
@@ -80,6 +81,30 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     public string SequenceName { get; set; } = "Moje sekvence";
     public string TextToType { get; set; } = string.Empty;
     public string FlaUiStatus { get; set; } = "⚙ FlaUI: Připraveno";
+
+    public bool CaptureByElement
+    {
+        get => _captureByElement;
+        set
+        {
+            if (!SetProperty(ref _captureByElement, value)) return;
+            if (value)
+            {
+                OnPropertyChanged(nameof(CaptureByCoordinates));
+            }
+        }
+    }
+
+    public bool CaptureByCoordinates
+    {
+        get => !CaptureByElement;
+        set
+        {
+            if (value == CaptureByCoordinates) return;
+            CaptureByElement = !value;
+            OnPropertyChanged(nameof(CaptureByCoordinates));
+        }
+    }
 
     private string _okText = "✓  0";
     public string OkText { get => _okText; set => SetProperty(ref _okText, value); }
@@ -133,7 +158,9 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         SetStatus("🔴  Nahrávám", "#F38BA8");
         FooterText = _attachedProcessId.HasValue
             ? $"Nahrávám… Připojená aplikace: {_attachedProcessName ?? _attachedProcessId.Value.ToString()} (PID {_attachedProcessId})."
-            : "Nahrávám… Klikej kdekoliv – FlaUI inspektuje každý element.";
+            : CaptureByElement
+                ? "Nahrávám… Režim: UI element (FlaUI)."
+                : "Nahrávám… Režim: souřadnice myši.";
     }
 
     public void StopRecord()
@@ -234,7 +261,8 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
             TextToType = TextToType,
             DelayAfterPrevious = delay,
             RecordedAt = ts,
-            Element = element
+            Element = element,
+            PreferElementPlayback = CaptureByElement
         };
 
         _recorded.Add(action);
@@ -375,7 +403,8 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
                     },
                     DelayAfterPrevious = delay,
                     RecordedAt = ts,
-                    Element = identity
+                    Element = identity,
+                    PreferElementPlayback = CaptureByElement
                 };
                 _recorded.Add(action);
                 var icon = action.Kind == ActionKind.TypeText ? "⌨" : (action.UseElementPlayback ? "⚙" : "🖱");
