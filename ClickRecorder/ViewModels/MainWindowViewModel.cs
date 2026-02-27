@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -28,6 +29,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     }
 
     private readonly GlobalMouseHook _hook = new();
+    private readonly GlobalKeyboardHook _keyboardHook = new();
     private readonly FlaUIInspectorService _inspector = new();
     private readonly FlaUIPlaybackService _playback = new();
     private readonly DatabaseService _db = new();
@@ -49,6 +51,8 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     private int _clickId;
     private bool _isPlaying;
     private bool _captureByElement = true;
+    private readonly StringBuilder _typedBuffer = new();
+    private DateTime? _lastTypedAt;
 
     public ObservableCollection<string> Clicks { get; } = new();
     public ObservableCollection<string> Results { get; } = new();
@@ -120,6 +124,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     public MainWindowViewModel()
     {
         _hook.MouseClicked += OnMouseClicked;
+        _keyboardHook.KeyPressed += OnKeyPressed;
         _playback.StepCompleted += OnStepCompleted;
         _playback.PlaybackFinished += OnPlaybackFinished;
         _scheduler = new JobSchedulerService(_db, _playback);
@@ -155,6 +160,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         }
         _isRecording = true;
         _hook.Start();
+        _keyboardHook.Start();
         SetStatus("🔴  Nahrávám", "#F38BA8");
         FooterText = _attachedProcessId.HasValue
             ? $"Nahrávám… Připojená aplikace: {_attachedProcessName ?? _attachedProcessId.Value.ToString()} (PID {_attachedProcessId})."
@@ -167,7 +173,9 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     {
         if (!_isRecording) return;
         _isRecording = false;
+        FlushTypingBuffer(DateTime.Now);
         _hook.Stop();
+        _keyboardHook.Stop();
         SetStatus("⏸  Idle", "#6C7086");
     }
 
@@ -282,6 +290,8 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     {
         _recorded.Clear();
         Clicks.Clear();
+        _typedBuffer.Clear();
+        _lastTypedAt = null;
         _clickId = 0;
         _lastClickTime = null;
         RecordCount = "0";
@@ -389,6 +399,8 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
             return;
         }
 
+        FlushTypingBuffer(e.Timestamp);
+
         var ts = e.Timestamp;
         var prevT = _lastClickTime;
         _lastClickTime = ts;
@@ -425,6 +437,95 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
                 OnPropertyChanged(nameof(CanPlay));
             });
         });
+    }
+
+    private void OnKeyPressed(object? sender, KeyboardHookEventArgs e)
+    {
+        if (!_isRecording || _isAttachArmed)
+        {
+            return;
+        }
+
+        if (_attachedProcessId.HasValue && e.ProcessId != _attachedProcessId.Value)
+        {
+            return;
+        }
+
+        if (e.IsBackspace)
+        {
+            if (_typedBuffer.Length > 0)
+            {
+                _typedBuffer.Length--;
+                _lastTypedAt = e.Timestamp;
+            }
+            return;
+        }
+
+        if (e.IsEnter)
+        {
+            _typedBuffer.Append(Environment.NewLine);
+            _lastTypedAt = e.Timestamp;
+            return;
+        }
+
+        if (string.IsNullOrEmpty(e.Text))
+        {
+            return;
+        }
+
+        _typedBuffer.Append(e.Text);
+        _lastTypedAt = e.Timestamp;
+    }
+
+    private void FlushTypingBuffer(DateTime timestamp)
+    {
+        if (_typedBuffer.Length == 0)
+        {
+            _lastTypedAt = null;
+            return;
+        }
+
+        var previous = _recorded.Count > 0 ? _recorded[^1] : null;
+        int x = previous?.X ?? 0;
+        int y = previous?.Y ?? 0;
+        var element = previous?.Element;
+        uint? targetProcessId = previous?.TargetProcessId ?? _attachedProcessId;
+
+        if (previous is null && GetCursorPos(out var pt))
+        {
+            x = pt.X;
+            y = pt.Y;
+            element = _inspector.InspectAt(x, y);
+            if (_attachedProcessId.HasValue && element?.ProcessId != _attachedProcessId)
+            {
+                element = null;
+            }
+        }
+
+        _clickId++;
+        var text = _typedBuffer.ToString();
+        var action = new ClickAction
+        {
+            Id = _clickId,
+            X = x,
+            Y = y,
+            Kind = ActionKind.TypeText,
+            Button = ClickButton.Left,
+            TextToType = text,
+            DelayAfterPrevious = _lastClickTime.HasValue ? timestamp - _lastClickTime.Value : TimeSpan.Zero,
+            RecordedAt = _lastTypedAt ?? timestamp,
+            Element = element,
+            TargetProcessId = targetProcessId,
+            PreferElementPlayback = CaptureByElement
+        };
+
+        _recorded.Add(action);
+        Clicks.Add($"⌨ {action.Summary}");
+        _typedBuffer.Clear();
+        _lastTypedAt = null;
+        _lastClickTime = timestamp;
+        RecordCount = _recorded.Count.ToString();
+        OnPropertyChanged(nameof(CanPlay));
     }
 
     private static string? ResolveProcessName(uint processId)
@@ -492,6 +593,8 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _scheduler.Dispose();
         _hook.Stop();
         _hook.Dispose();
+        _keyboardHook.Stop();
+        _keyboardHook.Dispose();
         _playback.Stop();
         _playback.Dispose();
         _inspector.Dispose();
