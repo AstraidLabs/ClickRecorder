@@ -28,6 +28,7 @@ namespace ClickRecorder.Services
 
                 var identity = new ElementIdentity
                 {
+                    ProcessId    = GetProcessId(element),
                     AutomationId = NullIfEmpty(element.AutomationId),
                     Name         = NullIfEmpty(element.Name),
                     ControlType  = element.ControlType.ToString(),
@@ -54,6 +55,16 @@ namespace ClickRecorder.Services
             {
                 int pid = element.Properties.ProcessId.Value;
                 return System.Diagnostics.Process.GetProcessById(pid).ProcessName;
+            }
+            catch { return null; }
+        }
+
+        private static uint? GetProcessId(AutomationElement element)
+        {
+            try
+            {
+                int pid = element.Properties.ProcessId.Value;
+                return pid <= 0 ? null : (uint)pid;
             }
             catch { return null; }
         }
