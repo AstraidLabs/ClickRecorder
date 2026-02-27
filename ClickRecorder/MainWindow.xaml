@@ -238,6 +238,7 @@
                                     Click="BtnAttachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
                             <Button x:Name="BtnDetachApp" Content="🔌 Odpojit aplikaci" Style="{StaticResource BRed}"
                                     Click="BtnDetachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
+                            <TextBlock Text="{Binding AttachedAppText}" Foreground="#BAC2DE" FontSize="11" Margin="0,0,0,4" TextWrapping="Wrap"/>
 
                             <Separator/>
 
