@@ -56,6 +56,8 @@ namespace ClickRecorder.Models
 
     public class ClickAction
     {
+        public const string EnterToken = "{ENTER}";
+
         public int          Id                  { get; set; }
         public int          X                   { get; set; }
         public int          Y                   { get; set; }
@@ -80,7 +82,7 @@ namespace ClickRecorder.Models
 
         public string Summary =>
             Kind == ActionKind.TypeText
-                ? $"#{Id:D3}  [TEXT] '{TextToType ?? string.Empty}'  +{DelayAfterPrevious.TotalMilliseconds:F0}ms"
+                ? $"#{Id:D3}  [TEXT] '{(TextToType ?? string.Empty).Replace(EnterToken, "↵")}'  +{DelayAfterPrevious.TotalMilliseconds:F0}ms"
             : UseElementPlayback
                 ? $"#{Id:D3}  {Element!.Selector,-38}  +{DelayAfterPrevious.TotalMilliseconds:F0}ms"
                 : $"#{Id:D3}  [{Button}] ({X},{Y})                            +{DelayAfterPrevious.TotalMilliseconds:F0}ms";
@@ -172,7 +174,7 @@ namespace ClickRecorder.Models
         {
             string rep = RepeatIndex > 1 ? $" [R{RepeatIndex}]" : "";
             string who = Kind == ActionKind.TypeText
-                ? $"TEXT '{TextToType ?? string.Empty}'"
+                ? $"TEXT '{(TextToType ?? string.Empty).Replace(EnterToken, "↵")}'"
                 : Element is not null ? Element.Selector : $"({X},{Y})";
             string err = Exception is not null ? $"  → {Exception.ShortType}: {Exception.Message}" : "";
             return $"{StatusIcon} {ModeIcon}  #{StepId:D3}{rep}  {who,-40}  {Duration.TotalMilliseconds:F0}ms{err}";
