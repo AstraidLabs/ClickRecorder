@@ -108,14 +108,18 @@ namespace ClickRecorder.Views
             if (!string.IsNullOrEmpty(tc.Preconditions))
             { sb.AppendLine("Preconditions:"); sb.AppendLine(tc.Preconditions); sb.AppendLine(); }
 
-            if (tc.Steps.Count > 0)
+            if (tc.Sections.Count > 0)
             {
-                sb.AppendLine($"Kroky ({tc.Steps.Count}):");
-                foreach (var s in tc.Steps)
+                sb.AppendLine($"Sekce ({tc.Sections.Count}, kroků celkem {tc.TotalSteps}):");
+                foreach (var section in tc.Sections.OrderBy(x => x.Order))
                 {
-                    sb.AppendLine($"  {s.Order:D2}. {s.Description}");
-                    if (!string.IsNullOrEmpty(s.ExpectedResult))
-                        sb.AppendLine($"      → {s.ExpectedResult}");
+                    sb.AppendLine($"  [{section.Order:D2}] {section.Name} ({section.Steps.Count} kroků)");
+                    foreach (var step in section.Steps.OrderBy(x => x.Order))
+                    {
+                        sb.AppendLine($"      {step.Order:D2}. {step.Description}");
+                        if (!string.IsNullOrEmpty(step.ExpectedResult))
+                            sb.AppendLine($"          → {step.ExpectedResult}");
+                    }
                 }
                 sb.AppendLine();
             }
