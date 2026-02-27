@@ -42,6 +42,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     private bool _isRecording;
     private DateTime? _lastClickTime;
     private int _clickId;
+    private (int X, int Y, UiElementInfo? Element)? _pendingTextTarget;
 
     public ObservableCollection<string> Clicks { get; } = new();
     public ObservableCollection<string> Results { get; } = new();
@@ -141,12 +142,23 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         int y = previous?.Y ?? 0;
         var element = previous?.Element;
 
-        if (previous is null && GetCursorPos(out var pt))
+        if (previous is null)
         {
-            x = pt.X;
-            y = pt.Y;
-            element = _inspector.InspectAt(x, y);
+            if (_pendingTextTarget is { } pending)
+            {
+                x = pending.X;
+                y = pending.Y;
+                element = pending.Element;
+            }
+            else if (GetCursorPos(out var pt))
+            {
+                x = pt.X;
+                y = pt.Y;
+                element = _inspector.InspectAt(x, y);
+            }
         }
+
+        _pendingTextTarget = null;
 
         _clickId++;
         var action = new ClickAction
@@ -166,6 +178,17 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         Clicks.Add($"⌨ {action.Summary}");
         RecordCount = _recorded.Count.ToString();
         FooterText = "Textový krok přidán do sekvence.";
+    }
+
+    public void CaptureTextTargetFromCursor()
+    {
+        if (!GetCursorPos(out var pt))
+        {
+            _pendingTextTarget = null;
+            return;
+        }
+
+        _pendingTextTarget = (pt.X, pt.Y, _inspector.InspectAt(pt.X, pt.Y));
     }
 
     public void ClearRecording()
