@@ -224,7 +224,7 @@
                                 <TextBlock Text="ℹ" Foreground="#89B4FA" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Cursor="Hand">
                                     <TextBlock.ToolTip>
                                         <ToolTip Placement="Bottom" Background="#11111B" BorderBrush="#45475A" Foreground="#CDD6F4" Padding="10" MaxWidth="360">
-                                            <TextBlock TextWrapping="Wrap" FontSize="11" Text="Návod: Nejprve spusťte cílovou aplikaci nebo se na ni omezte přes tlačítko Omezit na aplikaci. Omezení pomáhá nahrávání i přehrávání pracovat jen v jedné aplikaci."/>
+                                            <TextBlock TextWrapping="Wrap" FontSize="11" Text="Pro přesné nahrávání nejprve připojte cílovou aplikaci – nahrávání se omezí jen na ni a snížíte riziko chybných kliknutí."/>
                                         </ToolTip>
                                     </TextBlock.ToolTip>
                                 </TextBlock>
@@ -233,6 +233,7 @@
                     </Expander.Header>
                     <Border Style="{StaticResource Card}" Margin="0,8,0,0">
                         <StackPanel>
+                            <TextBlock Text="Připojit aplikaci" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
                             <Button x:Name="BtnAttachApp" Content="{Binding AttachButtonText}" Style="{StaticResource BPurple}"
                                     Click="BtnAttachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
                             <Button x:Name="BtnDetachApp" Content="🔌 Odpojit aplikaci" Style="{StaticResource BRed}"
