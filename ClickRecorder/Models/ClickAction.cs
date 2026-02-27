@@ -65,15 +65,20 @@ namespace ClickRecorder.Models
         /// <summary>FlaUI-inspected element info. Null if element inspection failed.</summary>
         public ElementIdentity? Element         { get; set; }
 
+        /// <summary>
+        /// True = prefer element-based playback (FlaUI), false = force coordinate playback.
+        /// </summary>
+        public bool PreferElementPlayback { get; set; } = true;
+
         /// <summary>When true playback uses FlaUI element search; otherwise falls back to coords.</summary>
         public bool UseElementPlayback =>
-            Element?.IsUsable == true;
+            PreferElementPlayback && Element?.IsUsable == true;
 
         public string Summary =>
             Kind == ActionKind.TypeText
                 ? $"#{Id:D3}  [TEXT] '{TextToType ?? string.Empty}'  +{DelayAfterPrevious.TotalMilliseconds:F0}ms"
-            : Element is not null
-                ? $"#{Id:D3}  {Element.Selector,-38}  +{DelayAfterPrevious.TotalMilliseconds:F0}ms"
+            : UseElementPlayback
+                ? $"#{Id:D3}  {Element!.Selector,-38}  +{DelayAfterPrevious.TotalMilliseconds:F0}ms"
                 : $"#{Id:D3}  [{Button}] ({X},{Y})                            +{DelayAfterPrevious.TotalMilliseconds:F0}ms";
 
         public override string ToString() => Summary;
