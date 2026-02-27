@@ -79,6 +79,8 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     public string AttachedAppText { get => _attachedAppText; set => SetProperty(ref _attachedAppText, value); }
 
     public bool CanRecord => _attachedProcessId.HasValue && !_isAttachArmed;
+    public bool CanAttachApplication => !_attachedProcessId.HasValue || _isAttachArmed;
+    public bool CanDetachApplication => _attachedProcessId.HasValue;
 
     public string RepeatText { get; set; } = "1";
     public string SpeedText { get; set; } = "1.0";
@@ -210,7 +212,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         {
             _isAttachArmed = false;
             AttachButtonText = "🎯 Připojit aplikaci";
-            OnPropertyChanged(nameof(CanRecord));
+            RefreshAttachmentState();
             FooterText = "Výběr cílové aplikace zrušen.";
             if (!_isRecording)
             {
@@ -222,7 +224,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _hook.Start();
         _isAttachArmed = true;
         AttachButtonText = "❌ Zrušit výběr";
-        OnPropertyChanged(nameof(CanRecord));
+        RefreshAttachmentState();
         FooterText = "Klikni kdekoliv do cílové aplikace a připojí se.";
     }
 
@@ -231,7 +233,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _attachedWindowHandle = null;
         _attachedProcessId = null;
         _attachedProcessName = null;
-        OnPropertyChanged(nameof(CanRecord));
+        RefreshAttachmentState();
         AttachedAppText = "Žádná aplikace není připojená.";
         FooterText = "Omezení cílové aplikace zrušeno.";
     }
@@ -470,7 +472,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
             _attachedWindowHandle = e.RootWindowHandle;
             _attachedProcessId = e.ProcessId;
             _attachedProcessName = ResolveProcessName(e.ProcessId);
-            OnPropertyChanged(nameof(CanRecord));
+            RefreshAttachmentState();
             AttachedAppText = $"🎯 {_attachedProcessName ?? "Neznámý proces"} · PID {_attachedProcessId}";
             FooterText = "Cílová aplikace nastavena. Nahrávání i přehrávání bude omezené pouze na tento proces.";
             if (!_isRecording)
@@ -637,6 +639,13 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         {
             return null;
         }
+    }
+
+    private void RefreshAttachmentState()
+    {
+        OnPropertyChanged(nameof(CanRecord));
+        OnPropertyChanged(nameof(CanAttachApplication));
+        OnPropertyChanged(nameof(CanDetachApplication));
     }
 
     private void OnStepCompleted(object? sender, StepResult result)

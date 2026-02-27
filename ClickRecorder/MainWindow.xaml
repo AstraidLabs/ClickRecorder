@@ -235,9 +235,11 @@
                         <StackPanel>
                             <TextBlock Text="Připojit aplikaci" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
                             <Button x:Name="BtnAttachApp" Content="{Binding AttachButtonText}" Style="{StaticResource BPurple}"
-                                    Click="BtnAttachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
+                                    Click="BtnAttachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"
+                                    IsEnabled="{Binding CanAttachApplication}"/>
                             <Button x:Name="BtnDetachApp" Content="🔌 Odpojit aplikaci" Style="{StaticResource BRed}"
-                                    Click="BtnDetachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
+                                    Click="BtnDetachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"
+                                    IsEnabled="{Binding CanDetachApplication}"/>
                             <TextBlock Text="{Binding AttachedAppText}" Foreground="#BAC2DE" FontSize="11" Margin="0,0,0,4" TextWrapping="Wrap"/>
 
                             <Separator/>
