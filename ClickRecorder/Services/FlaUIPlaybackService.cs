@@ -238,10 +238,12 @@ namespace ClickRecorder.Services
                 try
                 {
                     var cf = _automation.ConditionFactory;
-                    var cond = !string.IsNullOrEmpty(controlType) &&
-                               Enum.TryParse<ControlType>(controlType, out var ct)
-                        ? cf.ByName(name).And(cf.ByControlType(ct))
-                        : cf.ByName(name);
+                    var cond = cf.ByName(name);
+                    if (!string.IsNullOrEmpty(controlType) &&
+                        Enum.TryParse<ControlType>(controlType, out var ct))
+                    {
+                        cond = cond.And(cf.ByControlType(ct));
+                    }
 
                     var el = root.FindFirst(TreeScope.Descendants, cond);
                     if (el is not null) return el;
