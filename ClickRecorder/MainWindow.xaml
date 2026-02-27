@@ -144,6 +144,7 @@
                     <TextBlock Text="Text k vyplnění" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
                     <TextBox x:Name="TxtTextToType" Text="{Binding TextToType, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
                     <Button x:Name="BtnAddTextStep" Content="⌨ Přidat textový krok" Style="{StaticResource BBlue}"
+                            PreviewMouseLeftButtonDown="BtnAddTextStep_PreviewMouseLeftButtonDown"
                             Click="BtnAddTextStep_Click" HorizontalAlignment="Stretch"/>
 
                     <Separator/>

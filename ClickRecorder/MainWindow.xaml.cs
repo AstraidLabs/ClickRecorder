@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using ClickRecorder.Models;
 using ClickRecorder.ViewModels;
 
@@ -21,6 +22,7 @@ namespace ClickRecorder
         private async void BtnPlay_Click(object sender, RoutedEventArgs e) => await _vm.PlayAsync();
         private void BtnStopPlay_Click(object sender, RoutedEventArgs e) => _vm.StopPlay();
         private void BtnClear_Click(object sender, RoutedEventArgs e) => _vm.ClearRecording();
+        private void BtnAddTextStep_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => _vm.CaptureTextTargetFromCursor();
         private void BtnAddTextStep_Click(object sender, RoutedEventArgs e) => _vm.AddTextStep();
         private void BtnSaveSequence_Click(object sender, RoutedEventArgs e) => _vm.SaveSequence();
         private void BtnOpenTestCases_Click(object sender, RoutedEventArgs e) => _vm.OpenTestCases(this);
