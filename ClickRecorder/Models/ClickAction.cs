@@ -9,6 +9,9 @@ namespace ClickRecorder.Models
 
     public class ElementIdentity
     {
+        /// <summary>Owning process id if available.</summary>
+        public uint? ProcessId       { get; set; }
+
         /// <summary>AutomationId assigned by the app developer – most stable.</summary>
         public string? AutomationId   { get; set; }
 
@@ -61,6 +64,7 @@ namespace ClickRecorder.Models
         public string?      TextToType          { get; set; }
         public TimeSpan     DelayAfterPrevious  { get; set; }
         public DateTime     RecordedAt          { get; set; }
+        public uint?        TargetProcessId     { get; set; }
 
         /// <summary>FlaUI-inspected element info. Null if element inspection failed.</summary>
         public ElementIdentity? Element         { get; set; }

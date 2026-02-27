@@ -24,10 +24,22 @@ namespace ClickRecorder.Services
         // ── Win32 fallback ────────────────────────────────────────────────────
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool SetCursorPos(int x, int y);
+        [StructLayout(LayoutKind.Sequential)]
+        private struct POINT { public int X; public int Y; }
+
 
         [DllImport("user32.dll")]
         private static extern void mouse_event(uint dwFlags, int dx, int dy,
                                                uint dwData, int dwExtraInfo);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr WindowFromPoint(POINT point);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetAncestor(IntPtr hWnd, uint gaFlags);
+
+        [DllImport("user32.dll")]
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
         private const uint MOUSEEVENTF_LEFTDOWN   = 0x0002;
         private const uint MOUSEEVENTF_LEFTUP     = 0x0004;
@@ -35,6 +47,7 @@ namespace ClickRecorder.Services
         private const uint MOUSEEVENTF_RIGHTUP    = 0x0010;
         private const uint MOUSEEVENTF_MIDDLEDOWN = 0x0020;
         private const uint MOUSEEVENTF_MIDDLEUP   = 0x0040;
+        private const uint GA_ROOT = 2;
 
         // ── Events ────────────────────────────────────────────────────────────
         public event EventHandler<StepResult>? StepCompleted;
@@ -132,6 +145,15 @@ namespace ClickRecorder.Services
             var sw = Stopwatch.StartNew();
             try
             {
+                bool strictProcessScope = action.TargetProcessId.HasValue;
+
+                if (strictProcessScope && !action.UseElementPlayback)
+                {
+                    throw new InvalidOperationException(
+                        $"Step #{action.Id} is process-scoped (PID {action.TargetProcessId}) but has no usable UI element identity. " +
+                        "Coordinate playback is blocked in strict mode to prevent clicks outside the attached process.");
+                }
+
                 if (action.Kind == ActionKind.TypeText)
                 {
                     if (action.UseElementPlayback)
@@ -174,7 +196,7 @@ namespace ClickRecorder.Services
         private void TypeViaFlaUI(ClickAction action)
         {
             var id = action.Element!;
-            var el = WaitForElement(id)
+            var el = WaitForElement(id, action.TargetProcessId)
                      ?? throw new ElementNotFoundException(
                          $"UI element not found: {id.Selector} in window '{id.WindowTitle ?? id.ProcessName}'");
 
@@ -192,6 +214,8 @@ namespace ClickRecorder.Services
 
         private void TypeViaCoordinates(ClickAction action)
         {
+            EnsureCoordinateTargetsProcess(action);
+
             if (!SetCursorPos(action.X, action.Y))
                 throw new InvalidOperationException(
                     $"SetCursorPos({action.X},{action.Y}) failed. Win32 error: {Marshal.GetLastWin32Error()}");
@@ -209,7 +233,7 @@ namespace ClickRecorder.Services
         private void ClickViaFlaUI(ClickAction action)
         {
             var id  = action.Element!;
-            var el  = WaitForElement(id)
+            var el  = WaitForElement(id, action.TargetProcessId)
                       ?? throw new ElementNotFoundException(
                              $"UI element not found: {id.Selector} " +
                              $"in window '{id.WindowTitle ?? id.ProcessName}'");
@@ -242,50 +266,50 @@ namespace ClickRecorder.Services
             }
         }
 
-        private AutomationElement? FindElement(ElementIdentity id)
+        private AutomationElement? FindElement(ElementIdentity id, uint? targetProcessId)
         {
             // Strategy 1: search by AutomationId (most reliable)
             if (!string.IsNullOrEmpty(id.AutomationId))
             {
-                var found = FindByAutomationId(id.AutomationId, id.ProcessName);
+                var found = FindByAutomationId(id.AutomationId, id.ProcessName, targetProcessId);
                 if (found is not null) return found;
             }
 
             // Strategy 2: search by Name + ControlType
             if (!string.IsNullOrEmpty(id.Name))
             {
-                var found = FindByName(id.Name, id.ControlType, id.ProcessName);
+                var found = FindByName(id.Name, id.ControlType, id.ProcessName, targetProcessId);
                 if (found is not null) return found;
             }
 
             // Strategy 3: search by ClassName
             if (!string.IsNullOrEmpty(id.ClassName))
             {
-                var found = FindByClassName(id.ClassName, id.ProcessName);
+                var found = FindByClassName(id.ClassName, id.ProcessName, targetProcessId);
                 if (found is not null) return found;
             }
 
             return null;
         }
 
-        private AutomationElement? WaitForElement(ElementIdentity id)
+        private AutomationElement? WaitForElement(ElementIdentity id, uint? targetProcessId)
         {
             var timeoutAt = DateTime.UtcNow.AddMilliseconds(ElementSearchTimeoutMs);
             while (DateTime.UtcNow < timeoutAt)
             {
-                var found = FindElement(id);
+                var found = FindElement(id, targetProcessId);
                 if (found is not null)
                     return found;
 
                 Thread.Sleep(ElementSearchPollMs);
             }
 
-            return FindElement(id);
+            return FindElement(id, targetProcessId);
         }
 
-        private AutomationElement? FindByAutomationId(string automationId, string? processName)
+        private AutomationElement? FindByAutomationId(string automationId, string? processName, uint? targetProcessId)
         {
-            foreach (var root in GetSearchRoots(processName))
+            foreach (var root in GetSearchRoots(processName, targetProcessId))
             {
                 try
                 {
@@ -299,9 +323,9 @@ namespace ClickRecorder.Services
             return null;
         }
 
-        private AutomationElement? FindByName(string name, string? controlType, string? processName)
+        private AutomationElement? FindByName(string name, string? controlType, string? processName, uint? targetProcessId)
         {
-            foreach (var root in GetSearchRoots(processName))
+            foreach (var root in GetSearchRoots(processName, targetProcessId))
             {
                 try
                 {
@@ -321,9 +345,9 @@ namespace ClickRecorder.Services
             return null;
         }
 
-        private AutomationElement? FindByClassName(string className, string? processName)
+        private AutomationElement? FindByClassName(string className, string? processName, uint? targetProcessId)
         {
-            foreach (var root in GetSearchRoots(processName))
+            foreach (var root in GetSearchRoots(processName, targetProcessId))
             {
                 try
                 {
@@ -337,37 +361,74 @@ namespace ClickRecorder.Services
             return null;
         }
 
-        private List<AutomationElement> GetSearchRoots(string? processName)
+        private List<AutomationElement> GetSearchRoots(string? processName, uint? targetProcessId)
         {
             var roots = new List<AutomationElement>();
             try
             {
-                if (!string.IsNullOrEmpty(processName))
+                IEnumerable<System.Diagnostics.Process> procs = Enumerable.Empty<System.Diagnostics.Process>();
+                if (targetProcessId.HasValue)
                 {
-                    var procs = System.Diagnostics.Process.GetProcessesByName(processName);
-                    foreach (var p in procs)
+                    try
                     {
-                        if (p.MainWindowHandle != IntPtr.Zero)
-                        {
-                            try
-                            {
-                                roots.Add(_automation.FromHandle(p.MainWindowHandle));
-                            }
-                            catch { }
-                        }
+                        procs = new[] { System.Diagnostics.Process.GetProcessById((int)targetProcessId.Value) };
                     }
+                    catch
+                    {
+                        procs = Enumerable.Empty<System.Diagnostics.Process>();
+                    }
+                }
+                else if (!string.IsNullOrEmpty(processName))
+                {
+                    procs = System.Diagnostics.Process.GetProcessesByName(processName);
+                }
+
+                foreach (var p in procs)
+                {
+                    if (p.MainWindowHandle == IntPtr.Zero) continue;
+                    try
+                    {
+                        roots.Add(_automation.FromHandle(p.MainWindowHandle));
+                    }
+                    catch { }
                 }
             }
             catch { }
 
-            // Always include desktop as final fallback
-            try { roots.Add(_automation.GetDesktop()); } catch { }
+            // In strict process mode never fall back to desktop-wide search.
+            if (!targetProcessId.HasValue)
+            {
+                try { roots.Add(_automation.GetDesktop()); } catch { }
+            }
+
             return roots;
+        }
+
+
+        private static void EnsureCoordinateTargetsProcess(ClickAction action)
+        {
+            if (!action.TargetProcessId.HasValue)
+            {
+                return;
+            }
+
+            var pt = new POINT { X = action.X, Y = action.Y };
+            var window = WindowFromPoint(pt);
+            var root = window != IntPtr.Zero ? GetAncestor(window, GA_ROOT) : IntPtr.Zero;
+            _ = GetWindowThreadProcessId(root, out uint processId);
+
+            if (processId != action.TargetProcessId.Value)
+            {
+                throw new InvalidOperationException(
+                    $"Coordinate target mismatch for step #{action.Id}: expected PID {action.TargetProcessId}, but point ({action.X},{action.Y}) resolves to PID {processId}.");
+            }
         }
 
         // ── Win32 fallback click ──────────────────────────────────────────────
         private void ClickViaWin32(ClickAction action)
         {
+            EnsureCoordinateTargetsProcess(action);
+
             if (!SetCursorPos(action.X, action.Y))
                 throw new InvalidOperationException(
                     $"SetCursorPos({action.X},{action.Y}) failed. " +
