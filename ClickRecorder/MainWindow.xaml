@@ -133,7 +133,7 @@
                     <TextBlock Text="NAHRÁVÁNÍ" Style="{StaticResource Sec}"/>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                         <Button x:Name="BtnRecord"     Content="⏺ Nahrát" Style="{StaticResource BRed}"
-                                Click="BtnRecord_Click" Margin="0,0,6,0"/>
+                                Click="BtnRecord_Click" Margin="0,0,6,0" IsEnabled="{Binding CanRecord}"/>
                         <Button x:Name="BtnStopRecord" Content="⏹ Stop"   Style="{StaticResource BGray}"
                                 Click="BtnStopRecord_Click"/>
                     </StackPanel>
