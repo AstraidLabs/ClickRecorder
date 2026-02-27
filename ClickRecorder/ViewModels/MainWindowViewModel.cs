@@ -70,7 +70,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     private string _attachedAppText = "Nejprve připoj cílovou aplikaci";
     public string AttachedAppText { get => _attachedAppText; set => SetProperty(ref _attachedAppText, value); }
 
-    public bool CanRecord => _attachedProcessId.HasValue;
+    public bool CanRecord => true;
 
     public string RepeatText { get; set; } = "1";
     public string SpeedText { get; set; } = "1.0";
@@ -98,7 +98,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _playback.PlaybackFinished += OnPlaybackFinished;
         _scheduler = new JobSchedulerService(_db, _playback);
         _scheduler.JobFinished += (_, args) => FooterText = $"⏰ Job dokončen: {args.Job.Name} – {args.Message}";
-        FooterText = "FlaUI inicializováno. Nejprve připoj cílovou aplikaci přes 🎯 Připojit aplikaci.";
+        FooterText = "FlaUI inicializováno. Nahrávání je připravené pro kliknutí kdekoliv.";
     }
 
     public bool CanPlay => _recorded.Count > 0;
@@ -106,11 +106,6 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     public void StartRecord()
     {
         if (_isRecording) return;
-        if (!CanRecord)
-        {
-            FooterText = "Nahrávání je dostupné až po připojení cílové aplikace.";
-            return;
-        }
         if (_isAttachArmed)
         {
             FooterText = "Nejdřív dokonči výběr cílové aplikace kliknutím mimo ClickRecorder.";
@@ -120,7 +115,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _hook.Start();
         SetStatus("🔴  Nahrávám", "#F38BA8");
         FooterText = _attachedProcessId.HasValue
-            ? $"Nahrávám pouze pro proces {_attachedProcessName ?? _attachedProcessId.Value.ToString()} (PID {_attachedProcessId})."
+            ? $"Nahrávám… Připojená aplikace: {_attachedProcessName ?? _attachedProcessId.Value.ToString()} (PID {_attachedProcessId})."
             : "Nahrávám… Klikej kdekoliv – FlaUI inspektuje každý element.";
     }
 
@@ -319,16 +314,11 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
             _attachedProcessName = ResolveProcessName(e.ProcessId);
             OnPropertyChanged(nameof(CanRecord));
             AttachedAppText = $"🎯 {_attachedProcessName ?? "Neznámý proces"} (PID {_attachedProcessId}, HWND 0x{e.RootWindowHandle.ToInt64():X})";
-            FooterText = "Cílová aplikace nastavena. Nahrávání bude brát jen kliknutí v této aplikaci.";
+            FooterText = "Cílová aplikace nastavena (informativně). Nahrávání dál bere kliknutí kdekoliv.";
             if (!_isRecording)
             {
                 _hook.Stop();
             }
-            return;
-        }
-
-        if (_attachedProcessId.HasValue && e.ProcessId != _attachedProcessId.Value)
-        {
             return;
         }
 
