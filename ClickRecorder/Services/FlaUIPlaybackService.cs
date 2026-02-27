@@ -119,7 +119,9 @@ namespace ClickRecorder.Services
                 RepeatIndex = repeatIndex,
                 X           = action.X,
                 Y           = action.Y,
+                Kind        = action.Kind,
                 Button      = action.Button.ToString(),
+                TextToType  = action.TextToType,
                 Element     = action.Element,
                 ExecutedAt  = DateTime.Now
             };
@@ -127,7 +129,20 @@ namespace ClickRecorder.Services
             var sw = Stopwatch.StartNew();
             try
             {
-                if (action.UseElementPlayback)
+                if (action.Kind == ActionKind.TypeText)
+                {
+                    if (action.UseElementPlayback)
+                    {
+                        result.Mode = PlaybackMode.FlaUI;
+                        TypeViaFlaUI(action);
+                    }
+                    else
+                    {
+                        result.Mode = PlaybackMode.Coordinates;
+                        TypeViaCoordinates(action);
+                    }
+                }
+                else if (action.UseElementPlayback)
                 {
                     result.Mode = PlaybackMode.FlaUI;
                     ClickViaFlaUI(action);
@@ -151,6 +166,40 @@ namespace ClickRecorder.Services
             }
 
             return result;
+        }
+
+        private void TypeViaFlaUI(ClickAction action)
+        {
+            var id = action.Element!;
+            var el = FindElement(id)
+                     ?? throw new ElementNotFoundException(
+                         $"UI element not found: {id.Selector} in window '{id.WindowTitle ?? id.ProcessName}'");
+
+            string text = action.TextToType ?? string.Empty;
+            try { el.Focus(); } catch { }
+
+            if (el.Patterns.Value.IsSupported)
+            {
+                el.Patterns.Value.Pattern.SetValue(text);
+                return;
+            }
+
+            Keyboard.Type(text);
+        }
+
+        private void TypeViaCoordinates(ClickAction action)
+        {
+            if (!SetCursorPos(action.X, action.Y))
+                throw new InvalidOperationException(
+                    $"SetCursorPos({action.X},{action.Y}) failed. Win32 error: {Marshal.GetLastWin32Error()}");
+
+            Thread.Sleep(30);
+            mouse_event(MOUSEEVENTF_LEFTDOWN, action.X, action.Y, 0, 0);
+            Thread.Sleep(30);
+            mouse_event(MOUSEEVENTF_LEFTUP, action.X, action.Y, 0, 0);
+            Thread.Sleep(40);
+
+            Keyboard.Type(action.TextToType ?? string.Empty);
         }
 
         // ── FlaUI element click ───────────────────────────────────────────────

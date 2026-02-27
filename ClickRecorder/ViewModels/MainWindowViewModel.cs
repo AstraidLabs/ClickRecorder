@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Runtime.InteropServices;
 using ClickRecorder.Data.Entities;
 using ClickRecorder.Models;
 using ClickRecorder.Services;
@@ -15,6 +16,16 @@ namespace ClickRecorder.ViewModels;
 
 public sealed class MainWindowViewModel : ViewModelBase, IDisposable
 {
+    [DllImport("user32.dll")]
+    private static extern bool GetCursorPos(out POINT lpPoint);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct POINT
+    {
+        public int X;
+        public int Y;
+    }
+
     private readonly GlobalMouseHook _hook = new();
     private readonly FlaUIInspectorService _inspector = new();
     private readonly FlaUIPlaybackService _playback = new();
@@ -53,6 +64,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     public bool StopOnError { get; set; }
     public bool TakeScreenshots { get; set; }
     public string SequenceName { get; set; } = "Moje sekvence";
+    public string TextToType { get; set; } = string.Empty;
     public string FlaUiStatus { get; set; } = "⚙ FlaUI: Připraveno";
 
     private string _okText = "✓  0";
@@ -111,6 +123,50 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     }
 
     public void StopPlay() => _playback.Stop();
+
+    public void AddTextStep()
+    {
+        if (string.IsNullOrWhiteSpace(TextToType))
+        {
+            FooterText = "Zadej text, který chceš vyplnit.";
+            return;
+        }
+
+        var ts = DateTime.Now;
+        var delay = _lastClickTime.HasValue ? ts - _lastClickTime.Value : TimeSpan.Zero;
+        _lastClickTime = ts;
+
+        var previous = _recorded.Count > 0 ? _recorded[^1] : null;
+        int x = previous?.X ?? 0;
+        int y = previous?.Y ?? 0;
+        var element = previous?.Element;
+
+        if (previous is null && GetCursorPos(out var pt))
+        {
+            x = pt.X;
+            y = pt.Y;
+            element = _inspector.InspectAt(x, y);
+        }
+
+        _clickId++;
+        var action = new ClickAction
+        {
+            Id = _clickId,
+            X = x,
+            Y = y,
+            Kind = ActionKind.TypeText,
+            Button = ClickButton.Left,
+            TextToType = TextToType,
+            DelayAfterPrevious = delay,
+            RecordedAt = ts,
+            Element = element
+        };
+
+        _recorded.Add(action);
+        Clicks.Add($"⌨ {action.Summary}");
+        RecordCount = _recorded.Count.ToString();
+        FooterText = "Textový krok přidán do sekvence.";
+    }
 
     public void ClearRecording()
     {
@@ -189,7 +245,8 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         foreach (var a in steps)
         {
             _clickId = Math.Max(_clickId, a.Id);
-            Clicks.Add((a.UseElementPlayback ? "⚙ " : "🖱 ") + a.Summary);
+            var icon = a.Kind == ActionKind.TypeText ? "⌨ " : (a.UseElementPlayback ? "⚙ " : "🖱 ");
+            Clicks.Add(icon + a.Summary);
             _recorded.Add(a);
         }
         RecordCount = _recorded.Count.ToString();
@@ -226,7 +283,8 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
                     Element = identity
                 };
                 _recorded.Add(action);
-                Clicks.Add($"{(action.UseElementPlayback ? "⚙" : "🖱")} {action.Summary}");
+                var icon = action.Kind == ActionKind.TypeText ? "⌨" : (action.UseElementPlayback ? "⚙" : "🖱");
+                Clicks.Add($"{icon} {action.Summary}");
                 RecordCount = _recorded.Count.ToString();
             });
         });

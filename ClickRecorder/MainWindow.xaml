@@ -140,6 +140,12 @@
                     <Button x:Name="BtnClear" Content="🗑  Vymazat záznamy" Style="{StaticResource BOrange}"
                             Click="BtnClear_Click" HorizontalAlignment="Stretch"/>
 
+                    <TextBlock Text="TEXT INPUT" Style="{StaticResource Sec}" Margin="0,10,0,0"/>
+                    <TextBlock Text="Text k vyplnění" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                    <TextBox x:Name="TxtTextToType" Text="{Binding TextToType, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+                    <Button x:Name="BtnAddTextStep" Content="⌨ Přidat textový krok" Style="{StaticResource BBlue}"
+                            Click="BtnAddTextStep_Click" HorizontalAlignment="Stretch"/>
+
                     <Separator/>
 
                     <TextBlock Text="SEKVENCE / TEST CASE" Style="{StaticResource Sec}"/>
