@@ -144,12 +144,12 @@
             <!-- ── COL 0: Recording + Playback panels ─────────────────────── -->
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Expander IsExpanded="True" Style="{StaticResource PanelExpander}" Margin="0,0,8,8">
+                <Expander Grid.Row="1" IsExpanded="True" Style="{StaticResource PanelExpander}" Margin="0,0,8,8">
                     <Expander.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="NAHRÁVÁNÍ" VerticalAlignment="Center"/>
@@ -211,7 +211,7 @@
                     </Border>
                 </Expander>
 
-                <Expander Grid.Row="1" IsExpanded="True" Style="{StaticResource PanelExpander}" Margin="0,0,8,8">
+                <Expander Grid.Row="0" IsExpanded="True" Style="{StaticResource PanelExpander}" Margin="0,0,8,8">
                     <Expander.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="NAPOJENÍ APLIKACE" VerticalAlignment="Center"/>
