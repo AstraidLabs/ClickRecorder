@@ -461,10 +461,9 @@ namespace ClickRecorder.Services
                     }
                 });
 
-                if (byTitle is not null)
-                {
-                    return (uint)byTitle.Id;
-                }
+                // When a window title is available, only an exact title match is safe.
+                // Falling back to another process with the same name can misdirect playback.
+                return byTitle is not null ? (uint)byTitle.Id : null;
             }
 
             var first = processes.OrderByDescending(p =>
