@@ -242,12 +242,17 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         int x = previous?.X ?? 0;
         int y = previous?.Y ?? 0;
         var element = previous?.Element;
+        uint? targetProcessId = previous?.TargetProcessId ?? _attachedProcessId;
 
         if (previous is null && GetCursorPos(out var pt))
         {
             x = pt.X;
             y = pt.Y;
             element = _inspector.InspectAt(x, y);
+            if (_attachedProcessId.HasValue && element?.ProcessId != _attachedProcessId)
+            {
+                element = null;
+            }
         }
 
         _clickId++;
@@ -262,6 +267,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
             DelayAfterPrevious = delay,
             RecordedAt = ts,
             Element = element,
+            TargetProcessId = targetProcessId,
             PreferElementPlayback = CaptureByElement
         };
 
@@ -370,11 +376,16 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
             _attachedProcessName = ResolveProcessName(e.ProcessId);
             OnPropertyChanged(nameof(CanRecord));
             AttachedAppText = $"🎯 {_attachedProcessName ?? "Neznámý proces"} (PID {_attachedProcessId}, HWND 0x{e.RootWindowHandle.ToInt64():X})";
-            FooterText = "Cílová aplikace nastavena (informativně). Nahrávání dál bere kliknutí kdekoliv.";
+            FooterText = "Cílová aplikace nastavena. Nahrávání i přehrávání bude omezené pouze na tento proces.";
             if (!_isRecording)
             {
                 _hook.Stop();
             }
+            return;
+        }
+
+        if (_attachedProcessId.HasValue && e.ProcessId != _attachedProcessId.Value)
+        {
             return;
         }
 
@@ -404,6 +415,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
                     DelayAfterPrevious = delay,
                     RecordedAt = ts,
                     Element = identity,
+                    TargetProcessId = _attachedProcessId,
                     PreferElementPlayback = CaptureByElement
                 };
                 _recorded.Add(action);
