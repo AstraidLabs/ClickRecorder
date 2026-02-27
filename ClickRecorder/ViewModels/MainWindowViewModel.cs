@@ -132,6 +132,10 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
             _isAttachArmed = false;
             AttachButtonText = "🎯 Připojit aplikaci";
             FooterText = "Výběr cílové aplikace zrušen.";
+            if (!_isRecording)
+            {
+                _hook.Stop();
+            }
             return;
         }
 
