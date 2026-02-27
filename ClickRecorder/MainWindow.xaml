@@ -97,6 +97,10 @@
             <Setter Property="Margin" Value="0,0,8,0"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         </Style>
+        <Style x:Key="PanelContentCard" TargetType="Border" BasedOn="{StaticResource Card}">
+            <Setter Property="BorderBrush" Value="#45475A"/>
+            <Setter Property="BorderThickness" Value="0,1,0,0"/>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -173,7 +177,7 @@
                             </Border>
                         </StackPanel>
                     </Expander.Header>
-                    <Border Style="{StaticResource Card}" Margin="0,8,0,0">
+                    <Border Style="{StaticResource PanelContentCard}" Margin="0,8,0,0">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
                             <TextBlock Text="NAHRÁVÁNÍ" Style="{StaticResource Sec}"/>
@@ -231,7 +235,7 @@
                             </Border>
                         </StackPanel>
                     </Expander.Header>
-                    <Border Style="{StaticResource Card}" Margin="0,4,0,0">
+                    <Border Style="{StaticResource PanelContentCard}" Margin="0,4,0,0">
                         <StackPanel Margin="0,-2,0,0">
                             <TextBlock Text="Připojit aplikaci kliknutím do oblasti aplikace." Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
                             <Button x:Name="BtnAttachApp" Content="{Binding AttachButtonText}" Style="{StaticResource BPurple}"
@@ -261,7 +265,7 @@
                             </Border>
                         </StackPanel>
                     </Expander.Header>
-                    <Border Style="{StaticResource Card}" Margin="0,8,0,0">
+                    <Border Style="{StaticResource PanelContentCard}" Margin="0,8,0,0">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
                             <TextBlock Text="PŘEHRÁVÁNÍ" Style="{StaticResource Sec}"/>
