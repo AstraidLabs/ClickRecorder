@@ -18,6 +18,8 @@ namespace ClickRecorder
 
         private void BtnRecord_Click(object sender, RoutedEventArgs e) => _vm.StartRecord();
         private void BtnStopRecord_Click(object sender, RoutedEventArgs e) => _vm.StopRecord();
+        private void BtnAttachApp_Click(object sender, RoutedEventArgs e) => _vm.ArmAttachToApplication();
+        private void BtnDetachApp_Click(object sender, RoutedEventArgs e) => _vm.ClearAttachedApplication();
         private async void BtnPlay_Click(object sender, RoutedEventArgs e) => await _vm.PlayAsync();
         private void BtnStopPlay_Click(object sender, RoutedEventArgs e) => _vm.StopPlay();
         private void BtnClear_Click(object sender, RoutedEventArgs e) => _vm.ClearRecording();

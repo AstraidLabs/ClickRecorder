@@ -10,6 +10,8 @@ namespace ClickRecorder.Services
         public int      Y         { get; init; }
         public HookButton Button  { get; init; }
         public DateTime Timestamp { get; init; }
+        public IntPtr   RootWindowHandle { get; init; }
+        public uint     ProcessId { get; init; }
     }
 
     public enum HookButton { Left, Right, Middle }
@@ -46,6 +48,14 @@ namespace ClickRecorder.Services
                                                      IntPtr wParam, IntPtr lParam);
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
+        [DllImport("user32.dll")]
+        private static extern IntPtr WindowFromPoint(POINT point);
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetAncestor(IntPtr hWnd, uint gaFlags);
+        [DllImport("user32.dll")]
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
+        private const uint GA_ROOT = 2;
 
         private delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
 
@@ -82,6 +92,9 @@ namespace ClickRecorder.Services
                 if (msg is WM_LBUTTONDOWN or WM_RBUTTONDOWN or WM_MBUTTONDOWN)
                 {
                     var s = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
+                    var clickedWindow = WindowFromPoint(s.pt);
+                    var rootWindow = clickedWindow != IntPtr.Zero ? GetAncestor(clickedWindow, GA_ROOT) : IntPtr.Zero;
+                    _ = GetWindowThreadProcessId(rootWindow, out uint processId);
                     MouseClicked?.Invoke(this, new MouseHookEventArgs
                     {
                         X         = s.pt.x,
@@ -89,7 +102,9 @@ namespace ClickRecorder.Services
                         Button    = msg == WM_LBUTTONDOWN ? HookButton.Left
                                   : msg == WM_RBUTTONDOWN ? HookButton.Right
                                   : HookButton.Middle,
-                        Timestamp = DateTime.Now
+                        Timestamp = DateTime.Now,
+                        RootWindowHandle = rootWindow,
+                        ProcessId = processId
                     });
                 }
             }
