@@ -145,6 +145,7 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -159,11 +160,6 @@
                                 <Button x:Name="BtnStopRecord" Content="⏹ Stop"   Style="{StaticResource BGray}"
                                         Click="BtnStopRecord_Click"/>
                             </StackPanel>
-                            <Button x:Name="BtnAttachApp" Content="{Binding AttachButtonText}" Style="{StaticResource BPurple}"
-                                    Click="BtnAttachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
-                            <Button x:Name="BtnDetachApp" Content="🔓 Zrušit omezení aplikace" Style="{StaticResource BGray}"
-                                    Click="BtnDetachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
-                            <TextBlock Text="{Binding AttachedAppText}" Foreground="#6C7086" FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
                             <TextBlock Text="Režim zachytávání" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
                             <RadioButton Content="Podle UI elementu (FlaUI)" GroupName="CaptureMode"
                                          IsChecked="{Binding CaptureByElement}" Margin="0,0,0,2"/>
@@ -199,15 +195,32 @@
                     </Border>
                 </Expander>
 
-                <Expander Grid.Row="1" Header="PŘEHRÁVÁNÍ" IsExpanded="True" Style="{StaticResource PanelExpander}" Margin="0,0,8,0">
+                <Expander Grid.Row="1" Header="NAPOJENÍ APLIKACE" IsExpanded="True" Style="{StaticResource PanelExpander}" Margin="0,0,8,8">
+                    <Border Style="{StaticResource Card}" Margin="0,8,0,0">
+                        <StackPanel>
+                            <TextBlock Text="OMEZENÍ NA APLIKACI" Style="{StaticResource Sec}"/>
+                            <Button x:Name="BtnAttachApp" Content="{Binding AttachButtonText}" Style="{StaticResource BPurple}"
+                                    Click="BtnAttachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
+                            <Button x:Name="BtnDetachApp" Content="🔓 Zrušit omezení aplikace" Style="{StaticResource BGray}"
+                                    Click="BtnDetachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
+                            <TextBlock Text="{Binding AttachedAppText}" Foreground="#6C7086" FontSize="10" Margin="0,0,0,10" TextWrapping="Wrap"/>
+
+                            <Separator/>
+
+                            <TextBlock Text="SPUŠTĚNÍ APLIKACE" Style="{StaticResource Sec}"/>
+                            <TextBlock Text="Název / AUMID / exe / MSIX package" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                            <TextBox x:Name="TxtAppToLaunch" Text="{Binding AppToLaunch, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+                            <Button x:Name="BtnLaunchApp" Content="🚀 Spustit aplikaci" Style="{StaticResource BPurple}"
+                                    Click="BtnLaunchApp_Click" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                    </Border>
+                </Expander>
+
+                <Expander Grid.Row="2" Header="PŘEHRÁVÁNÍ" IsExpanded="True" Style="{StaticResource PanelExpander}" Margin="0,0,8,0">
                     <Border Style="{StaticResource Card}" Margin="0,8,0,0">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
                             <TextBlock Text="PŘEHRÁVÁNÍ" Style="{StaticResource Sec}"/>
-                            <TextBlock Text="Spuštění aplikace (název / AUMID / exe / MSIX package)" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
-                            <TextBox x:Name="TxtAppToLaunch" Text="{Binding AppToLaunch, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
-                            <Button x:Name="BtnLaunchApp" Content="🚀 Spustit aplikaci" Style="{StaticResource BPurple}"
-                                    Click="BtnLaunchApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,8"/>
                             <Grid Margin="0,0,0,6">
                                 <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0" Margin="0,0,4,0">
