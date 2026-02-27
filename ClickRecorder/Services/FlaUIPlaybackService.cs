@@ -45,6 +45,9 @@ namespace ClickRecorder.Services
         private readonly UIA3Automation    _automation = new();
         private CancellationTokenSource?  _cts;
 
+        private const int ElementSearchTimeoutMs = 5000;
+        private const int ElementSearchPollMs    = 200;
+
         // ── Public API ────────────────────────────────────────────────────────
         public async Task<TestSession> PlayAsync(
             List<ClickAction> actions,
@@ -171,7 +174,7 @@ namespace ClickRecorder.Services
         private void TypeViaFlaUI(ClickAction action)
         {
             var id = action.Element!;
-            var el = FindElement(id)
+            var el = WaitForElement(id)
                      ?? throw new ElementNotFoundException(
                          $"UI element not found: {id.Selector} in window '{id.WindowTitle ?? id.ProcessName}'");
 
@@ -206,7 +209,7 @@ namespace ClickRecorder.Services
         private void ClickViaFlaUI(ClickAction action)
         {
             var id  = action.Element!;
-            var el  = FindElement(id)
+            var el  = WaitForElement(id)
                       ?? throw new ElementNotFoundException(
                              $"UI element not found: {id.Selector} " +
                              $"in window '{id.WindowTitle ?? id.ProcessName}'");
@@ -263,6 +266,21 @@ namespace ClickRecorder.Services
             }
 
             return null;
+        }
+
+        private AutomationElement? WaitForElement(ElementIdentity id)
+        {
+            var timeoutAt = DateTime.UtcNow.AddMilliseconds(ElementSearchTimeoutMs);
+            while (DateTime.UtcNow < timeoutAt)
+            {
+                var found = FindElement(id);
+                if (found is not null)
+                    return found;
+
+                Thread.Sleep(ElementSearchPollMs);
+            }
+
+            return FindElement(id);
         }
 
         private AutomationElement? FindByAutomationId(string automationId, string? processName)
