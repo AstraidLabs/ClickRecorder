@@ -32,7 +32,29 @@ namespace ClickRecorder
         private void BtnOpenJobs_Click(object sender, RoutedEventArgs e) => _vm.OpenJobs(this);
         private void BtnExport_Click(object sender, RoutedEventArgs e) => _vm.ExportReport();
 
-        private void ClickList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) { }
+        private void BtnApplyStep_Click(object sender, RoutedEventArgs e) => _vm.ApplyStepDetails();
+        private void BtnStepUp_Click(object sender, RoutedEventArgs e)
+        {
+            var index = _vm.MoveSelectedStep(-1);
+            if (index >= 0)
+            {
+                ClickList.SelectedIndex = index;
+            }
+        }
+
+        private void BtnStepDown_Click(object sender, RoutedEventArgs e)
+        {
+            var index = _vm.MoveSelectedStep(1);
+            if (index >= 0)
+            {
+                ClickList.SelectedIndex = index;
+            }
+        }
+
+        private void ClickList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            _vm.SelectStep(ClickList.SelectedIndex);
+        }
         private void ResultList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) { }
         private void GlobalExList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) { }
         private void BtnTicket_Click(object sender, RoutedEventArgs e) { }

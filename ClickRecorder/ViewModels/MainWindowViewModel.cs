@@ -85,6 +85,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     public bool StopOnError { get; set; }
     public bool TakeScreenshots { get; set; }
     public string SequenceName { get; set; } = "Moje sekvence";
+    public string SequenceDescription { get; set; } = string.Empty;
     public string TextToType { get; set; } = string.Empty;
     public string FlaUiStatus { get; set; } = "⚙ FlaUI: Připraveno";
     public string AppToLaunch { get; set; } = string.Empty;
@@ -123,6 +124,22 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     public string CoordText { get => _coordText; set => SetProperty(ref _coordText, value); }
     private string _durationText = "";
     public string DurationText { get => _durationText; set => SetProperty(ref _durationText, value); }
+
+    private int _selectedStepIndex = -1;
+    private string _selectedStepName = string.Empty;
+    private string _selectedStepDescription = string.Empty;
+
+    public string SelectedStepName
+    {
+        get => _selectedStepName;
+        set => SetProperty(ref _selectedStepName, value);
+    }
+
+    public string SelectedStepDescription
+    {
+        get => _selectedStepDescription;
+        set => SetProperty(ref _selectedStepDescription, value);
+    }
 
     public MainWindowViewModel()
     {
@@ -283,6 +300,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         var action = new ClickAction
         {
             Id = _clickId,
+            StepName = $"Krok {_clickId}",
             X = x,
             Y = y,
             Kind = ActionKind.TypeText,
@@ -296,7 +314,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         };
 
         _recorded.Add(action);
-        Clicks.Add($"⌨ {action.Summary}");
+        RefreshRecordedList();
         RecordCount = _recorded.Count.ToString();
         OnPropertyChanged(nameof(CanPlay));
         FooterText = "Textový krok přidán do sekvence.";
@@ -310,6 +328,9 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _lastTypedAt = null;
         _clickId = 0;
         _lastClickTime = null;
+        _selectedStepIndex = -1;
+        SelectedStepName = string.Empty;
+        SelectedStepDescription = string.Empty;
         RecordCount = "0";
         OnPropertyChanged(nameof(CanPlay));
         FooterText = "Záznamy vymazány.";
@@ -319,9 +340,60 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     {
         if (_recorded.Count == 0) return;
         var name = string.IsNullOrWhiteSpace(SequenceName) ? $"Sekvence {DateTime.Now:dd.MM HH:mm}" : SequenceName.Trim();
-        var seq = _db.SaveSequence(name, string.Empty, new List<ClickAction>(_recorded));
+        var description = SequenceDescription?.Trim() ?? string.Empty;
+        var seq = _db.SaveSequence(name, description, new List<ClickAction>(_recorded));
         _currentSequenceId = seq.Id;
         FooterText = $"💾 Sekvence '{name}' uložena (ID {seq.Id})";
+    }
+
+    public void SelectStep(int selectedIndex)
+    {
+        if (selectedIndex < 0 || selectedIndex >= _recorded.Count)
+        {
+            _selectedStepIndex = -1;
+            SelectedStepName = string.Empty;
+            SelectedStepDescription = string.Empty;
+            return;
+        }
+
+        _selectedStepIndex = selectedIndex;
+        var step = _recorded[selectedIndex];
+        SelectedStepName = step.StepName;
+        SelectedStepDescription = step.StepDescription;
+    }
+
+    public void ApplyStepDetails()
+    {
+        if (_selectedStepIndex < 0 || _selectedStepIndex >= _recorded.Count)
+        {
+            return;
+        }
+
+        var step = _recorded[_selectedStepIndex];
+        step.StepName = SelectedStepName?.Trim() ?? string.Empty;
+        step.StepDescription = SelectedStepDescription?.Trim() ?? string.Empty;
+        RefreshRecordedList();
+        FooterText = $"✏️ Upraven {_selectedStepIndex + 1}. krok v sekvenci.";
+    }
+
+    public int MoveSelectedStep(int direction)
+    {
+        if (_selectedStepIndex < 0 || _selectedStepIndex >= _recorded.Count)
+        {
+            return -1;
+        }
+
+        var nextIndex = _selectedStepIndex + direction;
+        if (nextIndex < 0 || nextIndex >= _recorded.Count)
+        {
+            return _selectedStepIndex;
+        }
+
+        (_recorded[_selectedStepIndex], _recorded[nextIndex]) = (_recorded[nextIndex], _recorded[_selectedStepIndex]);
+        RefreshRecordedList();
+        _selectedStepIndex = nextIndex;
+        FooterText = $"↕️ Změněno pořadí kroku na pozici {_selectedStepIndex + 1}.";
+        return _selectedStepIndex;
     }
 
     public void OpenTestCases(Window owner)
@@ -376,16 +448,14 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     private void LoadSteps(List<ClickAction> steps, string footerFmt)
     {
         _recorded.Clear();
-        Clicks.Clear();
         _clickId = 0;
         _lastClickTime = null;
         foreach (var a in steps)
         {
             _clickId = Math.Max(_clickId, a.Id);
-            var icon = a.Kind == ActionKind.TypeText ? "⌨ " : (a.UseElementPlayback ? "⚙ " : "🖱 ");
-            Clicks.Add(icon + a.Summary);
             _recorded.Add(a);
         }
+        RefreshRecordedList();
         RecordCount = _recorded.Count.ToString();
         OnPropertyChanged(nameof(CanPlay));
         FooterText = string.Format(footerFmt, _recorded.Count);
@@ -432,6 +502,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
                 var action = new ClickAction
                 {
                     Id = _clickId,
+                    StepName = $"Krok {_clickId}",
                     X = e.X,
                     Y = e.Y,
                     Button = e.Button switch
@@ -447,8 +518,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
                     PreferElementPlayback = CaptureByElement
                 };
                 _recorded.Add(action);
-                var icon = action.Kind == ActionKind.TypeText ? "⌨" : (action.UseElementPlayback ? "⚙" : "🖱");
-                Clicks.Add($"{icon} {action.Summary}");
+                RefreshRecordedList();
                 RecordCount = _recorded.Count.ToString();
                 OnPropertyChanged(nameof(CanPlay));
             });
@@ -523,6 +593,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         var action = new ClickAction
         {
             Id = _clickId,
+            StepName = $"Krok {_clickId}",
             X = x,
             Y = y,
             Kind = ActionKind.TypeText,
@@ -536,12 +607,22 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         };
 
         _recorded.Add(action);
-        Clicks.Add($"⌨ {action.Summary}");
+        RefreshRecordedList();
         _typedBuffer.Clear();
         _lastTypedAt = null;
         _lastClickTime = timestamp;
         RecordCount = _recorded.Count.ToString();
         OnPropertyChanged(nameof(CanPlay));
+    }
+
+    private void RefreshRecordedList()
+    {
+        Clicks.Clear();
+        foreach (var action in _recorded)
+        {
+            var icon = action.Kind == ActionKind.TypeText ? "⌨" : (action.UseElementPlayback ? "⚙" : "🖱");
+            Clicks.Add($"{icon} {action.Summary}");
+        }
     }
 
     private static string? ResolveProcessName(uint processId)

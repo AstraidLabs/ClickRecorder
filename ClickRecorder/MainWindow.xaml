@@ -194,6 +194,8 @@
                         <TextBlock Text="SEKVENCE / TEST CASE" Style="{StaticResource Sec}"/>
                         <TextBlock Text="Název" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
                         <TextBox x:Name="TxtSequenceName" Text="{Binding SequenceName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+                        <TextBlock Text="Popis" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtSequenceDescription" Text="{Binding SequenceDescription, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
                         <Button x:Name="BtnSaveSequence" Content="💾 Uložit sekvenci" Style="{StaticResource BBlue}"
                                 Click="BtnSaveSequence_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
                         <Button x:Name="BtnSaveAsTestCase" Content="🧪 Uložit jako Test Case" Style="{StaticResource BPurple}"
@@ -316,6 +318,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="160"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="200"/>
                 </Grid.RowDefinitions>
 
@@ -335,9 +339,24 @@
                     </Grid>
                 </Border>
 
-                <TextBlock Grid.Row="1" Text="ELEMENT INSPEKTOR" Style="{StaticResource Sec}" Margin="0,10,0,6"/>
+                <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,10,0,6">
+                    <StackPanel>
+                        <TextBlock Text="VYBRANÝ KROK" Style="{StaticResource Sec}" Margin="0,0,0,4"/>
+                        <TextBlock Text="Název kroku" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtStepName" Text="{Binding SelectedStepName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+                        <TextBlock Text="Popis kroku" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtStepDescription" Text="{Binding SelectedStepDescription, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="BtnStepUp" Content="↑ Nahoru" Style="{StaticResource BGray}" Click="BtnStepUp_Click" Margin="0,0,6,0"/>
+                            <Button x:Name="BtnStepDown" Content="↓ Dolů" Style="{StaticResource BGray}" Click="BtnStepDown_Click" Margin="0,0,6,0"/>
+                            <Button x:Name="BtnApplyStep" Content="💾 Uložit krok" Style="{StaticResource BBlue}" Click="BtnApplyStep_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
 
-                <Border Grid.Row="2" Style="{StaticResource Card}">
+                <TextBlock Grid.Row="3" Text="ELEMENT INSPEKTOR" Style="{StaticResource Sec}" Margin="0,10,0,6"/>
+
+                <Border Grid.Row="4" Style="{StaticResource Card}">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel x:Name="InspectorPanel">
                             <TextBlock x:Name="TxtInspHint" Text="← Vyber záznam"
