@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows;
+using ClickRecorder.Models;
 using ClickRecorder.ViewModels;
 
 namespace ClickRecorder
@@ -32,6 +33,8 @@ namespace ClickRecorder
         private void GlobalExList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) { }
         private void BtnTicket_Click(object sender, RoutedEventArgs e) { }
         private void BtnClearResults_Click(object sender, RoutedEventArgs e) { }
+
+        public void NotifyGlobalException(ExceptionDetail detail) => _vm.NotifyGlobalException(detail);
 
         protected override void OnClosed(EventArgs e)
         {

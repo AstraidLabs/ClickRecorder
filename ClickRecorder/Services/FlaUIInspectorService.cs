@@ -23,8 +23,7 @@ namespace ClickRecorder.Services
         {
             try
             {
-                var point  = new FlaUI.Core.Shapes.Point(x, y);
-                var element = _automation.FromPoint(point);
+                var element = _automation.FromPoint(new System.Drawing.Point(x, y));
                 if (element is null) return null;
 
                 var identity = new ElementIdentity

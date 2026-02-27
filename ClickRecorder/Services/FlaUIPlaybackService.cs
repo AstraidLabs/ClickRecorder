@@ -177,12 +177,14 @@ namespace ClickRecorder.Services
                     break;
                 case ClickButton.Middle:
                     // FlaUI doesn't have a middle-click helper – fall back to Mouse API
-                    var pos = el.BoundingRectangle.Center();
-                    Mouse.MoveTo((int)pos.X, (int)pos.Y);
+                    var rect = el.BoundingRectangle;
+                    var x = (int)(rect.Left + rect.Width / 2);
+                    var y = (int)(rect.Top + rect.Height / 2);
+                    Mouse.MoveTo(x, y);
                     Thread.Sleep(30);
-                    mouse_event(MOUSEEVENTF_MIDDLEDOWN, (int)pos.X, (int)pos.Y, 0, 0);
+                    mouse_event(MOUSEEVENTF_MIDDLEDOWN, x, y, 0, 0);
                     Thread.Sleep(50);
-                    mouse_event(MOUSEEVENTF_MIDDLEUP, (int)pos.X, (int)pos.Y, 0, 0);
+                    mouse_event(MOUSEEVENTF_MIDDLEUP, x, y, 0, 0);
                     break;
             }
         }
@@ -236,11 +238,10 @@ namespace ClickRecorder.Services
                 try
                 {
                     var cf = _automation.ConditionFactory;
-                    var cond = cf.ByName(name);
-
-                    if (!string.IsNullOrEmpty(controlType) &&
-                        Enum.TryParse<ControlType>(controlType, out var ct))
-                        cond = cf.ByName(name).And(cf.ByControlType(ct));
+                    var cond = !string.IsNullOrEmpty(controlType) &&
+                               Enum.TryParse<ControlType>(controlType, out var ct)
+                        ? cf.ByName(name).And(cf.ByControlType(ct))
+                        : cf.ByName(name);
 
                     var el = root.FindFirst(TreeScope.Descendants, cond);
                     if (el is not null) return el;
