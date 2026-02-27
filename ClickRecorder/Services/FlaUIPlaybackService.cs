@@ -145,7 +145,8 @@ namespace ClickRecorder.Services
             var sw = Stopwatch.StartNew();
             try
             {
-                bool strictProcessScope = action.TargetProcessId.HasValue;
+                uint? effectiveTargetProcessId = ResolveEffectiveTargetProcessId(action);
+                bool strictProcessScope = effectiveTargetProcessId.HasValue;
 
                 if (strictProcessScope && !action.UseElementPlayback)
                 {
@@ -159,23 +160,23 @@ namespace ClickRecorder.Services
                     if (action.UseElementPlayback)
                     {
                         result.Mode = PlaybackMode.FlaUI;
-                        TypeViaFlaUI(action);
+                        TypeViaFlaUI(action, effectiveTargetProcessId);
                     }
                     else
                     {
                         result.Mode = PlaybackMode.Coordinates;
-                        TypeViaCoordinates(action);
+                        TypeViaCoordinates(action, effectiveTargetProcessId);
                     }
                 }
                 else if (action.UseElementPlayback)
                 {
                     result.Mode = PlaybackMode.FlaUI;
-                    ClickViaFlaUI(action);
+                    ClickViaFlaUI(action, effectiveTargetProcessId);
                 }
                 else
                 {
                     result.Mode = PlaybackMode.Coordinates;
-                    ClickViaWin32(action);
+                    ClickViaWin32(action, effectiveTargetProcessId);
                 }
                 result.Status = StepStatus.Success;
             }
@@ -193,10 +194,10 @@ namespace ClickRecorder.Services
             return result;
         }
 
-        private void TypeViaFlaUI(ClickAction action)
+        private void TypeViaFlaUI(ClickAction action, uint? targetProcessId)
         {
             var id = action.Element!;
-            var el = WaitForElement(id, action.TargetProcessId)
+            var el = WaitForElement(id, targetProcessId)
                      ?? throw new ElementNotFoundException(
                          $"UI element not found: {id.Selector} in window '{id.WindowTitle ?? id.ProcessName}'");
 
@@ -212,9 +213,9 @@ namespace ClickRecorder.Services
             Keyboard.Type(text);
         }
 
-        private void TypeViaCoordinates(ClickAction action)
+        private void TypeViaCoordinates(ClickAction action, uint? targetProcessId)
         {
-            EnsureCoordinateTargetsProcess(action);
+            EnsureCoordinateTargetsProcess(action, targetProcessId);
 
             if (!SetCursorPos(action.X, action.Y))
                 throw new InvalidOperationException(
@@ -230,10 +231,10 @@ namespace ClickRecorder.Services
         }
 
         // ── FlaUI element click ───────────────────────────────────────────────
-        private void ClickViaFlaUI(ClickAction action)
+        private void ClickViaFlaUI(ClickAction action, uint? targetProcessId)
         {
             var id  = action.Element!;
-            var el  = WaitForElement(id, action.TargetProcessId)
+            var el  = WaitForElement(id, targetProcessId)
                       ?? throw new ElementNotFoundException(
                              $"UI element not found: {id.Selector} " +
                              $"in window '{id.WindowTitle ?? id.ProcessName}'");
@@ -405,9 +406,79 @@ namespace ClickRecorder.Services
         }
 
 
-        private static void EnsureCoordinateTargetsProcess(ClickAction action)
+        private uint? ResolveEffectiveTargetProcessId(ClickAction action)
         {
             if (!action.TargetProcessId.HasValue)
+            {
+                return null;
+            }
+
+            uint targetProcessId = action.TargetProcessId.Value;
+            if (IsProcessAlive(targetProcessId))
+            {
+                return targetProcessId;
+            }
+
+            string? processName = action.Element?.ProcessName;
+            if (string.IsNullOrWhiteSpace(processName))
+            {
+                return targetProcessId;
+            }
+
+            var replacement = TryResolveProcessIdByName(processName, action.Element?.WindowTitle);
+            return replacement ?? targetProcessId;
+        }
+
+        private static bool IsProcessAlive(uint processId)
+        {
+            try
+            {
+                using var process = System.Diagnostics.Process.GetProcessById((int)processId);
+                return !process.HasExited;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static uint? TryResolveProcessIdByName(string processName, string? windowTitle)
+        {
+            var processes = System.Diagnostics.Process.GetProcessesByName(processName)
+                .Where(p => p.MainWindowHandle != IntPtr.Zero);
+
+            if (!string.IsNullOrWhiteSpace(windowTitle))
+            {
+                var byTitle = processes.FirstOrDefault(p =>
+                {
+                    try
+                    {
+                        return string.Equals(p.MainWindowTitle, windowTitle, StringComparison.Ordinal);
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                });
+
+                if (byTitle is not null)
+                {
+                    return (uint)byTitle.Id;
+                }
+            }
+
+            var first = processes.OrderByDescending(p =>
+            {
+                try { return p.StartTime; }
+                catch { return DateTime.MinValue; }
+            }).FirstOrDefault();
+
+            return first is not null ? (uint)first.Id : null;
+        }
+
+        private static void EnsureCoordinateTargetsProcess(ClickAction action, uint? targetProcessId)
+        {
+            if (!targetProcessId.HasValue)
             {
                 return;
             }
@@ -417,17 +488,17 @@ namespace ClickRecorder.Services
             var root = window != IntPtr.Zero ? GetAncestor(window, GA_ROOT) : IntPtr.Zero;
             _ = GetWindowThreadProcessId(root, out uint processId);
 
-            if (processId != action.TargetProcessId.Value)
+            if (processId != targetProcessId.Value)
             {
                 throw new InvalidOperationException(
-                    $"Coordinate target mismatch for step #{action.Id}: expected PID {action.TargetProcessId}, but point ({action.X},{action.Y}) resolves to PID {processId}.");
+                    $"Coordinate target mismatch for step #{action.Id}: expected PID {targetProcessId}, but point ({action.X},{action.Y}) resolves to PID {processId}.");
             }
         }
 
         // ── Win32 fallback click ──────────────────────────────────────────────
-        private void ClickViaWin32(ClickAction action)
+        private void ClickViaWin32(ClickAction action, uint? targetProcessId)
         {
-            EnsureCoordinateTargetsProcess(action);
+            EnsureCoordinateTargetsProcess(action, targetProcessId);
 
             if (!SetCursorPos(action.X, action.Y))
                 throw new InvalidOperationException(
