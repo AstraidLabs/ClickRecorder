@@ -186,11 +186,12 @@
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
                             <TextBlock Text="NAHRÁVÁNÍ" Style="{StaticResource Sec}"/>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <StackPanel Margin="0,0,0,6">
                                 <Button x:Name="BtnRecord"     Content="⏺ Nahrát" Style="{StaticResource BRed}"
-                                        Click="BtnRecord_Click" Margin="0,0,6,0" IsEnabled="{Binding CanRecord}"/>
+                                        Click="BtnRecord_Click" Margin="0,0,0,6" MinHeight="34"
+                                        HorizontalAlignment="Stretch" IsEnabled="{Binding CanRecord}"/>
                                 <Button x:Name="BtnStopRecord" Content="⏹ Stop"   Style="{StaticResource BGray}"
-                                        Click="BtnStopRecord_Click"/>
+                                        Click="BtnStopRecord_Click" MinHeight="34" HorizontalAlignment="Stretch"/>
                             </StackPanel>
                             <TextBlock Text="Režim zachytávání" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
                             <RadioButton Content="Podle UI elementu (FlaUI)" GroupName="CaptureMode"
