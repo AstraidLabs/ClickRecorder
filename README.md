@@ -7,6 +7,7 @@ Zachycuje chyby při přehrávání a zobrazuje podrobný log.
 ## Funkce
 - **Nahrávání** – globální mouse hook zachytí každé kliknutí (levé, pravé, prostřední) s přesnými souřadnicemi a časovými odstupy
 - **Přehrávání** – automaticky pohybuje kurzorem a simuluje kliknutí pomocí WinAPI (`SetCursorPos` + `mouse_event`)
+- **Vyplňování textu** – do sekvence lze přidat krok „TEXT INPUT“ a při přehrávání vyplnit text do zvoleného pole (přes FlaUI nebo klávesnici)
 - **Opakování** – nastav kolikrát se sekvence má opakovat (1–999)
 - **Rychlost** – multiplikátor: `0.5` = 2× rychleji, `2.0` = 2× pomaleji
 - **Error catching** – každý krok je zabalený v try/catch, chyby se zobrazí v logu a neporuší přehrávání
@@ -48,9 +49,10 @@ ClickRecorder/
 2. Klikni **"⏺ Spustit nahrávání"**
 3. Klikej libovolně po obrazovce (i mimo aplikaci)
 4. Klikni **"⏹ Zastavit"**
-5. Nastav počet opakování a rychlost
-6. Klikni **"▶ Přehrát"** – aplikace automaticky zreplikuje všechna kliknutí
-7. Sleduj log – úspěšné kroky jsou zelené ✓, chyby červené ✗
+5. (Volitelné) v sekci **TEXT INPUT** napiš hodnotu a klikni **"⌨ Přidat textový krok"**
+6. Nastav počet opakování a rychlost
+7. Klikni **"▶ Přehrát"** – aplikace automaticky zreplikuje kliknutí i textové kroky
+8. Sleduj log – úspěšné kroky jsou zelené ✓, chyby červené ✗
 
 ## Poznámky
 - Aplikace zachytává **globální** kliknutí – funguje i mimo okno aplikace
