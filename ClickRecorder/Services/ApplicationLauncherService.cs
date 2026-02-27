@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace ClickRecorder.Services;
 
@@ -101,10 +102,12 @@ public sealed class ApplicationLauncherService
                 "Where-Object { $_.Name -like \"*$q*\" } | " +
                 "Sort-Object Name | Select-Object -First 1 -ExpandProperty AppID";
 
+            string encodedScript = Convert.ToBase64String(Encoding.Unicode.GetBytes(script));
+
             var psi = new ProcessStartInfo
             {
                 FileName = "powershell.exe",
-                Arguments = $"-NoProfile -ExecutionPolicy Bypass -Command \"{script}\"",
+                Arguments = $"-NoProfile -ExecutionPolicy Bypass -EncodedCommand {encodedScript}",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
