@@ -1,8 +1,9 @@
 using System;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using ClickRecorder.Models;
 using ClickRecorder.ViewModels;
+using ClickRecorder.Views;
 
 namespace ClickRecorder
 {
@@ -59,6 +60,20 @@ namespace ClickRecorder
         private void GlobalExList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) { }
         private void BtnTicket_Click(object sender, RoutedEventArgs e) { }
         private void BtnClearResults_Click(object sender, RoutedEventArgs e) { }
+
+        private void BtnResultDetail_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button { Tag: StepResult result })
+            {
+                return;
+            }
+
+            var detailWindow = new StepResultDetailWindow(result)
+            {
+                Owner = this
+            };
+            detailWindow.ShowDialog();
+        }
 
         public void NotifyGlobalException(ExceptionDetail detail) => _vm.NotifyGlobalException(detail);
 

@@ -57,7 +57,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     private DateTime? _lastTypedAt;
 
     public ObservableCollection<string> Clicks { get; } = new();
-    public ObservableCollection<string> Results { get; } = new();
+    public ObservableCollection<StepResult> Results { get; } = new();
     public ObservableCollection<string> GlobalExceptions { get; } = new();
 
     private string _statusText = "⏸  Idle";
@@ -644,7 +644,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         Application.Current.Dispatcher.Invoke(() =>
         {
             _stepResults.Add(result);
-            Results.Add(result.ToString());
+            Results.Add(result);
             int ok = 0, err = 0, flaui = 0, coord = 0;
             foreach (var r in _stepResults)
             {
