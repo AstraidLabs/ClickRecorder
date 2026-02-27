@@ -173,7 +173,7 @@
                                             Style="{StaticResource BGreen}" Click="BtnStartScheduler_Click"
                                             Margin="0,0,6,0" FontSize="10" Padding="8,4"/>
                                     <Button x:Name="BtnStopScheduler" Content="⏹ Zastavit"
-                                            Style="{StaticResource BGray}" Click="BtnStopScheduler_Click"
+                                            Style="{StaticResource BRed}" Click="BtnStopScheduler_Click"
                                             IsEnabled="False" FontSize="10" Padding="8,4"/>
                                 </StackPanel>
                             </DockPanel>
