@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using FlaUI.Core.AutomationElements;
+using FlaUI.Core.Conditions;
 using FlaUI.Core.Definitions;
 using FlaUI.Core.Input;
 using FlaUI.UIA3;
@@ -238,7 +239,7 @@ namespace ClickRecorder.Services
                 try
                 {
                     var cf = _automation.ConditionFactory;
-                    var cond = cf.ByName(name);
+                    ConditionBase cond = cf.ByName(name);
                     if (!string.IsNullOrEmpty(controlType) &&
                         Enum.TryParse<ControlType>(controlType, out var ct))
                     {
