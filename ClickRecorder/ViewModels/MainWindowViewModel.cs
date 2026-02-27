@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,6 +41,10 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     private int? _currentSequenceId;
     private TestSession? _lastSession;
     private bool _isRecording;
+    private bool _isAttachArmed;
+    private IntPtr? _attachedWindowHandle;
+    private uint? _attachedProcessId;
+    private string? _attachedProcessName;
     private DateTime? _lastClickTime;
     private int _clickId;
 
@@ -58,6 +63,12 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
 
     private string _recordCount = "0";
     public string RecordCount { get => _recordCount; set => SetProperty(ref _recordCount, value); }
+
+    private string _attachButtonText = "🎯 Připojit aplikaci";
+    public string AttachButtonText { get => _attachButtonText; set => SetProperty(ref _attachButtonText, value); }
+
+    private string _attachedAppText = "Bez omezení – nahrává se klik kdekoliv";
+    public string AttachedAppText { get => _attachedAppText; set => SetProperty(ref _attachedAppText, value); }
 
     public string RepeatText { get; set; } = "1";
     public string SpeedText { get; set; } = "1.0";
@@ -93,10 +104,17 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     public void StartRecord()
     {
         if (_isRecording) return;
+        if (_isAttachArmed)
+        {
+            FooterText = "Nejdřív dokonči výběr cílové aplikace kliknutím mimo ClickRecorder.";
+            return;
+        }
         _isRecording = true;
         _hook.Start();
         SetStatus("🔴  Nahrávám", "#F38BA8");
-        FooterText = "Nahrávám… Klikej kdekoliv – FlaUI inspektuje každý element.";
+        FooterText = _attachedProcessId.HasValue
+            ? $"Nahrávám pouze pro proces {_attachedProcessName ?? _attachedProcessId.Value.ToString()} (PID {_attachedProcessId})."
+            : "Nahrávám… Klikej kdekoliv – FlaUI inspektuje každý element.";
     }
 
     public void StopRecord()
@@ -105,6 +123,31 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _isRecording = false;
         _hook.Stop();
         SetStatus("⏸  Idle", "#6C7086");
+    }
+
+    public void ArmAttachToApplication()
+    {
+        if (_isAttachArmed)
+        {
+            _isAttachArmed = false;
+            AttachButtonText = "🎯 Připojit aplikaci";
+            FooterText = "Výběr cílové aplikace zrušen.";
+            return;
+        }
+
+        _hook.Start();
+        _isAttachArmed = true;
+        AttachButtonText = "❌ Zrušit výběr";
+        FooterText = "Klikni do cílové aplikace – další klik nastaví omezení nahrávání.";
+    }
+
+    public void ClearAttachedApplication()
+    {
+        _attachedWindowHandle = null;
+        _attachedProcessId = null;
+        _attachedProcessName = null;
+        AttachedAppText = "Bez omezení – nahrává se klik kdekoliv";
+        FooterText = "Omezení cílové aplikace zrušeno.";
     }
 
     public async Task PlayAsync()
@@ -255,6 +298,27 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
 
     private void OnMouseClicked(object? sender, MouseHookEventArgs e)
     {
+        if (_isAttachArmed)
+        {
+            _isAttachArmed = false;
+            AttachButtonText = "🎯 Připojit aplikaci";
+            _attachedWindowHandle = e.RootWindowHandle;
+            _attachedProcessId = e.ProcessId;
+            _attachedProcessName = ResolveProcessName(e.ProcessId);
+            AttachedAppText = $"🎯 {_attachedProcessName ?? "Neznámý proces"} (PID {_attachedProcessId}, HWND 0x{e.RootWindowHandle.ToInt64():X})";
+            FooterText = "Cílová aplikace nastavena. Nahrávání bude brát jen kliknutí v této aplikaci.";
+            if (!_isRecording)
+            {
+                _hook.Stop();
+            }
+            return;
+        }
+
+        if (_attachedProcessId.HasValue && e.ProcessId != _attachedProcessId.Value)
+        {
+            return;
+        }
+
         var ts = e.Timestamp;
         var prevT = _lastClickTime;
         _lastClickTime = ts;
@@ -288,6 +352,20 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
                 RecordCount = _recorded.Count.ToString();
             });
         });
+    }
+
+    private static string? ResolveProcessName(uint processId)
+    {
+        try
+        {
+            if (processId == 0) return null;
+            using var process = Process.GetProcessById((int)processId);
+            return process.ProcessName;
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     private void OnStepCompleted(object? sender, StepResult result)

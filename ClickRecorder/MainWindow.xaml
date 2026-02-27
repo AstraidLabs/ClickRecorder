@@ -137,6 +137,11 @@
                         <Button x:Name="BtnStopRecord" Content="⏹ Stop"   Style="{StaticResource BGray}"
                                 Click="BtnStopRecord_Click"/>
                     </StackPanel>
+                    <Button x:Name="BtnAttachApp" Content="{Binding AttachButtonText}" Style="{StaticResource BPurple}"
+                            Click="BtnAttachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
+                    <Button x:Name="BtnDetachApp" Content="🔓 Zrušit omezení aplikace" Style="{StaticResource BGray}"
+                            Click="BtnDetachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
+                    <TextBlock Text="{Binding AttachedAppText}" Foreground="#6C7086" FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
                     <Button x:Name="BtnClear" Content="🗑  Vymazat záznamy" Style="{StaticResource BOrange}"
                             Click="BtnClear_Click" HorizontalAlignment="Stretch"/>
 
