@@ -149,7 +149,21 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Expander Header="NAHRÁVÁNÍ" IsExpanded="True" Style="{StaticResource PanelExpander}" Margin="0,0,8,8">
+                <Expander IsExpanded="True" Style="{StaticResource PanelExpander}" Margin="0,0,8,8">
+                    <Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="NAHRÁVÁNÍ" VerticalAlignment="Center"/>
+                            <Border Background="#313244" BorderBrush="#89B4FA" BorderThickness="1" CornerRadius="10" Width="18" Height="18" Margin="6,0,0,0" VerticalAlignment="Center" ToolTipService.ShowDuration="60000">
+                                <TextBlock Text="ℹ" Foreground="#89B4FA" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Cursor="Hand">
+                                    <TextBlock.ToolTip>
+                                        <ToolTip Placement="Bottom" Background="#11111B" BorderBrush="#45475A" Foreground="#CDD6F4" Padding="10" MaxWidth="360">
+                                            <TextBlock TextWrapping="Wrap" FontSize="11" Text="Návod: Vyberte režim zachytávání, klikněte na Nahrát, proveďte kroky a ukončete tlačítkem Stop. Poté můžete záznam uložit jako sekvenci nebo Test Case."/>
+                                        </ToolTip>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
+                            </Border>
+                        </StackPanel>
+                    </Expander.Header>
                     <Border Style="{StaticResource Card}" Margin="0,8,0,0">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
@@ -195,7 +209,21 @@
                     </Border>
                 </Expander>
 
-                <Expander Grid.Row="1" Header="NAPOJENÍ APLIKACE" IsExpanded="True" Style="{StaticResource PanelExpander}" Margin="0,0,8,8">
+                <Expander Grid.Row="1" IsExpanded="True" Style="{StaticResource PanelExpander}" Margin="0,0,8,8">
+                    <Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="NAPOJENÍ APLIKACE" VerticalAlignment="Center"/>
+                            <Border Background="#313244" BorderBrush="#89B4FA" BorderThickness="1" CornerRadius="10" Width="18" Height="18" Margin="6,0,0,0" VerticalAlignment="Center" ToolTipService.ShowDuration="60000">
+                                <TextBlock Text="ℹ" Foreground="#89B4FA" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Cursor="Hand">
+                                    <TextBlock.ToolTip>
+                                        <ToolTip Placement="Bottom" Background="#11111B" BorderBrush="#45475A" Foreground="#CDD6F4" Padding="10" MaxWidth="360">
+                                            <TextBlock TextWrapping="Wrap" FontSize="11" Text="Návod: Nejprve spusťte cílovou aplikaci nebo se na ni omezte přes tlačítko Omezit na aplikaci. Omezení pomáhá nahrávání i přehrávání pracovat jen v jedné aplikaci."/>
+                                        </ToolTip>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
+                            </Border>
+                        </StackPanel>
+                    </Expander.Header>
                     <Border Style="{StaticResource Card}" Margin="0,8,0,0">
                         <StackPanel>
                             <TextBlock Text="OMEZENÍ NA APLIKACI" Style="{StaticResource Sec}"/>
@@ -216,7 +244,21 @@
                     </Border>
                 </Expander>
 
-                <Expander Grid.Row="2" Header="PŘEHRÁVÁNÍ" IsExpanded="True" Style="{StaticResource PanelExpander}" Margin="0,0,8,0">
+                <Expander Grid.Row="2" IsExpanded="True" Style="{StaticResource PanelExpander}" Margin="0,0,8,0">
+                    <Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="PŘEHRÁVÁNÍ" VerticalAlignment="Center"/>
+                            <Border Background="#313244" BorderBrush="#89B4FA" BorderThickness="1" CornerRadius="10" Width="18" Height="18" Margin="6,0,0,0" VerticalAlignment="Center" ToolTipService.ShowDuration="60000">
+                                <TextBlock Text="ℹ" Foreground="#89B4FA" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Cursor="Hand">
+                                    <TextBlock.ToolTip>
+                                        <ToolTip Placement="Bottom" Background="#11111B" BorderBrush="#45475A" Foreground="#CDD6F4" Padding="10" MaxWidth="360">
+                                            <TextBlock TextWrapping="Wrap" FontSize="11" Text="Návod: Nastavte opakování a rychlost, zvolte chování při chybě a spusťte test tlačítkem Přehrát. Pokud potřebujete, běh zastavíte tlačítkem Stop."/>
+                                        </ToolTip>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
+                            </Border>
+                        </StackPanel>
+                    </Expander.Header>
                     <Border Style="{StaticResource Card}" Margin="0,8,0,0">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
