@@ -143,10 +143,10 @@
         <!-- MAIN: 4 columns -->
         <Grid Grid.Row="1" Margin="10,10,10,4">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="260"/>   <!-- recording + playback -->
-                <ColumnDefinition Width="260"/>   <!-- recorded + inspector -->
+                <ColumnDefinition Width="280"/>   <!-- recording + playback -->
+                <ColumnDefinition Width="280"/>   <!-- recorded + inspector -->
                 <ColumnDefinition Width="*"/>     <!-- exception detail -->
-                <ColumnDefinition Width="280"/>   <!-- results -->
+                <ColumnDefinition Width="300"/>   <!-- results -->
             </Grid.ColumnDefinitions>
 
             <!-- ── COL 0: Recording + Playback panels ─────────────────────── -->
