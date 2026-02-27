@@ -383,53 +383,17 @@
                 </Border>
             </Grid>
 
-            <!-- ── COL 2: Exception detail + global ──────────────────────── -->
+            <!-- ── COL 2: Global exceptions ──────────────────────────────── -->
             <Border Grid.Column="2" Style="{StaticResource Card}" Margin="0,0,8,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="120"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="VÝJIMKA &amp; CALL STACK" Style="{StaticResource Sec}"/>
-
-                    <!-- Summary box -->
-                    <Border Grid.Row="1" x:Name="ExBox" Background="#181825" CornerRadius="6"
-                            Padding="10,8" Margin="0,0,0,8" Visibility="Collapsed">
-                        <StackPanel>
-                            <TextBlock x:Name="TxtExType"    FontWeight="Bold" Foreground="#F38BA8" FontSize="12" TextWrapping="Wrap"/>
-                            <TextBlock x:Name="TxtExMessage" Foreground="#CDD6F4" FontSize="11" TextWrapping="Wrap" Margin="0,4,0,4"/>
-                            <TextBlock x:Name="TxtExSource"  Foreground="#6C7086" FontSize="10" TextWrapping="Wrap"/>
-                            <TextBlock x:Name="TxtExTime"    Foreground="#6C7086" FontSize="10"/>
-                            <!-- Inner exception indicator -->
-                            <TextBlock x:Name="TxtExInner"   Foreground="#FAB387" FontSize="10"
-                                       Margin="0,4,0,0" Visibility="Collapsed"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Full call stack -->
-                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                        <TextBlock x:Name="TxtStack"
-                                   Text="← Vyber krok ve výsledcích pro zobrazení call stacku"
-                                   Foreground="#6C7086" FontFamily="Consolas" FontSize="11"
-                                   TextWrapping="Wrap" Padding="4"/>
-                    </ScrollViewer>
-
-                    <Separator Grid.Row="3"/>
-
-                    <!-- Global exceptions -->
-                    <Grid Grid.Row="4">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="GLOBÁLNÍ VÝJIMKY" Style="{StaticResource Sec}"/>
-                        <ListBox x:Name="GlobalExList" Grid.Row="1" ItemsSource="{Binding GlobalExceptions}"
-                                 SelectionChanged="GlobalExList_SelectionChanged"/>
-                    </Grid>
+                    <TextBlock Text="GLOBÁLNÍ VÝJIMKY" Style="{StaticResource Sec}"/>
+                    <ListBox x:Name="GlobalExList" Grid.Row="1" ItemsSource="{Binding GlobalExceptions}"
+                             SelectionChanged="GlobalExList_SelectionChanged"/>
                 </Grid>
             </Border>
 
@@ -450,8 +414,21 @@
                                     Click="BtnClearResults_Click" FontSize="10" Padding="8,4"/>
                         </StackPanel>
                     </DockPanel>
-                    <ListBox x:Name="ResultList" Grid.Row="1" ItemsSource="{Binding Results}"
-                             SelectionChanged="ResultList_SelectionChanged"/>
+                    <ListBox x:Name="ResultList" Grid.Row="1" ItemsSource="{Binding Results}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <Button Grid.Column="1" Content="Detail" Style="{StaticResource BBlue}" FontSize="10" Padding="8,3"
+                                            Tag="{Binding}" Click="BtnResultDetail_Click"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </Grid>
             </Border>
         </Grid>
