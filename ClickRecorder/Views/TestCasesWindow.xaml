@@ -114,7 +114,7 @@
                 <!-- Filter -->
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
                     <TextBlock Text="🔍" Foreground="#6C7086" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                    <TextBox x:Name="TxtFilter" Width="160" PlaceholderText="Filtrovat…"
+                    <TextBox x:Name="TxtFilter" Width="160" helpers:PlaceholderService.Text="Filtrovat…"
                              TextChanged="TxtFilter_Changed"/>
                 </StackPanel>
             </DockPanel>
