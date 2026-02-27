@@ -72,7 +72,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     private string _recordCount = "0";
     public string RecordCount { get => _recordCount; set => SetProperty(ref _recordCount, value); }
 
-    private string _attachButtonText = "🎯 Vybrat cílovou aplikaci";
+    private string _attachButtonText = "🎯 Připojit aplikaci";
     public string AttachButtonText { get => _attachButtonText; set => SetProperty(ref _attachButtonText, value); }
 
     private string _attachedAppText = "Žádná aplikace není připojená.";
@@ -180,7 +180,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         }
         if (!CanRecord)
         {
-            FooterText = "Nejdřív připoj cílovou aplikaci přes tlačítko 🎯 Vybrat cílovou aplikaci.";
+            FooterText = "Nejdřív připoj cílovou aplikaci přes tlačítko 🎯 Připojit aplikaci.";
             return;
         }
         _isRecording = true;
@@ -209,7 +209,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         if (_isAttachArmed)
         {
             _isAttachArmed = false;
-            AttachButtonText = "🎯 Vybrat cílovou aplikaci";
+            AttachButtonText = "🎯 Připojit aplikaci";
             OnPropertyChanged(nameof(CanRecord));
             FooterText = "Výběr cílové aplikace zrušen.";
             if (!_isRecording)
@@ -223,7 +223,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _isAttachArmed = true;
         AttachButtonText = "❌ Zrušit výběr";
         OnPropertyChanged(nameof(CanRecord));
-        FooterText = "Klikni do cílové aplikace – další klik nastaví omezení nahrávání.";
+        FooterText = "Klikni kdekoliv do cílové aplikace a připojí se.";
     }
 
     public void ClearAttachedApplication()
@@ -466,7 +466,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         if (_isAttachArmed)
         {
             _isAttachArmed = false;
-            AttachButtonText = "🎯 Vybrat cílovou aplikaci";
+            AttachButtonText = "🎯 Připojit aplikaci";
             _attachedWindowHandle = e.RootWindowHandle;
             _attachedProcessId = e.ProcessId;
             _attachedProcessName = ResolveProcessName(e.ProcessId);
