@@ -49,13 +49,16 @@ namespace ClickRecorder.Models
     // ─── Single recorded action ───────────────────────────────────────────────
 
     public enum ClickButton { Left, Right, Middle, Double }
+    public enum ActionKind { Click, TypeText }
 
     public class ClickAction
     {
         public int          Id                  { get; set; }
         public int          X                   { get; set; }
         public int          Y                   { get; set; }
+        public ActionKind   Kind                { get; set; } = ActionKind.Click;
         public ClickButton  Button              { get; set; }
+        public string?      TextToType          { get; set; }
         public TimeSpan     DelayAfterPrevious  { get; set; }
         public DateTime     RecordedAt          { get; set; }
 
@@ -67,7 +70,9 @@ namespace ClickRecorder.Models
             Element?.IsUsable == true;
 
         public string Summary =>
-            Element is not null
+            Kind == ActionKind.TypeText
+                ? $"#{Id:D3}  [TEXT] '{TextToType ?? string.Empty}'  +{DelayAfterPrevious.TotalMilliseconds:F0}ms"
+            : Element is not null
                 ? $"#{Id:D3}  {Element.Selector,-38}  +{DelayAfterPrevious.TotalMilliseconds:F0}ms"
                 : $"#{Id:D3}  [{Button}] ({X},{Y})                            +{DelayAfterPrevious.TotalMilliseconds:F0}ms";
 
@@ -135,6 +140,8 @@ namespace ClickRecorder.Models
         public int          X             { get; set; }
         public int          Y             { get; set; }
         public string       Button        { get; set; } = string.Empty;
+        public ActionKind   Kind          { get; set; }
+        public string?      TextToType    { get; set; }
         public StepStatus   Status        { get; set; }
         public PlaybackMode Mode          { get; set; }
         public ExceptionDetail? Exception { get; set; }
@@ -155,7 +162,9 @@ namespace ClickRecorder.Models
         public override string ToString()
         {
             string rep = RepeatIndex > 1 ? $" [R{RepeatIndex}]" : "";
-            string who = Element is not null ? Element.Selector : $"({X},{Y})";
+            string who = Kind == ActionKind.TypeText
+                ? $"TEXT '{TextToType ?? string.Empty}'"
+                : Element is not null ? Element.Selector : $"({X},{Y})";
             string err = Exception is not null ? $"  → {Exception.ShortType}: {Exception.Message}" : "";
             return $"{StatusIcon} {ModeIcon}  #{StepId:D3}{rep}  {who,-40}  {Duration.TotalMilliseconds:F0}ms{err}";
         }
