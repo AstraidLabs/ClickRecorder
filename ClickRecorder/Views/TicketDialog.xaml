@@ -1,0 +1,93 @@
+<Window x:Class="ClickRecorder.Views.TicketDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:ClickRecorder.Helpers"
+        Title="📋 Bug Ticket" Height="680" Width="720"
+        WindowStartupLocation="CenterOwner"
+        Background="#1E1E2E" ResizeMode="CanResize">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Text="📋 Bug Ticket" FontSize="18" FontWeight="Bold" Foreground="#CDD6F4"/>
+            <TextBlock Text="Zkopíruj a vlož do Redmine / Jira / GitHub Issues"
+                       Foreground="#6C7086" FontSize="11" Margin="0,3,0,0"/>
+        </StackPanel>
+
+        <!-- Optional fields -->
+        <Grid Grid.Row="1" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                <TextBlock Text="Aplikace pod testem" Foreground="#6C7086" FontSize="11" Margin="0,0,0,3"/>
+                <TextBox x:Name="TxtApp" Background="#181825" Foreground="#CDD6F4"
+                         BorderBrush="#45475A" Padding="7,5" FontSize="12"
+                         TextChanged="OnFieldChanged"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="Verze" Foreground="#6C7086" FontSize="11" Margin="0,0,0,3"/>
+                <TextBox x:Name="TxtVersion" Background="#181825" Foreground="#CDD6F4"
+                         BorderBrush="#45475A" Padding="7,5" FontSize="12"
+                         TextChanged="OnFieldChanged"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Ticket text -->
+        <TextBox Grid.Row="2"
+                 x:Name="TxtTicket"
+                 Background="#181825"
+                 Foreground="#CDD6F4"
+                 BorderBrush="#45475A"
+                 FontFamily="Consolas"
+                 FontSize="12"
+                 Padding="10"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"
+                 IsReadOnly="False"/>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,12,0,0" HorizontalAlignment="Right">
+            <Button x:Name="BtnCopy" Content="📋 Kopírovat do schránky"
+                    Click="BtnCopy_Click"
+                    Background="#89B4FA" Foreground="#1E1E2E"
+                    FontWeight="Bold" FontSize="13"
+                    Padding="18,9" BorderThickness="0" Cursor="Hand"
+                    Margin="0,0,10,0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True"><Setter Property="Opacity" Value="0.82"/></Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Content="✕ Zavřít" Click="BtnClose_Click"
+                    Background="#585B70" Foreground="#CDD6F4"
+                    FontSize="13" Padding="14,9" BorderThickness="0" Cursor="Hand">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True"><Setter Property="Opacity" Value="0.82"/></Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
