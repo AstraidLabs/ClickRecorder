@@ -574,7 +574,14 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
             {
                 _db.SaveSession(_lastSession, _currentSequenceId, trigger: "Manual");
                 DurationText = $"⏱ {_lastSession.TotalDuration.TotalSeconds:F1}s";
+                int flauiSteps = _lastSession.Steps.Count(s => s.Mode == PlaybackMode.FlaUI);
+                bool allSuccessful = _lastSession.FailureCount == 0 && _lastSession.Steps.Count > 0;
+
                 FooterText = $"Hotovo – ✓{_lastSession.SuccessCount} ✗{_lastSession.FailureCount}";
+                if (allSuccessful && flauiSteps == _lastSession.Steps.Count)
+                {
+                    FooterText += " (FlaUI režim běží bez viditelného pohybu myši)";
+                }
             }
             IsPlaying = false;
             SetStatus("⏸  Idle", "#6C7086");
