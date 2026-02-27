@@ -33,6 +33,9 @@ namespace ClickRecorder.Services
                                                uint dwData, int dwExtraInfo);
 
         [DllImport("user32.dll")]
+        private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
+
+        [DllImport("user32.dll")]
         private static extern IntPtr WindowFromPoint(POINT point);
 
         [DllImport("user32.dll")]
@@ -47,6 +50,8 @@ namespace ClickRecorder.Services
         private const uint MOUSEEVENTF_RIGHTUP    = 0x0010;
         private const uint MOUSEEVENTF_MIDDLEDOWN = 0x0020;
         private const uint MOUSEEVENTF_MIDDLEUP   = 0x0040;
+        private const uint KEYEVENTF_KEYUP       = 0x0002;
+        private const byte VK_RETURN             = 0x0D;
         private const uint GA_ROOT = 2;
 
         // ── Events ────────────────────────────────────────────────────────────
@@ -204,13 +209,13 @@ namespace ClickRecorder.Services
             string text = action.TextToType ?? string.Empty;
             try { el.Focus(); } catch { }
 
-            if (el.Patterns.Value.IsSupported)
+            if (el.Patterns.Value.IsSupported && !ContainsEnterToken(text))
             {
                 el.Patterns.Value.Pattern.SetValue(text);
                 return;
             }
 
-            Keyboard.Type(text);
+            TypeTextWithSpecialKeys(text);
         }
 
         private void TypeViaCoordinates(ClickAction action, uint? targetProcessId)
@@ -227,7 +232,43 @@ namespace ClickRecorder.Services
             mouse_event(MOUSEEVENTF_LEFTUP, action.X, action.Y, 0, 0);
             Thread.Sleep(40);
 
-            Keyboard.Type(action.TextToType ?? string.Empty);
+            TypeTextWithSpecialKeys(action.TextToType ?? string.Empty);
+        }
+
+        private static bool ContainsEnterToken(string text) =>
+            text.Contains(ClickAction.EnterToken, StringComparison.Ordinal);
+
+        private static void TypeTextWithSpecialKeys(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return;
+            }
+
+            int start = 0;
+            while (start < text.Length)
+            {
+                int idx = text.IndexOf(ClickAction.EnterToken, start, StringComparison.Ordinal);
+                if (idx < 0)
+                {
+                    Keyboard.Type(text[start..]);
+                    return;
+                }
+
+                if (idx > start)
+                {
+                    Keyboard.Type(text[start..idx]);
+                }
+
+                SendEnterKey();
+                start = idx + ClickAction.EnterToken.Length;
+            }
+        }
+
+        private static void SendEnterKey()
+        {
+            keybd_event(VK_RETURN, 0, 0, 0);
+            keybd_event(VK_RETURN, 0, KEYEVENTF_KEYUP, 0);
         }
 
         // ── FlaUI element click ───────────────────────────────────────────────

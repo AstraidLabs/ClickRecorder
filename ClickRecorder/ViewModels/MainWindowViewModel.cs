@@ -463,7 +463,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
 
         if (e.IsEnter)
         {
-            _typedBuffer.Append(Environment.NewLine);
+            _typedBuffer.Append(ClickAction.EnterToken);
             _lastTypedAt = e.Timestamp;
             return;
         }
