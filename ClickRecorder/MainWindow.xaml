@@ -233,7 +233,7 @@
                     </Expander.Header>
                     <Border Style="{StaticResource Card}" Margin="0,8,0,0">
                         <StackPanel>
-                            <TextBlock Text="Připojit aplikaci" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                            <TextBlock Text="Vybrat cílovou aplikaci" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
                             <Button x:Name="BtnAttachApp" Content="{Binding AttachButtonText}" Style="{StaticResource BPurple}"
                                     Click="BtnAttachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
                             <Button x:Name="BtnDetachApp" Content="🔌 Odpojit aplikaci" Style="{StaticResource BRed}"
