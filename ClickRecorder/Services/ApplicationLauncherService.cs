@@ -19,6 +19,7 @@ public sealed class ApplicationLauncherService
         string directError = string.Empty;
         string appIdError = string.Empty;
         string startAppsError = string.Empty;
+        string packageError = string.Empty;
 
         // 1) Přímé spuštění (exe cesta, app execution alias, URL protocol)
         if (TryStartShell(query, out directError))
@@ -39,7 +40,14 @@ public sealed class ApplicationLauncherService
             return LaunchResult.Ok($"Spuštěna aplikace '{query}' přes Start Apps ({appId}).");
         }
 
-        string combinedError = string.Join(" | ", new[] { directError, appIdError, startAppsError }
+        // 4) Hledání podle identity MSIX balíčku (Package name / family / full name)
+        string? packageAppId = ResolveAppIdFromMsixPackage(query);
+        if (!string.IsNullOrWhiteSpace(packageAppId) && TryStartAppsFolderByAppId(packageAppId, out packageError))
+        {
+            return LaunchResult.Ok($"Spuštěna MSIX aplikace z balíčku '{query}' ({packageAppId}).");
+        }
+
+        string combinedError = string.Join(" | ", new[] { directError, appIdError, startAppsError, packageError }
             .Where(e => !string.IsNullOrWhiteSpace(e)));
 
         return LaunchResult.Fail(
@@ -100,6 +108,51 @@ public sealed class ApplicationLauncherService
                 "Get-StartApps | " +
                 "Where-Object { $_.Name -like \"*$q*\" } | " +
                 "Sort-Object Name | Select-Object -First 1 -ExpandProperty AppID";
+
+            var psi = new ProcessStartInfo
+            {
+                FileName = "powershell.exe",
+                Arguments = $"-NoProfile -ExecutionPolicy Bypass -Command \"{script}\"",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+
+            using var process = Process.Start(psi);
+            if (process is null)
+            {
+                return null;
+            }
+
+            string output = process.StandardOutput.ReadToEnd().Trim();
+            process.WaitForExit(5000);
+            return string.IsNullOrWhiteSpace(output) ? null : output;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static string? ResolveAppIdFromMsixPackage(string query)
+    {
+        try
+        {
+            string escaped = query.Replace("'", "''");
+            string script =
+                "$q = '" + escaped + "'; " +
+                "$pkg = Get-AppxPackage | " +
+                "Where-Object { " +
+                "    $_.Name -like \"*$q*\" -or " +
+                "    $_.PackageFamilyName -like \"*$q*\" -or " +
+                "    $_.PackageFullName -like \"*$q*\" " +
+                "} | Select-Object -First 1; " +
+                "if ($pkg) { " +
+                "    Get-StartApps | " +
+                "    Where-Object { $_.AppID -like \"$($pkg.PackageFamilyName)!*\" } | " +
+                "    Select-Object -First 1 -ExpandProperty AppID " +
+                "}";
 
             var psi = new ProcessStartInfo
             {

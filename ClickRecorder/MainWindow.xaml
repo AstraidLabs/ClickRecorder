@@ -181,7 +181,7 @@
                     <Separator/>
 
                     <TextBlock Text="PŘEHRÁVÁNÍ" Style="{StaticResource Sec}"/>
-                    <TextBlock Text="Spuštění aplikace (název / AUMID / exe)" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                    <TextBlock Text="Spuštění aplikace (název / AUMID / exe / MSIX package)" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
                     <TextBox x:Name="TxtAppToLaunch" Text="{Binding AppToLaunch, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
                     <Button x:Name="BtnLaunchApp" Content="🚀 Spustit aplikaci" Style="{StaticResource BPurple}"
                             Click="BtnLaunchApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,8"/>
