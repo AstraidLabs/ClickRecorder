@@ -242,13 +242,6 @@
                                     IsEnabled="{Binding CanDetachApplication}"/>
                             <TextBlock Text="{Binding AttachedAppText}" Foreground="#BAC2DE" FontSize="11" Margin="0,0,0,4" TextWrapping="Wrap"/>
 
-                            <Separator/>
-
-                            <TextBlock Text="SPUŠTĚNÍ APLIKACE" Style="{StaticResource Sec}"/>
-                            <TextBlock Text="Název / AUMID / exe / MSIX package" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
-                            <TextBox x:Name="TxtAppToLaunch" Text="{Binding AppToLaunch, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
-                            <Button x:Name="BtnLaunchApp" Content="🚀 Spustit aplikaci" Style="{StaticResource BPurple}"
-                                    Click="BtnLaunchApp_Click" HorizontalAlignment="Stretch"/>
                         </StackPanel>
                     </Border>
                 </Expander>
