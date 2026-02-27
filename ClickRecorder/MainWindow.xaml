@@ -108,12 +108,12 @@
 
                 <!-- FlaUI badge -->
                 <Border Grid.Column="1" Background="#1a2a44" CornerRadius="6" Padding="10,5" Margin="0,0,10,0" VerticalAlignment="Center">
-                    <TextBlock x:Name="TxtFlaUIStatus" Text="⚙ FlaUI: Inicializuji…"
+                    <TextBlock x:Name="TxtFlaUIStatus" Text="{Binding FlaUiStatus}"
                                Foreground="#89B4FA" FontSize="11" FontWeight="SemiBold"/>
                 </Border>
 
                 <Border Grid.Column="2" x:Name="StatusPill" Background="#252535" CornerRadius="20" Padding="14,6" VerticalAlignment="Center">
-                    <TextBlock x:Name="TxtStatus" Text="⏸  Idle" FontSize="13" FontWeight="Bold" Foreground="#6C7086"/>
+                    <TextBlock x:Name="TxtStatus" Text="{Binding StatusText}" FontSize="13" FontWeight="Bold" Foreground="{Binding StatusColor}"/>
                 </Border>
             </Grid>
         </Border>
@@ -135,7 +135,7 @@
                         <Button x:Name="BtnRecord"     Content="⏺ Nahrát" Style="{StaticResource BRed}"
                                 Click="BtnRecord_Click" Margin="0,0,6,0"/>
                         <Button x:Name="BtnStopRecord" Content="⏹ Stop"   Style="{StaticResource BGray}"
-                                Click="BtnStopRecord_Click" IsEnabled="False"/>
+                                Click="BtnStopRecord_Click"/>
                     </StackPanel>
                     <Button x:Name="BtnClear" Content="🗑  Vymazat záznamy" Style="{StaticResource BOrange}"
                             Click="BtnClear_Click" HorizontalAlignment="Stretch"/>
@@ -144,13 +144,13 @@
 
                     <TextBlock Text="SEKVENCE / TEST CASE" Style="{StaticResource Sec}"/>
                     <TextBlock Text="Název" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
-                    <TextBox x:Name="TxtSequenceName" Text="Moje sekvence" Margin="0,0,0,6"/>
+                    <TextBox x:Name="TxtSequenceName" Text="{Binding SequenceName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
                     <Button x:Name="BtnSaveSequence" Content="💾 Uložit sekvenci" Style="{StaticResource BBlue}"
-                            Click="BtnSaveSequence_Click" HorizontalAlignment="Stretch" IsEnabled="False" Margin="0,0,0,6"/>
+                            Click="BtnSaveSequence_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
                     <Button x:Name="BtnSaveAsTestCase" Content="🧪 Uložit jako Test Case" Style="{StaticResource BPurple}"
-                            Click="BtnSaveAsTestCase_Click" HorizontalAlignment="Stretch" IsEnabled="False" Margin="0,0,0,6"/>
+                            Click="BtnSaveAsTestCase_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
                     <Button x:Name="BtnAddToTestCase" Content="➕ (editor zavřen)" Style="{StaticResource BGray}"
-                            Click="BtnAddToTestCase_Click" HorizontalAlignment="Stretch" IsEnabled="False" Margin="0,0,0,6"/>
+                            Click="BtnAddToTestCase_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
                     <Button Content="🗂 Otevřít Test Cases" Style="{StaticResource BGray}"
                             Click="BtnOpenTestCases_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
                     <Button Content="⏰ Otevřít Jobs" Style="{StaticResource BGray}"
@@ -163,27 +163,27 @@
                         <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" Margin="0,0,4,0">
                             <TextBlock Text="Opakování" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
-                            <TextBox x:Name="TxtRepeat" Text="1"/>
+                            <TextBox x:Name="TxtRepeat" Text="{Binding RepeatText, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
                         <StackPanel Grid.Column="1">
                             <TextBlock Text="Rychlost ×" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
-                            <TextBox x:Name="TxtSpeed" Text="1.0"/>
+                            <TextBox x:Name="TxtSpeed" Text="{Binding SpeedText, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
                     </Grid>
-                    <CheckBox x:Name="ChkStopOnError"  Content="Zastavit při první chybě" Margin="0,2,0,4"/>
-                    <CheckBox x:Name="ChkScreenshots"  Content="Screenshot při chybě"     Margin="0,0,0,10"/>
+                    <CheckBox x:Name="ChkStopOnError"  Content="Zastavit při první chybě" Margin="0,2,0,4" IsChecked="{Binding StopOnError}"/>
+                    <CheckBox x:Name="ChkScreenshots"  Content="Screenshot při chybě"     Margin="0,0,0,10" IsChecked="{Binding TakeScreenshots}"/>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                         <Button x:Name="BtnPlay"     Content="▶  Přehrát" Style="{StaticResource BGreen}"
-                                Click="BtnPlay_Click" Margin="0,0,6,0" IsEnabled="False"/>
+                                Click="BtnPlay_Click" Margin="0,0,6,0"/>
                         <Button x:Name="BtnStopPlay" Content="⏹" Style="{StaticResource BGray}"
-                                Click="BtnStopPlay_Click" IsEnabled="False" Padding="10,6"/>
+                                Click="BtnStopPlay_Click" Padding="10,6"/>
                     </StackPanel>
 
                     <Separator/>
 
                     <TextBlock Text="EXPORT" Style="{StaticResource Sec}"/>
                     <Button x:Name="BtnExport" Content="📄  HTML Report" Style="{StaticResource BBlue}"
-                            Click="BtnExport_Click" HorizontalAlignment="Stretch" IsEnabled="False"/>
+                            Click="BtnExport_Click" HorizontalAlignment="Stretch"/>
 
                     <Separator/>
 
@@ -191,14 +191,14 @@
                     <Border Background="#181825" CornerRadius="6" Padding="10,8">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock x:Name="TxtOk"    Text="✓  0" Foreground="#A6E3A1" FontWeight="Bold" Margin="0,0,12,0"/>
-                                <TextBlock x:Name="TxtErr"   Text="✗  0" Foreground="#F38BA8" FontWeight="Bold"/>
+                                <TextBlock x:Name="TxtOk"    Text="{Binding OkText}" Foreground="#A6E3A1" FontWeight="Bold" Margin="0,0,12,0"/>
+                                <TextBlock x:Name="TxtErr"   Text="{Binding ErrText}" Foreground="#F38BA8" FontWeight="Bold"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock x:Name="TxtFlaUI" Text="⚙  0" Foreground="#89B4FA" FontSize="11" Margin="0,0,12,0"/>
-                                <TextBlock x:Name="TxtCoord" Text="🖱  0" Foreground="#F9E2AF" FontSize="11"/>
+                                <TextBlock x:Name="TxtFlaUI" Text="{Binding FlaUiText}" Foreground="#89B4FA" FontSize="11" Margin="0,0,12,0"/>
+                                <TextBlock x:Name="TxtCoord" Text="{Binding CoordText}" Foreground="#F9E2AF" FontSize="11"/>
                             </StackPanel>
-                            <TextBlock x:Name="TxtDur"   Text="" Foreground="#6C7086" FontSize="11"/>
+                            <TextBlock x:Name="TxtDur"   Text="{Binding DurationText}" Foreground="#6C7086" FontSize="11"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>
@@ -220,10 +220,10 @@
                         </Grid.RowDefinitions>
                         <DockPanel Margin="0,0,0,8">
                             <TextBlock Text="NAHRANÁ KLIKNUTÍ" Style="{StaticResource Sec}" DockPanel.Dock="Left" Margin="0"/>
-                            <TextBlock x:Name="TxtRecordCount" Text="0" Foreground="#6C7086" FontSize="11"
+                            <TextBlock x:Name="TxtRecordCount" Text="{Binding RecordCount}" Foreground="#6C7086" FontSize="11"
                                        HorizontalAlignment="Right" VerticalAlignment="Center"/>
                         </DockPanel>
-                        <ListBox x:Name="ClickList" Grid.Row="1"
+                        <ListBox x:Name="ClickList" Grid.Row="1" ItemsSource="{Binding Clicks}"
                                  SelectionChanged="ClickList_SelectionChanged"/>
                     </Grid>
                 </Border>
@@ -269,7 +269,7 @@
                                     Click="BtnClearResults_Click" FontSize="10" Padding="8,4"/>
                         </StackPanel>
                     </DockPanel>
-                    <ListBox x:Name="ResultList" Grid.Row="1"
+                    <ListBox x:Name="ResultList" Grid.Row="1" ItemsSource="{Binding Results}"
                              SelectionChanged="ResultList_SelectionChanged"/>
                 </Grid>
             </Border>
@@ -318,7 +318,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBlock Text="GLOBÁLNÍ VÝJIMKY" Style="{StaticResource Sec}"/>
-                        <ListBox x:Name="GlobalExList" Grid.Row="1"
+                        <ListBox x:Name="GlobalExList" Grid.Row="1" ItemsSource="{Binding GlobalExceptions}"
                                  SelectionChanged="GlobalExList_SelectionChanged"/>
                     </Grid>
                 </Grid>
@@ -327,8 +327,7 @@
 
         <!-- STATUS BAR -->
         <Border Grid.Row="2" Background="#252535" Padding="14,6" Margin="10,0,10,8" CornerRadius="6">
-            <TextBlock x:Name="TxtFooter" Foreground="#6C7086" FontSize="11"
-                       Text="Připraveno. Klikni ⏺ Nahrát – FlaUI bude automaticky inspektovat každý kliknutý element."/>
+            <TextBlock x:Name="TxtFooter" Foreground="#6C7086" FontSize="11" Text="{Binding FooterText}"/>
         </Border>
     </Grid>
 </Window>
