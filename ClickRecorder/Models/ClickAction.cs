@@ -116,7 +116,7 @@ namespace ClickRecorder.Models
 
         public string ShortType => Type.Split('.')[^1];
 
-        public object TypeName { get; internal set; }
+        public string TypeName => ShortType;
 
         public string FullDisplay()
         {
