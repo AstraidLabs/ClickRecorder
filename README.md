@@ -7,6 +7,7 @@ Zachycuje chyby při přehrávání a zobrazuje podrobný log.
 ## Funkce
 - **Nahrávání** – globální mouse hook zachytí každé kliknutí (levé, pravé, prostřední) s přesnými souřadnicemi a časovými odstupy
 - **Přehrávání** – automaticky pohybuje kurzorem a simuluje kliknutí pomocí WinAPI (`SetCursorPos` + `mouse_event`)
+- **Spouštění aplikací podle názvu** – umí spustit aplikaci zadanou názvem/aliasem, cestou k `.exe` i MSIX/UWP přes AUMID
 - **Vyplňování textu** – do sekvence lze přidat krok „TEXT INPUT“ a při přehrávání vyplnit text do zvoleného pole (přes FlaUI nebo klávesnici)
 - **Attach režim (strict)** – po připojení aplikace recorder přijímá jen kliknutí z daného procesu a přehrávání blokuje kroky, které by mohly mířit mimo cílový proces
 - **Opakování** – nastav kolikrát se sekvence má opakovat (1–999)
@@ -52,8 +53,9 @@ ClickRecorder/
 4. Klikni **"⏹ Zastavit"**
 5. (Volitelné) v sekci **TEXT INPUT** napiš hodnotu a klikni **"⌨ Přidat textový krok"**
 6. Nastav počet opakování a rychlost
-7. Klikni **"▶ Přehrát"** – aplikace automaticky zreplikuje kliknutí i textové kroky
-8. Sleduj log – úspěšné kroky jsou zelené ✓, chyby červené ✗
+7. (Volitelné) v sekci **PŘEHRÁVÁNÍ** zadej název aplikace (např. `Kalkulačka`) nebo AUMID (např. `Microsoft.WindowsCalculator_8wekyb3d8bbwe!App`) a klikni **"🚀 Spustit aplikaci"**
+8. Klikni **"▶ Přehrát"** – aplikace automaticky zreplikuje kliknutí i textové kroky
+9. Sleduj log – úspěšné kroky jsou zelené ✓, chyby červené ✗
 
 ## Poznámky
 - Aplikace používá **globální hook**, ale v attach režimu jsou kroky filtrovány pouze na připojený proces
