@@ -296,22 +296,6 @@
                         <Button x:Name="BtnExport" Content="📄  HTML Report" Style="{StaticResource BBlue}"
                                 Click="BtnExport_Click" HorizontalAlignment="Stretch"/>
 
-                        <Separator/>
-
-                        <TextBlock Text="STATISTIKY" Style="{StaticResource Sec}"/>
-                        <Border Background="#181825" CornerRadius="6" Padding="10,8">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                    <TextBlock x:Name="TxtOk"    Text="{Binding OkText}" Foreground="#A6E3A1" FontWeight="Bold" Margin="0,0,12,0"/>
-                                    <TextBlock x:Name="TxtErr"   Text="{Binding ErrText}" Foreground="#F38BA8" FontWeight="Bold"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                    <TextBlock x:Name="TxtFlaUI" Text="{Binding FlaUiText}" Foreground="#89B4FA" FontSize="11" Margin="0,0,12,0"/>
-                                    <TextBlock x:Name="TxtCoord" Text="{Binding CoordText}" Foreground="#F9E2AF" FontSize="11"/>
-                                </StackPanel>
-                                <TextBlock x:Name="TxtDur"   Text="{Binding DurationText}" Foreground="#6C7086" FontSize="11"/>
-                            </StackPanel>
-                        </Border>
                             </StackPanel>
                         </ScrollViewer>
                     </Border>
@@ -435,7 +419,23 @@
 
         <!-- STATUS BAR -->
         <Border Grid.Row="2" Background="#252535" Padding="14,6" Margin="10,0,10,8" CornerRadius="6">
-            <TextBlock x:Name="TxtFooter" Foreground="#6C7086" FontSize="11" Text="{Binding FooterText}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock x:Name="TxtFooter" Foreground="#6C7086" FontSize="11" Text="{Binding FooterText}" VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="STATISTIKY:" Foreground="#6C7086" FontSize="11" Margin="0,0,10,0"/>
+                    <TextBlock x:Name="TxtOk" Text="{Binding OkText}" Foreground="#A6E3A1" FontWeight="Bold" FontSize="11" Margin="0,0,12,0"/>
+                    <TextBlock x:Name="TxtErr" Text="{Binding ErrText}" Foreground="#F38BA8" FontWeight="Bold" FontSize="11" Margin="0,0,12,0"/>
+                    <TextBlock x:Name="TxtFlaUI" Text="{Binding FlaUiText}" Foreground="#89B4FA" FontSize="11" Margin="0,0,12,0"/>
+                    <TextBlock x:Name="TxtCoord" Text="{Binding CoordText}" Foreground="#F9E2AF" FontSize="11" Margin="0,0,12,0"/>
+                    <TextBlock x:Name="TxtDur" Text="{Binding DurationText}" Foreground="#6C7086" FontSize="11"/>
+                </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </Window>
