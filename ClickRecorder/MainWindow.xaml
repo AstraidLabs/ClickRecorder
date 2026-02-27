@@ -137,8 +137,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="260"/>   <!-- recording + playback -->
                 <ColumnDefinition Width="260"/>   <!-- recorded + inspector -->
-                <ColumnDefinition Width="*"/>     <!-- results -->
-                <ColumnDefinition Width="320"/>   <!-- exception detail -->
+                <ColumnDefinition Width="*"/>     <!-- exception detail -->
+                <ColumnDefinition Width="280"/>   <!-- results -->
             </Grid.ColumnDefinitions>
 
             <!-- ── COL 0: Recording + Playback panels ─────────────────────── -->
@@ -378,30 +378,8 @@
                 </Border>
             </Grid>
 
-            <!-- ── COL 2: Test results ────────────────────────────────────── -->
+            <!-- ── COL 2: Exception detail + global ──────────────────────── -->
             <Border Grid.Column="2" Style="{StaticResource Card}" Margin="0,0,8,0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <DockPanel Margin="0,0,0,10">
-                        <TextBlock Text="VÝSLEDKY TESTU" Style="{StaticResource Sec}" DockPanel.Dock="Left" Margin="0"/>
-                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                            <Button x:Name="BtnTicket" Content="📋 Ticket" Style="{StaticResource BPurple}"
-                                    Click="BtnTicket_Click" FontSize="10" Padding="8,4"
-                                    IsEnabled="False" Margin="0,0,6,0"/>
-                            <Button Content="Vymazat" Style="{StaticResource BGray}"
-                                    Click="BtnClearResults_Click" FontSize="10" Padding="8,4"/>
-                        </StackPanel>
-                    </DockPanel>
-                    <ListBox x:Name="ResultList" Grid.Row="1" ItemsSource="{Binding Results}"
-                             SelectionChanged="ResultList_SelectionChanged"/>
-                </Grid>
-            </Border>
-
-            <!-- ── COL 3: Exception detail + global ──────────────────────── -->
-            <Border Grid.Column="3" Style="{StaticResource Card}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -447,6 +425,28 @@
                         <ListBox x:Name="GlobalExList" Grid.Row="1" ItemsSource="{Binding GlobalExceptions}"
                                  SelectionChanged="GlobalExList_SelectionChanged"/>
                     </Grid>
+                </Grid>
+            </Border>
+
+            <!-- ── COL 3: Test results ────────────────────────────────────── -->
+            <Border Grid.Column="3" Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <DockPanel Margin="0,0,0,10">
+                        <TextBlock Text="VÝSLEDKY TESTU" Style="{StaticResource Sec}" DockPanel.Dock="Left" Margin="0"/>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                            <Button x:Name="BtnTicket" Content="📋 Ticket" Style="{StaticResource BPurple}"
+                                    Click="BtnTicket_Click" FontSize="10" Padding="8,4"
+                                    IsEnabled="False" Margin="0,0,6,0"/>
+                            <Button Content="Vymazat" Style="{StaticResource BGray}"
+                                    Click="BtnClearResults_Click" FontSize="10" Padding="8,4"/>
+                        </StackPanel>
+                    </DockPanel>
+                    <ListBox x:Name="ResultList" Grid.Row="1" ItemsSource="{Binding Results}"
+                             SelectionChanged="ResultList_SelectionChanged"/>
                 </Grid>
             </Border>
         </Grid>
