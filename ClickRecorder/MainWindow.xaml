@@ -106,7 +106,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel>
-                    <TextBlock Text="🖱️  ClickRecorder – FlaUI Auto Test" FontSize="18" FontWeight="Bold" Foreground="#CDD6F4"/>
+                    <TextBlock Text="🖱️  Slaveclicker" FontSize="18" FontWeight="Bold" Foreground="#CDD6F4"/>
                     <TextBlock Foreground="#6C7086" FontSize="11" Margin="0,3,0,0"
                                Text="Nahraj kliknutí · FlaUI inspectuje elementy · Přehraj spolehlivě · Zachyť výjimky + call stack · HTML report"/>
                 </StackPanel>
