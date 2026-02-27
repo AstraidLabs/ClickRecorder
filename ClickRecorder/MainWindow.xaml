@@ -188,10 +188,10 @@
                             <TextBlock Text="NAHRÁVÁNÍ" Style="{StaticResource Sec}"/>
                             <StackPanel Margin="0,0,0,6">
                                 <Button x:Name="BtnRecord"     Content="⏺ Nahrát" Style="{StaticResource BRed}"
-                                        Click="BtnRecord_Click" Margin="0,0,0,6" MinHeight="34"
+                                        Click="BtnRecord_Click" Margin="0,0,0,6"
                                         HorizontalAlignment="Stretch" IsEnabled="{Binding CanRecord}"/>
                                 <Button x:Name="BtnStopRecord" Content="⏹ Stop"   Style="{StaticResource BGray}"
-                                        Click="BtnStopRecord_Click" MinHeight="34" HorizontalAlignment="Stretch"/>
+                                        Click="BtnStopRecord_Click" HorizontalAlignment="Stretch"/>
                             </StackPanel>
                             <TextBlock Text="Režim zachytávání" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
                             <RadioButton Content="Podle UI elementu (FlaUI)" GroupName="CaptureMode"
