@@ -75,7 +75,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     private string _attachButtonText = "🎯 Připojit aplikaci";
     public string AttachButtonText { get => _attachButtonText; set => SetProperty(ref _attachButtonText, value); }
 
-    private string _attachedAppText = "🎯 Připojit cílovou aplikaci pro omezení kliknutí mimo aplikaci";
+    private string _attachedAppText = "🎯 Pro přesné nahrávání nejprve připojte cílovou aplikaci – nahrávání se omezí jen na ni a snížíte riziko chybných kliknutí.";
     public string AttachedAppText { get => _attachedAppText; set => SetProperty(ref _attachedAppText, value); }
 
     public bool CanRecord => _attachedProcessId.HasValue && !_isAttachArmed;
@@ -232,7 +232,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _attachedProcessId = null;
         _attachedProcessName = null;
         OnPropertyChanged(nameof(CanRecord));
-        AttachedAppText = "🎯 Připojit cílovou aplikaci pro omezení kliknutí mimo aplikaci";
+        AttachedAppText = "🎯 Pro přesné nahrávání nejprve připojte cílovou aplikaci – nahrávání se omezí jen na ni a snížíte riziko chybných kliknutí.";
         FooterText = "Omezení cílové aplikace zrušeno.";
     }
 
