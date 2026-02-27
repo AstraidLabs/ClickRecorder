@@ -47,6 +47,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     private string? _attachedProcessName;
     private DateTime? _lastClickTime;
     private int _clickId;
+    private bool _isPlaying;
 
     public ObservableCollection<string> Clicks { get; } = new();
     public ObservableCollection<string> Results { get; } = new();
@@ -101,7 +102,23 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         FooterText = "FlaUI inicializováno. Nahrávání je připravené pro kliknutí kdekoliv.";
     }
 
-    public bool CanPlay => _recorded.Count > 0;
+    public bool IsPlaying
+    {
+        get => _isPlaying;
+        private set
+        {
+            if (!SetProperty(ref _isPlaying, value))
+            {
+                return;
+            }
+
+            OnPropertyChanged(nameof(CanPlay));
+            OnPropertyChanged(nameof(CanStopPlayback));
+        }
+    }
+
+    public bool CanPlay => _recorded.Count > 0 && !IsPlaying;
+    public bool CanStopPlayback => IsPlaying;
 
     public void StartRecord()
     {
@@ -159,7 +176,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
 
     public async Task PlayAsync()
     {
-        if (_recorded.Count == 0) return;
+        if (!CanPlay) return;
         if (!int.TryParse(RepeatText, out int rep) || rep < 1) rep = 1;
         if (!double.TryParse(SpeedText.Replace(",", "."), NumberStyles.Float, CultureInfo.InvariantCulture, out double spd) || spd <= 0) spd = 1.0;
 
@@ -169,7 +186,15 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         SetStatus("▶  Přehrávám", "#A6E3A1");
         FooterText = $"Přehrávám {_recorded.Count} kroků × {rep}× ...";
 
-        _lastSession = await _playback.PlayAsync(new List<ClickAction>(_recorded), rep, spd, StopOnError, TakeScreenshots);
+        IsPlaying = true;
+        try
+        {
+            _lastSession = await _playback.PlayAsync(new List<ClickAction>(_recorded), rep, spd, StopOnError, TakeScreenshots);
+        }
+        finally
+        {
+            IsPlaying = false;
+        }
     }
 
     public void StopPlay() => _playback.Stop();
@@ -215,6 +240,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _recorded.Add(action);
         Clicks.Add($"⌨ {action.Summary}");
         RecordCount = _recorded.Count.ToString();
+        OnPropertyChanged(nameof(CanPlay));
         FooterText = "Textový krok přidán do sekvence.";
     }
 
@@ -225,6 +251,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _clickId = 0;
         _lastClickTime = null;
         RecordCount = "0";
+        OnPropertyChanged(nameof(CanPlay));
         FooterText = "Záznamy vymazány.";
     }
 
@@ -300,6 +327,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
             _recorded.Add(a);
         }
         RecordCount = _recorded.Count.ToString();
+        OnPropertyChanged(nameof(CanPlay));
         FooterText = string.Format(footerFmt, _recorded.Count);
     }
 
@@ -353,6 +381,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
                 var icon = action.Kind == ActionKind.TypeText ? "⌨" : (action.UseElementPlayback ? "⚙" : "🖱");
                 Clicks.Add($"{icon} {action.Summary}");
                 RecordCount = _recorded.Count.ToString();
+                OnPropertyChanged(nameof(CanPlay));
             });
         });
     }
@@ -397,6 +426,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
                 DurationText = $"⏱ {_lastSession.TotalDuration.TotalSeconds:F1}s";
                 FooterText = $"Hotovo – ✓{_lastSession.SuccessCount} ✗{_lastSession.FailureCount}";
             }
+            IsPlaying = false;
             SetStatus("⏸  Idle", "#6C7086");
         });
     }
