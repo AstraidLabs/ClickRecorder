@@ -62,6 +62,8 @@ namespace ClickRecorder.Models
         public ActionKind   Kind                { get; set; } = ActionKind.Click;
         public ClickButton  Button              { get; set; }
         public string?      TextToType          { get; set; }
+        public string       StepName            { get; set; } = string.Empty;
+        public string       StepDescription     { get; set; } = string.Empty;
         public TimeSpan     DelayAfterPrevious  { get; set; }
         public DateTime     RecordedAt          { get; set; }
         public uint?        TargetProcessId     { get; set; }
@@ -80,10 +82,12 @@ namespace ClickRecorder.Models
 
         public string Summary =>
             Kind == ActionKind.TypeText
-                ? $"#{Id:D3}  [TEXT] '{TextToType ?? string.Empty}'  +{DelayAfterPrevious.TotalMilliseconds:F0}ms"
+                ? $"#{Id:D3}  [{DisplayStepTitle}] [TEXT] '{TextToType ?? string.Empty}'  +{DelayAfterPrevious.TotalMilliseconds:F0}ms"
             : UseElementPlayback
-                ? $"#{Id:D3}  {Element!.Selector,-38}  +{DelayAfterPrevious.TotalMilliseconds:F0}ms"
-                : $"#{Id:D3}  [{Button}] ({X},{Y})                            +{DelayAfterPrevious.TotalMilliseconds:F0}ms";
+                ? $"#{Id:D3}  [{DisplayStepTitle}] {Element!.Selector,-38}  +{DelayAfterPrevious.TotalMilliseconds:F0}ms"
+                : $"#{Id:D3}  [{DisplayStepTitle}] [{Button}] ({X},{Y})                            +{DelayAfterPrevious.TotalMilliseconds:F0}ms";
+
+        public string DisplayStepTitle => string.IsNullOrWhiteSpace(StepName) ? $"Krok {Id}" : StepName.Trim();
 
         public override string ToString() => Summary;
     }
