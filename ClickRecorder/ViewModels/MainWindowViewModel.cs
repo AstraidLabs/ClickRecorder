@@ -32,6 +32,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     private readonly GlobalKeyboardHook _keyboardHook = new();
     private readonly FlaUIInspectorService _inspector = new();
     private readonly FlaUIPlaybackService _playback = new();
+    private readonly ApplicationLauncherService _appLauncher = new();
     private readonly DatabaseService _db = new();
     private readonly TestCaseService _tcSvc = new();
     private readonly JobSchedulerService _scheduler;
@@ -85,6 +86,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     public string SequenceName { get; set; } = "Moje sekvence";
     public string TextToType { get; set; } = string.Empty;
     public string FlaUiStatus { get; set; } = "⚙ FlaUI: Připraveno";
+    public string AppToLaunch { get; set; } = string.Empty;
 
     public bool CaptureByElement
     {
@@ -233,6 +235,12 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     }
 
     public void StopPlay() => _playback.Stop();
+
+    public void LaunchApplication()
+    {
+        var result = _appLauncher.Launch(AppToLaunch);
+        FooterText = result.Success ? $"🚀 {result.Message}" : $"⚠ {result.Message}";
+    }
 
     public void AddTextStep()
     {
