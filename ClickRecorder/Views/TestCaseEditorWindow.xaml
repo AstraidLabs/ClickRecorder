@@ -163,7 +163,7 @@
 
                         <TextBlock Text="Tagy (čárkou)" Style="{StaticResource Lbl}"/>
                         <TextBox x:Name="TxtTags" Margin="0,0,0,7" TextChanged="MarkDirty"
-                                 PlaceholderText="smoke, login, ui"/>
+                                 helpers:PlaceholderService.Text="smoke, login, ui"/>
 
                         <TextBlock Text="Verze" Style="{StaticResource Lbl}"/>
                         <TextBox x:Name="TxtVersion" Text="1.0" Margin="0,0,0,7" TextChanged="MarkDirty"/>
@@ -173,14 +173,14 @@
                         <TextBox x:Name="TxtPreconditions" Height="65" TextWrapping="Wrap"
                                  AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
                                  Margin="0,0,0,7" TextChanged="MarkDirty"
-                                 PlaceholderText="Co musí být splněno…"/>
+                                 helpers:PlaceholderService.Text="Co musí být splněno…"/>
 
                         <Separator/>
                         <TextBlock Text="OČEKÁVANÝ VÝSLEDEK" Style="{StaticResource Sec}"/>
                         <TextBox x:Name="TxtExpectedOutcome" Height="65" TextWrapping="Wrap"
                                  AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
                                  Margin="0,0,0,7" TextChanged="MarkDirty"
-                                 PlaceholderText="Po úspěšném průběhu…"/>
+                                 helpers:PlaceholderService.Text="Po úspěšném průběhu…"/>
 
                         <Separator/>
                         <TextBlock Text="POZNÁMKY" Style="{StaticResource Sec}"/>
@@ -221,7 +221,7 @@
                     <!-- Add section -->
                     <StackPanel Grid.Row="3" Margin="0,0,0,6">
                         <TextBlock Text="Název nové sekce" Style="{StaticResource Lbl}"/>
-                        <TextBox x:Name="TxtNewSectionName" PlaceholderText="např. Přihlášení"/>
+                        <TextBox x:Name="TxtNewSectionName" helpers:PlaceholderService.Text="např. Přihlášení"/>
                     </StackPanel>
                     <Button Grid.Row="4" Content="➕ Přidat sekci" Style="{StaticResource BGreen}"
                             Click="BtnAddSection_Click" HorizontalAlignment="Stretch"/>
@@ -293,10 +293,10 @@
                             <TextBox x:Name="TxtStepDesc" Height="52" TextWrapping="Wrap"
                                      AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
                                      Margin="0,0,0,5"
-                                     PlaceholderText="Co se v tomto kroku dělá…"/>
+                                     helpers:PlaceholderService.Text="Co se v tomto kroku dělá…"/>
                             <TextBlock Text="Očekávaný výsledek kroku" Style="{StaticResource Lbl}"/>
                             <TextBox x:Name="TxtStepExpected" Margin="0,0,0,6"
-                                     PlaceholderText="Co se má stát…"/>
+                                     helpers:PlaceholderService.Text="Co se má stát…"/>
                             <Button Content="✓ Uložit krok" Style="{StaticResource BGreen}"
                                     Click="BtnSaveStep_Click" HorizontalAlignment="Left"/>
                         </StackPanel>
