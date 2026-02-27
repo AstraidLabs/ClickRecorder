@@ -463,7 +463,7 @@ namespace ClickRecorder
             // Track it so further recordings can be pushed in
             _openEditor = editor;
             UpdateAddToTcButton();
-            Footer($"🧪 Editor otevřen. Nahraj další kliknutí a klikni „➕ Přidat do Test Case".");
+            Footer("🧪 Editor otevřen. Nahraj další kliknutí a klikni „➕ Přidat do Test Case“.");
         }
 
         private void BtnAddToTestCase_Click(object sender, RoutedEventArgs e)
@@ -471,7 +471,7 @@ namespace ClickRecorder
             if (_recorded.Count == 0) { Info("Žádná kliknutí k nahrání."); return; }
             if (_openEditor is null || !_openEditor.IsVisible)
             {
-                Info("Nejprve otevři Test Case editor pomocí „🧪 Uložit jako Test Case".");
+                Info("Nejprve otevři Test Case editor pomocí „🧪 Uložit jako Test Case“.");
                 return;
             }
 
@@ -482,7 +482,7 @@ namespace ClickRecorder
             _openEditor.AddSection(sectionName,
                 new System.Collections.Generic.List<ClickAction>(_recorded));
             _openEditor.Activate();   // bring to front
-            Footer($"➕ {_recorded.Count} kliků přidáno jako sekce „{sectionName}".");
+            Footer($"➕ {_recorded.Count} kliků přidáno jako sekce „{sectionName}“.");
         }
 
         private void UpdateAddToTcButton()

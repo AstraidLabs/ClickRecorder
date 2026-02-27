@@ -27,53 +27,54 @@ namespace ClickRecorder.Services
             string verdictColor = s.FailureCount == 0 ? "#a6e3a1" : "#f38ba8";
             var sb = new StringBuilder();
 
-            sb.Append($"""
+            sb.Append("""
 <!DOCTYPE html>
 <html lang="cs">
 <head>
 <meta charset="UTF-8"/>
-<title>ClickRecorder – {s.Id}</title>
+<title>ClickRecorder</title>
 <style>
-*{{box-sizing:border-box;margin:0;padding:0}}
-body{{font-family:'Segoe UI',sans-serif;background:#1e1e2e;color:#cdd6f4;padding:24px;font-size:13px}}
-h1{{font-size:20px;margin-bottom:4px}}
-.sub{{color:#6c7086;font-size:12px;margin-bottom:20px}}
-.cards{{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}}
-.card{{background:#313244;border-radius:8px;padding:14px 18px;min-width:120px}}
-.card .v{{font-size:26px;font-weight:700;margin-bottom:3px}}
-.card .l{{font-size:11px;color:#6c7086}}
-.ok{{color:#a6e3a1}}.err{{color:#f38ba8}}.warn{{color:#fab387}}.info{{color:#89b4fa}}
-h2{{font-size:14px;margin:20px 0 10px;color:#89b4fa;font-weight:600}}
-table{{width:100%;border-collapse:collapse;background:#181825;border-radius:8px;overflow:hidden;font-size:12px}}
-th{{background:#313244;padding:9px 12px;text-align:left;color:#89b4fa;font-weight:600;white-space:nowrap}}
-td{{padding:8px 12px;border-top:1px solid #252535;vertical-align:top}}
-tr:hover td{{background:#1f1f2e}}
-.badge{{display:inline-block;padding:2px 7px;border-radius:4px;font-weight:700;font-size:11px}}
-.bok{{background:#1a3328;color:#a6e3a1}}.berr{{background:#351a1a;color:#f38ba8}}
-.bflaui{{background:#1a2a44;color:#89b4fa}}.bcoord{{background:#2a2a1a;color:#f9e2af}}
-details{{margin-top:5px}}summary{{cursor:pointer;color:#89b4fa;font-size:11px;user-select:none}}
-pre{{margin-top:6px;background:#0d0d18;padding:10px;border-radius:6px;white-space:pre-wrap;
-     word-break:break-all;color:#cdd6f4;line-height:1.55;font-size:11px}}
-.inner{{margin-top:6px;border-left:3px solid #f38ba8;padding-left:10px}}
-code{{font-family:Consolas,monospace;background:#252535;padding:1px 5px;border-radius:3px}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#1e1e2e;color:#cdd6f4;padding:24px;font-size:13px}
+h1{font-size:20px;margin-bottom:4px}
+.sub{color:#6c7086;font-size:12px;margin-bottom:20px}
+.cards{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.card{background:#313244;border-radius:8px;padding:14px 18px;min-width:120px}
+.card .v{font-size:26px;font-weight:700;margin-bottom:3px}
+.card .l{font-size:11px;color:#6c7086}
+.ok{color:#a6e3a1}.err{color:#f38ba8}.warn{color:#fab387}.info{color:#89b4fa}
+h2{font-size:14px;margin:20px 0 10px;color:#89b4fa;font-weight:600}
+table{width:100%;border-collapse:collapse;background:#181825;border-radius:8px;overflow:hidden;font-size:12px}
+th{background:#313244;padding:9px 12px;text-align:left;color:#89b4fa;font-weight:600;white-space:nowrap}
+td{padding:8px 12px;border-top:1px solid #252535;vertical-align:top}
+tr:hover td{background:#1f1f2e}
+.badge{display:inline-block;padding:2px 7px;border-radius:4px;font-weight:700;font-size:11px}
+.bok{background:#1a3328;color:#a6e3a1}.berr{background:#351a1a;color:#f38ba8}
+.bflaui{background:#1a2a44;color:#89b4fa}.bcoord{background:#2a2a1a;color:#f9e2af}
+details{margin-top:5px}summary{cursor:pointer;color:#89b4fa;font-size:11px;user-select:none}
+pre{margin-top:6px;background:#0d0d18;padding:10px;border-radius:6px;white-space:pre-wrap;
+     word-break:break-all;color:#cdd6f4;line-height:1.55;font-size:11px}
+.inner{margin-top:6px;border-left:3px solid #f38ba8;padding-left:10px}
+code{font-family:Consolas,monospace;background:#252535;padding:1px 5px;border-radius:3px}
 </style>
 </head>
 <body>
-<h1>🖱️ ClickRecorder – Test Report</h1>
-<div class="sub">Session: <code>{s.Id}</code> &nbsp;|&nbsp; {s.StartedAt:dd.MM.yyyy HH:mm:ss}
-&nbsp;|&nbsp; Duration: <code>{s.TotalDuration.TotalSeconds:F1}s</code></div>
-
-<div class="cards">
-  <div class="card"><div class="v" style="color:{verdictColor}">{verdict}</div><div class="l">Result</div></div>
-  <div class="card"><div class="v">{s.Steps.Count}</div><div class="l">Total steps</div></div>
-  <div class="card"><div class="v ok">{s.SuccessCount}</div><div class="l">Passed</div></div>
-  <div class="card"><div class="v err">{s.FailureCount}</div><div class="l">Failed</div></div>
-  <div class="card"><div class="v info">{s.FlaUISteps}</div><div class="l">FlaUI steps</div></div>
-  <div class="card"><div class="v warn">{s.CoordSteps}</div><div class="l">Coord steps</div></div>
-  <div class="card"><div class="v warn">{s.RepeatCount}×</div><div class="l">Repeats</div></div>
-  <div class="card"><div class="v">{s.SpeedMultiplier}×</div><div class="l">Speed</div></div>
-</div>
 """);
+
+            sb.AppendLine("<h1>🖱️ ClickRecorder – Test Report</h1>");
+            sb.AppendLine($"<div class='sub'>Session: <code>{s.Id}</code> &nbsp;|&nbsp; {s.StartedAt:dd.MM.yyyy HH:mm:ss}");
+            sb.AppendLine($"&nbsp;|&nbsp; Duration: <code>{s.TotalDuration.TotalSeconds:F1}s</code></div>");
+            sb.AppendLine("<div class='cards'>");
+            sb.AppendLine($"  <div class='card'><div class='v' style='color:{verdictColor}'>{verdict}</div><div class='l'>Result</div></div>");
+            sb.AppendLine($"  <div class='card'><div class='v'>{s.Steps.Count}</div><div class='l'>Total steps</div></div>");
+            sb.AppendLine($"  <div class='card'><div class='v ok'>{s.SuccessCount}</div><div class='l'>Passed</div></div>");
+            sb.AppendLine($"  <div class='card'><div class='v err'>{s.FailureCount}</div><div class='l'>Failed</div></div>");
+            sb.AppendLine($"  <div class='card'><div class='v info'>{s.FlaUISteps}</div><div class='l'>FlaUI steps</div></div>");
+            sb.AppendLine($"  <div class='card'><div class='v warn'>{s.CoordSteps}</div><div class='l'>Coord steps</div></div>");
+            sb.AppendLine($"  <div class='card'><div class='v warn'>{s.RepeatCount}×</div><div class='l'>Repeats</div></div>");
+            sb.AppendLine($"  <div class='card'><div class='v'>{s.SpeedMultiplier}×</div><div class='l'>Speed</div></div>");
+            sb.AppendLine("</div>");
+
 
             // Steps table
             sb.AppendLine("<h2>Steps</h2>");
