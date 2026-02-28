@@ -102,11 +102,21 @@
                             <StackPanel Margin="0,-2,0,0">
                             <TextBlock Text="Spusťte nahrávání kliknutím na tlačítko Nahrát." Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
                             <StackPanel Margin="0,0,0,6">
-                                <Button x:Name="BtnRecord"     Content="Nahrát" Style="{StaticResource BPurple}"
+                                <Button x:Name="BtnRecord" Style="{StaticResource BPurple}"
                                         Click="BtnRecord_Click" Margin="0,0,0,6"
-                                        HorizontalAlignment="Stretch" IsEnabled="{Binding CanRecord}"/>
-                                <Button x:Name="BtnStopRecord" Content="Stop"   Style="{StaticResource BRed}"
-                                        Click="BtnStopRecord_Click" HorizontalAlignment="Stretch"/>
+                                        HorizontalAlignment="Stretch" IsEnabled="{Binding CanRecord}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <icons:FluentIcon Icon="Record" Width="14" Height="14" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
+                                        <TextBlock Text="Nahrát" Margin="6,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="BtnStopRecord" Style="{StaticResource BRed}"
+                                        Click="BtnStopRecord_Click" HorizontalAlignment="Stretch">
+                                    <StackPanel Orientation="Horizontal">
+                                        <icons:FluentIcon Icon="Stop" Width="14" Height="14" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
+                                        <TextBlock Text="Stop" Margin="6,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
                             <TextBlock Text="Režim zachytávání" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
                             <RadioButton Content="Podle UI elementu (FlaUI)" GroupName="CaptureMode"
