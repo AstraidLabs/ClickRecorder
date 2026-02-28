@@ -5,84 +5,8 @@
         Title="🧪 Test Case Editor" Height="820" Width="1280"
         MinWidth="1000" MinHeight="580"
         WindowStartupLocation="CenterOwner"
-        Background="#1E1E2E">
-    <Window.Resources>
-        <Style x:Key="Card" TargetType="Border">
-            <Setter Property="Background" Value="#313244"/>
-            <Setter Property="CornerRadius" Value="8"/>
-            <Setter Property="Padding" Value="12"/>
-        </Style>
-        <Style x:Key="Sec" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="10"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="#89B4FA"/>
-            <Setter Property="Margin" Value="0,0,0,8"/>
-        </Style>
-        <Style x:Key="Lbl" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="Foreground" Value="#6C7086"/>
-            <Setter Property="Margin" Value="0,0,0,3"/>
-        </Style>
-        <Style TargetType="TextBox">
-            <Setter Property="Background" Value="#181825"/>
-            <Setter Property="Foreground" Value="#CDD6F4"/>
-            <Setter Property="BorderBrush" Value="#45475A"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="7,5"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="CaretBrush" Value="#CDD6F4"/>
-        </Style>
-        <Style TargetType="ComboBox">
-            <Setter Property="Background" Value="#181825"/>
-            <Setter Property="Foreground" Value="#CDD6F4"/>
-            <Setter Property="BorderBrush" Value="#45475A"/>
-            <Setter Property="Padding" Value="6,4"/>
-            <Setter Property="FontSize" Value="12"/>
-        </Style>
-        <Style x:Key="Btn" TargetType="Button">
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Padding" Value="10,5"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="5"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True"><Setter Property="Opacity" Value="0.80"/></Trigger>
-                            <Trigger Property="IsEnabled"   Value="False"><Setter Property="Opacity" Value="0.28"/></Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="BBlue"   TargetType="Button" BasedOn="{StaticResource Btn}"><Setter Property="Background" Value="#89B4FA"/><Setter Property="Foreground" Value="#1E1E2E"/></Style>
-        <Style x:Key="BGreen"  TargetType="Button" BasedOn="{StaticResource Btn}"><Setter Property="Background" Value="#A6E3A1"/><Setter Property="Foreground" Value="#1E1E2E"/></Style>
-        <Style x:Key="BRed"    TargetType="Button" BasedOn="{StaticResource Btn}"><Setter Property="Background" Value="#F38BA8"/><Setter Property="Foreground" Value="#1E1E2E"/></Style>
-        <Style x:Key="BGray"   TargetType="Button" BasedOn="{StaticResource Btn}"><Setter Property="Background" Value="#585B70"/><Setter Property="Foreground" Value="#CDD6F4"/></Style>
-        <Style x:Key="BOrange" TargetType="Button" BasedOn="{StaticResource Btn}"><Setter Property="Background" Value="#FAB387"/><Setter Property="Foreground" Value="#1E1E2E"/></Style>
-        <Style x:Key="BPurple" TargetType="Button" BasedOn="{StaticResource Btn}"><Setter Property="Background" Value="#CBA6F7"/><Setter Property="Foreground" Value="#1E1E2E"/></Style>
-        <Style TargetType="ListBox">
-            <Setter Property="Background" Value="#181825"/>
-            <Setter Property="BorderBrush" Value="#45475A"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="#CDD6F4"/>
-            <Setter Property="FontSize" Value="12"/>
-        </Style>
-        <Style TargetType="ListBoxItem">
-            <Setter Property="Padding" Value="7,4"/>
-            <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#45475A"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style TargetType="Separator"><Setter Property="Background" Value="#45475A"/><Setter Property="Margin" Value="0,6"/></Style>
-    </Window.Resources>
+        Background="{DynamicResource Brush.Background}">
+    
 
     <Grid>
         <Grid.RowDefinitions>
