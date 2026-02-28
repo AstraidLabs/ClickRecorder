@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
 
         <!-- HEADER -->
-        <Border Grid.Row="0" Background="#252535" Padding="16,10">
+        <Border Grid.Row="0" Background="{DynamicResource Brush.SurfaceAlt}" Padding="16,10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -24,15 +24,15 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel>
                     <TextBlock x:Name="TxtWindowTitle" Text="🧪  Nový Test Case"
-                               FontSize="17" FontWeight="Bold" Foreground="#CDD6F4"/>
+                               FontSize="17" FontWeight="Bold" Foreground="{DynamicResource Brush.TextPrimary}"/>
                     <TextBlock x:Name="TxtWindowSub"
                                Text="Přidej sekce · Do každé sekce nahraj nebo vlož kliknutí"
-                               Foreground="#6C7086" FontSize="11" Margin="0,3,0,0"/>
+                               Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" Margin="0,3,0,0"/>
                 </StackPanel>
-                <Border Grid.Column="1" x:Name="DirtyBadge" Background="#2a2510"
+                <Border Grid.Column="1" x:Name="DirtyBadge" Background="{DynamicResource Brush.SurfaceAlt}"
                         CornerRadius="6" Padding="10,4" VerticalAlignment="Center"
                         Visibility="Collapsed">
-                    <TextBlock Text="● Neuloženo" Foreground="#F9E2AF" FontSize="11" FontWeight="Bold"/>
+                    <TextBlock Text="● Neuloženo" Foreground="{DynamicResource Brush.ButtonWarningBg}" FontSize="11" FontWeight="Bold"/>
                 </Border>
             </Grid>
         </Border>
@@ -167,12 +167,12 @@
                     <DockPanel Margin="0,0,0,6">
                         <TextBlock x:Name="TxtSectionHeader" Text="KROKY  ← vyber sekci vlevo"
                                    Style="{StaticResource Sec}" DockPanel.Dock="Left" Margin="0"/>
-                        <TextBlock x:Name="TxtStepCount" Text="" Foreground="#6C7086"
+                        <TextBlock x:Name="TxtStepCount" Text="" Foreground="{DynamicResource Brush.TextSecondary}"
                                    FontSize="11" DockPanel.Dock="Right" VerticalAlignment="Center"/>
                     </DockPanel>
 
                     <!-- Import clicks from recorder -->
-                    <Border Grid.Row="1" Background="#1a2a20" CornerRadius="6"
+                    <Border Grid.Row="1" Background="{DynamicResource Brush.SurfaceAlt}" CornerRadius="6"
                             Padding="10,7" Margin="0,0,0,8">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -181,7 +181,7 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock x:Name="TxtRecorderInfo"
                                        Text="Žádná kliknutí z recorderu"
-                                       Foreground="#6C7086" FontSize="11"
+                                       Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11"
                                        VerticalAlignment="Center"/>
                             <Button Grid.Column="1"
                                     x:Name="BtnPasteClicks"
@@ -210,7 +210,7 @@
                     </StackPanel>
 
                     <!-- Inline step editor -->
-                    <Border Grid.Row="4" Background="#1a1a2e" CornerRadius="6" Padding="10">
+                    <Border Grid.Row="4" Background="{DynamicResource Brush.SurfaceAlt}" CornerRadius="6" Padding="10">
                         <StackPanel>
                             <TextBlock Text="EDITACE KROKU" Style="{StaticResource Sec}"/>
                             <TextBlock Text="Popis" Style="{StaticResource Lbl}"/>
@@ -245,7 +245,7 @@
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto"
                                   HorizontalScrollBarVisibility="Auto">
                         <TextBox x:Name="TxtJson" IsReadOnly="True"
-                                 Background="Transparent" Foreground="#A6E3A1"
+                                 Background="Transparent" Foreground="{DynamicResource Brush.ButtonSuccessBg}"
                                  FontFamily="Consolas" FontSize="10.5"
                                  BorderThickness="0" TextWrapping="NoWrap"
                                  AcceptsReturn="True"/>
@@ -255,10 +255,10 @@
         </Grid>
 
         <!-- FOOTER -->
-        <Border Grid.Row="2" Background="#252535" Padding="12,7"
+        <Border Grid.Row="2" Background="{DynamicResource Brush.SurfaceAlt}" Padding="12,7"
                 Margin="10,0,10,8" CornerRadius="6">
             <DockPanel>
-                <TextBlock x:Name="TxtFooter" Foreground="#6C7086" FontSize="11"
+                <TextBlock x:Name="TxtFooter" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11"
                            VerticalAlignment="Center" Text="Připraveno"/>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                     <Button x:Name="BtnSave" Content="💾 Uložit do DB" Style="{StaticResource BGreen}"

@@ -81,7 +81,7 @@ namespace ClickRecorder
         {
             if (Application.Current is { } app)
             {
-                App.ThemeService.ApplyTheme(app, AppTheme.Dark);
+                App.ThemeService.ApplyTheme(app, isDark: true);
             }
         }
 
@@ -89,7 +89,7 @@ namespace ClickRecorder
         {
             if (Application.Current is { } app)
             {
-                App.ThemeService.ApplyTheme(app, AppTheme.Light);
+                App.ThemeService.ApplyTheme(app, isDark: false);
             }
         }
 

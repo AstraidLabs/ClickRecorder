@@ -43,6 +43,18 @@ namespace ClickRecorder.Services
             CurrentTheme = theme;
         }
 
+        public void ApplyTheme(Application app, bool isDark)
+            => ApplyTheme(app, isDark ? AppTheme.Dark : AppTheme.Light);
+
+        public void ApplyTheme(Application app, string themeName)
+        {
+            var isDark = string.Equals(themeName, "dark", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(themeName, "tmave", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(themeName, "tmavé", StringComparison.OrdinalIgnoreCase);
+
+            ApplyTheme(app, isDark);
+        }
+
         public void ApplySystemTheme(Application app)
         {
             var systemTheme = DetectSystemTheme();
