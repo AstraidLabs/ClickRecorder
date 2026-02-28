@@ -417,6 +417,13 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         return _selectedStepIndex;
     }
 
+    public void OpenSequenceEditor(Window owner)
+    {
+        var win = new SequenceEditorWindow(_db) { Owner = owner };
+        win.SequenceLoadRequested += (_, steps) => LoadSteps(steps, "📂 Načteno {0} kroků ze sekvence");
+        win.Show();
+    }
+
     public void OpenTestCases(Window owner)
     {
         var win = new TestCasesWindow(_tcSvc) { Owner = owner };
