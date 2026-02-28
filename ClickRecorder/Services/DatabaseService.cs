@@ -65,6 +65,21 @@ namespace ClickRecorder.Services
             return JsonSerializer.Deserialize<List<ClickAction>>(seq.StepsJson, _json) ?? new();
         }
 
+        public DbSequence SaveSequenceById(int sequenceId, string name, string description,
+                                           List<ClickAction> steps)
+        {
+            using var db = AppDbContext.Create();
+            var seq = db.Sequences.Find(sequenceId)
+                ?? throw new InvalidOperationException($"Sekvence #{sequenceId} neexistuje.");
+
+            seq.Name        = name;
+            seq.Description = description;
+            seq.StepsJson   = JsonSerializer.Serialize(steps, _json);
+            seq.UpdatedAt   = DateTime.UtcNow;
+            db.SaveChanges();
+            return seq;
+        }
+
         public void DeleteSequence(int id)
         {
             using var db = AppDbContext.Create();
