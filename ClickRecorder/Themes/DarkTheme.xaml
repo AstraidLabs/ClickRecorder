@@ -1,0 +1,55 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Dark theme brand tokens -->
+    <Color x:Key="Color.Background">#023444</Color>
+    <Color x:Key="Color.Surface">#164453</Color>
+    <Color x:Key="Color.SurfaceAlt">#25505E</Color>
+
+    <Color x:Key="Color.TextPrimary">#F7F7FA</Color>
+    <Color x:Key="Color.TextSecondary">#ADBCC3</Color>
+    <Color x:Key="Color.TextDisabled">#899FA8</Color>
+
+    <Color x:Key="Color.BorderSubtle">#3F6571</Color>
+    <Color x:Key="Color.Border">#557886</Color>
+
+    <Color x:Key="Color.ButtonPrimaryBg">#884DFF</Color>
+    <Color x:Key="Color.ButtonPrimaryHoverBg">#7A45E6</Color>
+    <Color x:Key="Color.ButtonPrimaryPressedBg">#703FD1</Color>
+    <Color x:Key="Color.ButtonPrimaryText">#FFFFFF</Color>
+
+    <Color x:Key="Color.ButtonSuccessBg">#89E103</Color>
+    <Color x:Key="Color.ButtonSuccessHoverBg">#7ECF03</Color>
+    <Color x:Key="Color.ButtonSuccessPressedBg">#73BD03</Color>
+    <Color x:Key="Color.ButtonSuccessText">#023444</Color>
+
+    <Color x:Key="Color.SelectionBg">#33884DFF</Color>
+    <Color x:Key="Color.FocusRing">#66884DFF</Color>
+    <Color x:Key="Color.Overlay">#80000000</Color>
+
+    <SolidColorBrush x:Key="Brush.Background" Color="{StaticResource Color.Background}"/>
+    <SolidColorBrush x:Key="Brush.Surface" Color="{StaticResource Color.Surface}"/>
+    <SolidColorBrush x:Key="Brush.SurfaceAlt" Color="{StaticResource Color.SurfaceAlt}"/>
+
+    <SolidColorBrush x:Key="Brush.TextPrimary" Color="{StaticResource Color.TextPrimary}"/>
+    <SolidColorBrush x:Key="Brush.TextSecondary" Color="{StaticResource Color.TextSecondary}"/>
+    <SolidColorBrush x:Key="Brush.TextDisabled" Color="{StaticResource Color.TextDisabled}"/>
+
+    <SolidColorBrush x:Key="Brush.BorderSubtle" Color="{StaticResource Color.BorderSubtle}"/>
+    <SolidColorBrush x:Key="Brush.Border" Color="{StaticResource Color.Border}"/>
+
+    <SolidColorBrush x:Key="Brush.ButtonPrimaryBg" Color="{StaticResource Color.ButtonPrimaryBg}"/>
+    <SolidColorBrush x:Key="Brush.ButtonPrimaryHoverBg" Color="{StaticResource Color.ButtonPrimaryHoverBg}"/>
+    <SolidColorBrush x:Key="Brush.ButtonPrimaryPressedBg" Color="{StaticResource Color.ButtonPrimaryPressedBg}"/>
+    <SolidColorBrush x:Key="Brush.ButtonPrimaryText" Color="{StaticResource Color.ButtonPrimaryText}"/>
+
+    <SolidColorBrush x:Key="Brush.ButtonSuccessBg" Color="{StaticResource Color.ButtonSuccessBg}"/>
+    <SolidColorBrush x:Key="Brush.ButtonSuccessHoverBg" Color="{StaticResource Color.ButtonSuccessHoverBg}"/>
+    <SolidColorBrush x:Key="Brush.ButtonSuccessPressedBg" Color="{StaticResource Color.ButtonSuccessPressedBg}"/>
+    <SolidColorBrush x:Key="Brush.ButtonSuccessText" Color="{StaticResource Color.ButtonSuccessText}"/>
+
+    <SolidColorBrush x:Key="Brush.SelectionBg" Color="{StaticResource Color.SelectionBg}"/>
+    <SolidColorBrush x:Key="Brush.FocusRing" Color="{StaticResource Color.FocusRing}"/>
+    <SolidColorBrush x:Key="Brush.Overlay" Color="{StaticResource Color.Overlay}"/>
+
+</ResourceDictionary>
