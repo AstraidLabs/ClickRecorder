@@ -33,10 +33,10 @@ namespace ClickRecorder.Views
         private void BtnCopy_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(TxtTicket.Text);
-            BtnCopy.Content = "✓ Zkopírováno!";
+            BtnCopy.Content = "Zkopírováno!";
             var timer = new System.Windows.Threading.DispatcherTimer
                 { Interval = System.TimeSpan.FromSeconds(2) };
-            timer.Tick += (_, _) => { BtnCopy.Content = "📋 Kopírovat do schránky"; timer.Stop(); };
+            timer.Tick += (_, _) => { BtnCopy.Content = "Kopírovat do schránky"; timer.Stop(); };
             timer.Start();
         }
 
