@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using ClickRecorder.Models;
+using ClickRecorder.Services;
 
 namespace ClickRecorder
 {
@@ -11,11 +12,13 @@ namespace ClickRecorder
         // Global exception store – accessible by MainWindow
         public static System.Collections.Generic.List<ExceptionDetail> GlobalExceptions { get; } = new();
 
+        public static ThemeService ThemeService { get; } = new();
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
-            EnsureDefaultLightTheme();
+            ThemeService.ApplySystemTheme(this);
 
             // 1) WPF UI thread unhandled exceptions
             DispatcherUnhandledException += (_, args) =>
@@ -37,33 +40,6 @@ namespace ClickRecorder
                 CaptureGlobal(args.Exception, "TaskScheduler.UnobservedTaskException");
                 args.SetObserved();
             };
-        }
-
-        private void EnsureDefaultLightTheme()
-        {
-            const string lightThemePath = "Themes/LightTheme.xaml";
-
-            var mergedDictionaries = Resources.MergedDictionaries;
-            for (var index = mergedDictionaries.Count - 1; index >= 0; index--)
-            {
-                var source = mergedDictionaries[index].Source?.OriginalString;
-                if (string.Equals(source, "Themes/DarkTheme.xaml", StringComparison.OrdinalIgnoreCase))
-                    mergedDictionaries.RemoveAt(index);
-            }
-
-            var hasLightTheme = false;
-            foreach (var dictionary in mergedDictionaries)
-            {
-                var source = dictionary.Source?.OriginalString;
-                if (string.Equals(source, lightThemePath, StringComparison.OrdinalIgnoreCase))
-                {
-                    hasLightTheme = true;
-                    break;
-                }
-            }
-
-            if (!hasLightTheme)
-                mergedDictionaries.Insert(0, new ResourceDictionary { Source = new Uri(lightThemePath, UriKind.Relative) });
         }
 
         private static void CaptureGlobal(Exception ex, string source)

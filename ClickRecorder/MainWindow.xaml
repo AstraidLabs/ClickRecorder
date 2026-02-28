@@ -5,10 +5,10 @@
         Title="🖱️ Slaveclicker" Height="820" Width="1300"
         MinWidth="1000" MinHeight="600"
         WindowStartupLocation="CenterScreen"
-        Background="#1E1E2E">
+        Background="{DynamicResource Brush.Background}">
     <Window.Resources>
         <Style x:Key="Card" TargetType="Border">
-            <Setter Property="Background" Value="#313244"/>
+            <Setter Property="Background" Value="{DynamicResource Brush.Surface}"/>
             <Setter Property="CornerRadius" Value="8"/>
             <Setter Property="Padding" Value="13"/>
         </Style>
@@ -116,17 +116,18 @@
         </Grid.RowDefinitions>
 
         <!-- HEADER -->
-        <Border Grid.Row="0" Background="#252535" Padding="16,10">
+        <Border Grid.Row="0" Background="{DynamicResource Brush.SurfaceAlt}" Padding="16,10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel>
-                    <TextBlock Text="🖱️  Slaveclicker" FontSize="18" FontWeight="Bold" Foreground="#CDD6F4"/>
-                    <TextBlock Foreground="#6C7086" FontSize="11" Margin="0,3,0,0"
+                    <TextBlock Text="🖱️  Slaveclicker" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource Brush.TextPrimary}"/>
+                    <TextBlock Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" Margin="0,3,0,0"
                                Text="1. Krok - Napojení aplikace do nahrávání · 2. Nahrát test do přehrávání · 3. Spustit test"/>
                 </StackPanel>
 
@@ -143,7 +144,13 @@
                                Foreground="#89B4FA" FontSize="11" FontWeight="SemiBold"/>
                 </Border>
 
-                <Border Grid.Column="3" x:Name="StatusPill" Background="#252535" CornerRadius="20" Padding="14,6" VerticalAlignment="Center">
+                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <TextBlock Text="🌗 Téma" Foreground="{DynamicResource Brush.TextPrimary}" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="ThemeToggle" Content="Tmavé" VerticalAlignment="Center"
+                              Checked="ThemeToggle_Checked" Unchecked="ThemeToggle_Unchecked"/>
+                </StackPanel>
+
+                <Border Grid.Column="4" x:Name="StatusPill" Background="#252535" CornerRadius="20" Padding="14,6" VerticalAlignment="Center">
                     <TextBlock x:Name="TxtStatus" Text="{Binding StatusText}" FontSize="13" FontWeight="Bold" Foreground="{Binding StatusColor}"/>
                 </Border>
             </Grid>
