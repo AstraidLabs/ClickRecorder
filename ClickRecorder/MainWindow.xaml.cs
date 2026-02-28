@@ -91,6 +91,12 @@ namespace ClickRecorder
         private void BtnTicket_Click(object sender, RoutedEventArgs e) { }
         private void BtnClearResults_Click(object sender, RoutedEventArgs e) { }
 
+
+        private void BtnGlobalExceptions_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalExceptionsPopup.IsOpen = !GlobalExceptionsPopup.IsOpen;
+        }
+
         private void BtnResultDetail_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not Button { Tag: StepResult result })
