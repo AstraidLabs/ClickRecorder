@@ -13,7 +13,7 @@ public partial class MainViewModel : ObservableObject
 
     public MainViewModel()
     {
-        TogglePlayCommand = new RelayCommand(TogglePlay, CanTogglePlay);
+        TogglePlayCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(TogglePlay, CanTogglePlay);
     }
 
     public IRelayCommand TogglePlayCommand { get; }
