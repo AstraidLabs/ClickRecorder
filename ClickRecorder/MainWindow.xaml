@@ -90,7 +90,7 @@
                             <Border Background="{DynamicResource Brush.SurfaceAlt}" BorderBrush="{DynamicResource Brush.SectionAccent}" BorderThickness="1" CornerRadius="10" Width="18" Height="18" Margin="6,0,0,0" VerticalAlignment="Center" ToolTipService.ShowDuration="60000" Cursor="Hand">
                                 <Border.ToolTip>
                                     <ToolTip Placement="Bottom" Background="{DynamicResource Brush.Surface}" BorderBrush="{DynamicResource Brush.Border}" Foreground="{DynamicResource Brush.TextPrimary}" Padding="10" MaxWidth="360">
-                                        <TextBlock TextWrapping="Wrap" FontSize="11" Text="Návod: Vyberte režim zachytávání, klikněte na Nahrát, proveďte kroky a ukončete tlačítkem Stop. Poté můžete záznam uložit jako sekvenci nebo Test Case."/>
+                                        <TextBlock TextWrapping="Wrap" FontSize="11" Text="Návod: Vyberte režim zachytávání, klikněte na Nahrát, proveďte kroky a ukončete tlačítkem Stop. Po zastavení se zobrazí nabídka pro uložení nebo zahození záznamu."/>
                                     </ToolTip>
                                 </Border.ToolTip>
                                 <icons:FluentIcon Icon="Info" Width="12" Height="12" Foreground="{DynamicResource Brush.SectionAccent}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -123,29 +123,8 @@
                                          IsChecked="{Binding CaptureByElement}" Margin="0,0,0,2"/>
                             <RadioButton Content="Podle souřadnic" GroupName="CaptureMode"
                                          IsChecked="{Binding CaptureByCoordinates}" Margin="0,0,0,6"/>
-                            <Button x:Name="BtnClear" Content="Vymazat záznamy" Style="{StaticResource BOrange}"
+                            <Button x:Name="BtnClear" Content="Smazat záznam" Style="{StaticResource BOrange}"
                                     Click="BtnClear_Click" HorizontalAlignment="Stretch"/>
-
-                        <TextBlock Text="TEXT INPUT" Style="{StaticResource Sec}" Margin="0,10,0,0"/>
-                        <TextBlock Text="Při nahrávání se psaný text zachytí automaticky." Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3" TextWrapping="Wrap"/>
-                        <TextBlock Text="Text k vyplnění" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
-                        <TextBox x:Name="TxtTextToType" Text="{Binding TextToType, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8" MinHeight="34" TextWrapping="Wrap"/>
-                        <Button x:Name="BtnAddTextStep" Content="Přidat textový krok" Style="{StaticResource BBlue}"
-                                Click="BtnAddTextStep_Click" HorizontalAlignment="Stretch"/>
-
-                        <Separator/>
-
-                        <TextBlock Text="SEKVENCE / TEST CASE" Style="{StaticResource Sec}"/>
-                        <TextBlock Text="Název" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
-                        <TextBox x:Name="TxtSequenceName" Text="{Binding SequenceName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
-                        <TextBlock Text="Popis" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
-                        <TextBox x:Name="TxtSequenceDescription" Text="{Binding SequenceDescription, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8" MinHeight="70" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
-                        <Button x:Name="BtnSaveSequence" Content="Uložit sekvenci" Style="{StaticResource BBlue}"
-                                Click="BtnSaveSequence_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
-                        <Button x:Name="BtnSaveAsTestCase" Content="Uložit jako Test Case" Style="{StaticResource BPurple}"
-                                Click="BtnSaveAsTestCase_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
-                        <Button x:Name="BtnAddToTestCase" Content="(editor zavřen)" Style="{StaticResource BGray}"
-                                Click="BtnAddToTestCase_Click" HorizontalAlignment="Stretch"/>
                             </StackPanel>
                         </ScrollViewer>
                     </Border>
