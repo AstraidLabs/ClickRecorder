@@ -183,10 +183,10 @@
                             </Border>
                         </StackPanel>
                     </Expander.Header>
-                    <Border Style="{StaticResource PanelContentCard}" Margin="0,8,0,0">
+                    <Border Style="{StaticResource PanelContentCard}" Margin="0,4,0,0">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <StackPanel>
-                            <TextBlock Text="PŘEHRÁVÁNÍ" Style="{StaticResource Sec}"/>
+                            <StackPanel Margin="0,-2,0,0">
+                            <TextBlock Text="Spusťte přehrávání tlačítkem Přehrát nebo načtěte uložený test." Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
                             <Grid Margin="0,0,0,6">
                                 <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0" Margin="0,0,4,0">
@@ -200,16 +200,23 @@
                             </Grid>
                             <CheckBox x:Name="ChkStopOnError"  Content="Zastavit při první chybě" Margin="0,2,0,4" IsChecked="{Binding StopOnError}"/>
                             <CheckBox x:Name="ChkScreenshots"  Content="Screenshot při chybě"     Margin="0,0,0,10" IsChecked="{Binding TakeScreenshots}"/>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                            <StackPanel Margin="0,0,0,0">
+                                <Button x:Name="BtnLoadPlayback" Style="{StaticResource BBlue}"
+                                        Click="BtnLoadPlayback_Click" Margin="0,0,0,6" HorizontalAlignment="Stretch">
+                                    <StackPanel Orientation="Horizontal">
+                                        <icons:FluentIcon Icon="Folder" Width="14" Height="14" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
+                                        <TextBlock Text="Načíst" Margin="6,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
                                 <Button x:Name="BtnPlay" Style="{StaticResource BGreen}"
-                                        Click="BtnPlay_Click" Margin="0,0,6,0" IsEnabled="{Binding CanPlay}">
+                                        Click="BtnPlay_Click" Margin="0,0,0,6" HorizontalAlignment="Stretch" IsEnabled="{Binding CanPlay}">
                                     <StackPanel Orientation="Horizontal">
                                         <icons:FluentIcon Icon="Play" Width="14" Height="14" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
                                         <TextBlock Text="Přehrát" Margin="6,0,0,0"/>
                                     </StackPanel>
                                 </Button>
                                 <Button x:Name="BtnStopPlay" Style="{StaticResource BRed}"
-                                        Click="BtnStopPlay_Click" Padding="10,6" IsEnabled="{Binding CanStopPlayback}">
+                                        Click="BtnStopPlay_Click" HorizontalAlignment="Stretch" IsEnabled="{Binding CanStopPlayback}">
                                     <StackPanel Orientation="Horizontal">
                                         <icons:FluentIcon Icon="Stop" Width="14" Height="14" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
                                         <TextBlock Text="Stop" Margin="6,0,0,0"/>
