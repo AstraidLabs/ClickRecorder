@@ -97,10 +97,10 @@
                             </Border>
                         </StackPanel>
                     </Expander.Header>
-                    <Border Style="{StaticResource PanelContentCard}" Margin="0,8,0,0">
+                    <Border Style="{StaticResource PanelContentCard}" Margin="0,4,0,0">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <StackPanel>
-                            <TextBlock Text="NAHRÁVÁNÍ" Style="{StaticResource Sec}"/>
+                            <StackPanel Margin="0,-2,0,0">
+                            <TextBlock Text="Spusťte nahrávání kliknutím na tlačítko Nahrát." Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
                             <StackPanel Margin="0,0,0,6">
                                 <Button x:Name="BtnRecord"     Content="Nahrát" Style="{StaticResource BPurple}"
                                         Click="BtnRecord_Click" Margin="0,0,0,6"
