@@ -4,7 +4,7 @@
         xmlns:helpers="clr-namespace:ClickRecorder.Helpers"
         Title="📋 Bug Ticket" Height="680" Width="720"
         WindowStartupLocation="CenterOwner"
-        Background="#1E1E2E" ResizeMode="CanResize">
+        Background="{DynamicResource Brush.Background}" ResizeMode="CanResize">
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,9 +15,9 @@
 
         <!-- Header -->
         <StackPanel Grid.Row="0" Margin="0,0,0,12">
-            <TextBlock Text="📋 Bug Ticket" FontSize="18" FontWeight="Bold" Foreground="#CDD6F4"/>
+            <TextBlock Text="📋 Bug Ticket" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource Brush.TextPrimary}"/>
             <TextBlock Text="Zkopíruj a vlož do Redmine / Jira / GitHub Issues"
-                       Foreground="#6C7086" FontSize="11" Margin="0,3,0,0"/>
+                       Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" Margin="0,3,0,0"/>
         </StackPanel>
 
         <!-- Optional fields -->
@@ -27,15 +27,15 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Margin="0,0,8,0">
-                <TextBlock Text="Aplikace pod testem" Foreground="#6C7086" FontSize="11" Margin="0,0,0,3"/>
-                <TextBox x:Name="TxtApp" Background="#181825" Foreground="#CDD6F4"
-                         BorderBrush="#45475A" Padding="7,5" FontSize="12"
+                <TextBlock Text="Aplikace pod testem" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" Margin="0,0,0,3"/>
+                <TextBox x:Name="TxtApp" Background="{DynamicResource Brush.Surface}" Foreground="{DynamicResource Brush.TextPrimary}"
+                         BorderBrush="{DynamicResource Brush.Border}" Padding="7,5" FontSize="12"
                          TextChanged="OnFieldChanged"/>
             </StackPanel>
             <StackPanel Grid.Column="1">
-                <TextBlock Text="Verze" Foreground="#6C7086" FontSize="11" Margin="0,0,0,3"/>
-                <TextBox x:Name="TxtVersion" Background="#181825" Foreground="#CDD6F4"
-                         BorderBrush="#45475A" Padding="7,5" FontSize="12"
+                <TextBlock Text="Verze" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" Margin="0,0,0,3"/>
+                <TextBox x:Name="TxtVersion" Background="{DynamicResource Brush.Surface}" Foreground="{DynamicResource Brush.TextPrimary}"
+                         BorderBrush="{DynamicResource Brush.Border}" Padding="7,5" FontSize="12"
                          TextChanged="OnFieldChanged"/>
             </StackPanel>
         </Grid>
@@ -43,9 +43,9 @@
         <!-- Ticket text -->
         <TextBox Grid.Row="2"
                  x:Name="TxtTicket"
-                 Background="#181825"
-                 Foreground="#CDD6F4"
-                 BorderBrush="#45475A"
+                 Background="{DynamicResource Brush.Surface}"
+                 Foreground="{DynamicResource Brush.TextPrimary}"
+                 BorderBrush="{DynamicResource Brush.Border}"
                  FontFamily="Consolas"
                  FontSize="12"
                  Padding="10"
@@ -59,35 +59,13 @@
         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,12,0,0" HorizontalAlignment="Right">
             <Button x:Name="BtnCopy" Content="📋 Kopírovat do schránky"
                     Click="BtnCopy_Click"
-                    Background="#89B4FA" Foreground="#1E1E2E"
+                    Style="{StaticResource BBlue}"
                     FontWeight="Bold" FontSize="13"
-                    Padding="18,9" BorderThickness="0" Cursor="Hand"
-                    Margin="0,0,10,0">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True"><Setter Property="Opacity" Value="0.82"/></Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    Padding="18,9"
+                    Margin="0,0,10,0"/>
             <Button Content="✕ Zavřít" Click="BtnClose_Click"
-                    Background="#585B70" Foreground="#CDD6F4"
-                    FontSize="13" Padding="14,9" BorderThickness="0" Cursor="Hand">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True"><Setter Property="Opacity" Value="0.82"/></Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    Style="{StaticResource BGray}"
+                    FontSize="13" Padding="14,9"/>
         </StackPanel>
     </Grid>
 </Window>

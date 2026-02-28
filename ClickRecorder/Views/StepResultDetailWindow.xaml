@@ -4,7 +4,7 @@
         Title="Detail kroku" Height="680" Width="950"
         MinHeight="520" MinWidth="700"
         WindowStartupLocation="CenterOwner"
-        Background="#1E1E2E">
+        Background="{DynamicResource Brush.Background}">
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,14 +14,14 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="TxtTitle" FontSize="18" FontWeight="Bold" Foreground="#CDD6F4" TextWrapping="Wrap"/>
-        <TextBlock x:Name="TxtSummary" Grid.Row="1" Margin="0,8,0,0" Foreground="#A6ADC8" FontSize="12" TextWrapping="Wrap"/>
-        <TextBlock x:Name="TxtScreenshotLabel" Grid.Row="2" Margin="0,14,0,6" Foreground="#89B4FA" FontSize="11" FontWeight="Bold" Text="SCREENSHOT" Visibility="Collapsed"/>
+        <TextBlock x:Name="TxtTitle" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource Brush.TextPrimary}" TextWrapping="Wrap"/>
+        <TextBlock x:Name="TxtSummary" Grid.Row="1" Margin="0,8,0,0" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="12" TextWrapping="Wrap"/>
+        <TextBlock x:Name="TxtScreenshotLabel" Grid.Row="2" Margin="0,14,0,6" Foreground="{DynamicResource Brush.SectionAccent}" FontSize="11" FontWeight="Bold" Text="SCREENSHOT" Visibility="Collapsed"/>
 
         <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0,6,0,6">
             <StackPanel>
                 <Image x:Name="ImgScreenshot" Stretch="Uniform" MaxHeight="260" Visibility="Collapsed" Margin="0,0,0,10"/>
-                <TextBlock x:Name="TxtDetails" FontFamily="Consolas" Foreground="#CDD6F4" FontSize="12" TextWrapping="Wrap"/>
+                <TextBlock x:Name="TxtDetails" FontFamily="Consolas" Foreground="{DynamicResource Brush.TextPrimary}" FontSize="12" TextWrapping="Wrap"/>
             </StackPanel>
         </ScrollViewer>
 

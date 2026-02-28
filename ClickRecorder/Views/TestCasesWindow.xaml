@@ -17,16 +17,16 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Border Grid.Row="0" Background="#252535" Padding="18,12">
+        <Border Grid.Row="0" Background="{DynamicResource Brush.SurfaceAlt}" Padding="18,12">
             <StackPanel>
-                <TextBlock Text="🧪  Test Cases" FontSize="18" FontWeight="Bold" Foreground="#CDD6F4"/>
-                <TextBlock Foreground="#6C7086" FontSize="11" Margin="0,3,0,0"
+                <TextBlock Text="🧪  Test Cases" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource Brush.TextPrimary}"/>
+                <TextBlock Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" Margin="0,3,0,0"
                            Text="Spravuj, edituj a exportuj test cases · Uložené jako JSON v SQLite DB"/>
             </StackPanel>
         </Border>
 
         <!-- Toolbar -->
-        <Border Grid.Row="1" Background="#252535" Padding="12,8" BorderBrush="#45475A" BorderThickness="0,1,0,0">
+        <Border Grid.Row="1" Background="{DynamicResource Brush.SurfaceAlt}" Padding="12,8" BorderBrush="{DynamicResource Brush.Border}" BorderThickness="0,1,0,0">
             <DockPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
                     <Button Content="➕ Nový" Style="{StaticResource BGreen}"
@@ -45,7 +45,7 @@
 
                 <!-- Filter -->
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
-                    <TextBlock Text="🔍" Foreground="#6C7086" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <TextBlock Text="🔍" Foreground="{DynamicResource Brush.TextSecondary}" VerticalAlignment="Center" Margin="0,0,6,0"/>
                     <TextBox x:Name="TxtFilter" Width="160" helpers:PlaceholderService.Text="Filtrovat…"
                              TextChanged="TxtFilter_Changed"/>
                 </StackPanel>
@@ -69,7 +69,7 @@
                     <DockPanel Margin="0,0,0,8">
                         <TextBlock Text="TEST CASES" Style="{StaticResource Sec}"
                                    DockPanel.Dock="Left" Margin="0"/>
-                        <TextBlock x:Name="TxtCount" Text="0" Foreground="#6C7086"
+                        <TextBlock x:Name="TxtCount" Text="0" Foreground="{DynamicResource Brush.TextSecondary}"
                                    FontSize="11" DockPanel.Dock="Right" VerticalAlignment="Center"/>
                     </DockPanel>
                     <ListBox x:Name="TcList" Grid.Row="1"
@@ -89,7 +89,7 @@
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                         <TextBlock x:Name="TxtDetail"
                                    Text="← Vyber test case"
-                                   Foreground="#6C7086" FontFamily="Consolas"
+                                   Foreground="{DynamicResource Brush.TextSecondary}" FontFamily="Consolas"
                                    FontSize="11" TextWrapping="Wrap" Padding="4"/>
                     </ScrollViewer>
                 </Grid>
@@ -97,8 +97,8 @@
         </Grid>
 
         <!-- Footer -->
-        <Border Grid.Row="3" Background="#252535" Padding="14,6" Margin="12,0,12,8" CornerRadius="6">
-            <TextBlock x:Name="TxtFooter" Foreground="#6C7086" FontSize="11"
+        <Border Grid.Row="3" Background="{DynamicResource Brush.SurfaceAlt}" Padding="14,6" Margin="12,0,12,8" CornerRadius="6">
+            <TextBlock x:Name="TxtFooter" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11"
                        Text="Dvojklik = otevřít editor"/>
         </Border>
     </Grid>

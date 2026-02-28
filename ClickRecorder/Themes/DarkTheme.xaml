@@ -54,14 +54,26 @@
     <SolidColorBrush x:Key="Brush.Overlay" Color="{StaticResource Color.Overlay}"/>
 
     <Color x:Key="Color.ButtonDangerBg">#E5484D</Color>
+    <Color x:Key="Color.ButtonDangerHoverBg">#CE3F44</Color>
+    <Color x:Key="Color.ButtonDangerPressedBg">#B9383C</Color>
     <Color x:Key="Color.ButtonWarningBg">#F5A524</Color>
+    <Color x:Key="Color.ButtonWarningHoverBg">#DD941F</Color>
+    <Color x:Key="Color.ButtonWarningPressedBg">#C6841C</Color>
     <Color x:Key="Color.ButtonNeutralBg">#6B7280</Color>
+    <Color x:Key="Color.ButtonNeutralHoverBg">#5F6572</Color>
+    <Color x:Key="Color.ButtonNeutralPressedBg">#545964</Color>
     <Color x:Key="Color.ButtonNeutralText">#F7F7FA</Color>
     <Color x:Key="Color.SectionAccent">#884DFF</Color>
 
     <SolidColorBrush x:Key="Brush.ButtonDangerBg" Color="{StaticResource Color.ButtonDangerBg}"/>
+    <SolidColorBrush x:Key="Brush.ButtonDangerHoverBg" Color="{StaticResource Color.ButtonDangerHoverBg}"/>
+    <SolidColorBrush x:Key="Brush.ButtonDangerPressedBg" Color="{StaticResource Color.ButtonDangerPressedBg}"/>
     <SolidColorBrush x:Key="Brush.ButtonWarningBg" Color="{StaticResource Color.ButtonWarningBg}"/>
+    <SolidColorBrush x:Key="Brush.ButtonWarningHoverBg" Color="{StaticResource Color.ButtonWarningHoverBg}"/>
+    <SolidColorBrush x:Key="Brush.ButtonWarningPressedBg" Color="{StaticResource Color.ButtonWarningPressedBg}"/>
     <SolidColorBrush x:Key="Brush.ButtonNeutralBg" Color="{StaticResource Color.ButtonNeutralBg}"/>
+    <SolidColorBrush x:Key="Brush.ButtonNeutralHoverBg" Color="{StaticResource Color.ButtonNeutralHoverBg}"/>
+    <SolidColorBrush x:Key="Brush.ButtonNeutralPressedBg" Color="{StaticResource Color.ButtonNeutralPressedBg}"/>
     <SolidColorBrush x:Key="Brush.ButtonNeutralText" Color="{StaticResource Color.ButtonNeutralText}"/>
     <SolidColorBrush x:Key="Brush.SectionAccent" Color="{StaticResource Color.SectionAccent}"/>
 
@@ -88,17 +100,90 @@
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Padding" Value="12,6"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True"><Setter Property="Opacity" Value="0.80"/></Trigger>
-                        <Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.30"/></Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Tag" Value="Primary"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{DynamicResource Brush.ButtonPrimaryHoverBg}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Tag" Value="Primary"/>
+                                <Condition Property="IsPressed" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{DynamicResource Brush.ButtonPrimaryPressedBg}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Tag" Value="Success"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{DynamicResource Brush.ButtonSuccessHoverBg}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Tag" Value="Success"/>
+                                <Condition Property="IsPressed" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{DynamicResource Brush.ButtonSuccessPressedBg}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Tag" Value="Danger"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{DynamicResource Brush.ButtonDangerHoverBg}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Tag" Value="Danger"/>
+                                <Condition Property="IsPressed" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{DynamicResource Brush.ButtonDangerPressedBg}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Tag" Value="Warning"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{DynamicResource Brush.ButtonWarningHoverBg}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Tag" Value="Warning"/>
+                                <Condition Property="IsPressed" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{DynamicResource Brush.ButtonWarningPressedBg}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Tag" Value="Neutral"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{DynamicResource Brush.ButtonNeutralHoverBg}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Tag" Value="Neutral"/>
+                                <Condition Property="IsPressed" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{DynamicResource Brush.ButtonNeutralPressedBg}"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="{DynamicResource Brush.SurfaceAlt}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Brush.TextDisabled}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.BorderSubtle}"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -108,26 +193,38 @@
     <Style x:Key="BBlue" TargetType="Button" BasedOn="{StaticResource Btn}">
         <Setter Property="Background" Value="{DynamicResource Brush.ButtonPrimaryBg}"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.ButtonPrimaryText}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.ButtonPrimaryBg}"/>
+        <Setter Property="Tag" Value="Primary"/>
     </Style>
     <Style x:Key="BGreen" TargetType="Button" BasedOn="{StaticResource Btn}">
         <Setter Property="Background" Value="{DynamicResource Brush.ButtonSuccessBg}"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.ButtonSuccessText}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.ButtonSuccessBg}"/>
+        <Setter Property="Tag" Value="Success"/>
     </Style>
     <Style x:Key="BRed" TargetType="Button" BasedOn="{StaticResource Btn}">
         <Setter Property="Background" Value="{DynamicResource Brush.ButtonDangerBg}"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.ButtonPrimaryText}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.ButtonDangerBg}"/>
+        <Setter Property="Tag" Value="Danger"/>
     </Style>
     <Style x:Key="BOrange" TargetType="Button" BasedOn="{StaticResource Btn}">
         <Setter Property="Background" Value="{DynamicResource Brush.ButtonWarningBg}"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.ButtonSuccessText}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.ButtonWarningBg}"/>
+        <Setter Property="Tag" Value="Warning"/>
     </Style>
     <Style x:Key="BPurple" TargetType="Button" BasedOn="{StaticResource Btn}">
         <Setter Property="Background" Value="{DynamicResource Brush.ButtonPrimaryBg}"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.ButtonPrimaryText}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.ButtonPrimaryBg}"/>
+        <Setter Property="Tag" Value="Primary"/>
     </Style>
     <Style x:Key="BGray" TargetType="Button" BasedOn="{StaticResource Btn}">
         <Setter Property="Background" Value="{DynamicResource Brush.ButtonNeutralBg}"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.ButtonNeutralText}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.ButtonNeutralBg}"/>
+        <Setter Property="Tag" Value="Neutral"/>
     </Style>
 
     <Style TargetType="TextBox">
@@ -156,7 +253,11 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="Text" Value=""><Setter TargetName="PlaceholderText" Property="Visibility" Value="Visible"/></Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True"><Setter Property="BorderBrush" Value="{DynamicResource Brush.FocusRing}"/></Trigger>
-                        <Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.5"/></Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource Brush.TextDisabled}"/>
+                            <Setter Property="Background" Value="{DynamicResource Brush.SurfaceAlt}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.BorderSubtle}"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -217,7 +318,7 @@
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Padding" Value="14,8"/>
         <Setter Property="Background" Value="{DynamicResource Brush.SurfaceAlt}"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderThickness" Value="1"/>
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Foreground" Value="{DynamicResource Brush.SectionAccent}"/>
@@ -227,7 +328,7 @@
     </Style>
     <Style TargetType="TabControl">
         <Setter Property="Background" Value="{DynamicResource Brush.Background}"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderThickness" Value="1"/>
     </Style>
 
 </ResourceDictionary>

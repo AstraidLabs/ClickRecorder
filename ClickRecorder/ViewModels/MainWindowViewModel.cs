@@ -63,7 +63,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     private string _statusText = "⏸  Idle";
     public string StatusText { get => _statusText; set => SetProperty(ref _statusText, value); }
 
-    private Brush _statusColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C7086"));
+    private Brush _statusColor = ResolveBrush("Brush.TextSecondary");
     public Brush StatusColor { get => _statusColor; set => SetProperty(ref _statusColor, value); }
 
     private string _footer = string.Empty;
@@ -188,7 +188,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _isRecording = true;
         _hook.Start();
         _keyboardHook.Start();
-        SetStatus("🔴  Nahrávám", "#F38BA8");
+        SetStatus("🔴  Nahrávám", "Brush.ButtonDangerBg");
         FooterText = _attachedProcessId.HasValue
             ? $"Nahrávám… Připojená aplikace: {_attachedProcessName ?? _attachedProcessId.Value.ToString()} (PID {_attachedProcessId})."
             : CaptureByElement
@@ -203,7 +203,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         FlushTypingBuffer(DateTime.Now);
         _hook.Stop();
         _keyboardHook.Stop();
-        SetStatus("⏸  Idle", "#6C7086");
+        SetStatus("⏸  Idle", "Brush.TextSecondary");
     }
 
     public void ArmAttachToApplication()
@@ -247,7 +247,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         Results.Clear();
         _stepResults.Clear();
         UpdateStats(0, 0, 0, 0);
-        SetStatus("▶  Přehrávám", "#A6E3A1");
+        SetStatus("▶  Přehrávám", "Brush.ButtonSuccessBg");
         FooterText = $"Přehrávám {_recorded.Count} kroků × {rep}× ...";
 
         IsPlaying = true;
@@ -682,14 +682,20 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
                 }
             }
             IsPlaying = false;
-            SetStatus("⏸  Idle", "#6C7086");
+            SetStatus("⏸  Idle", "Brush.TextSecondary");
         });
     }
 
-    private void SetStatus(string text, string hex)
+    private void SetStatus(string text, string brushKey)
     {
         StatusText = text;
-        StatusColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex));
+        StatusColor = ResolveBrush(brushKey);
+    }
+
+    private static Brush ResolveBrush(string brushKey)
+    {
+        var resource = Application.Current?.TryFindResource(brushKey) as Brush;
+        return resource ?? Brushes.Gray;
     }
 
     private void UpdateStats(int ok, int err, int flaui, int coord)

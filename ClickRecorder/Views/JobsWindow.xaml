@@ -16,22 +16,22 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Border Grid.Row="0" Background="#252535" Padding="18,12">
+        <Border Grid.Row="0" Background="{DynamicResource Brush.SurfaceAlt}" Padding="18,12">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel>
-                    <TextBlock Text="📅  Joby &amp; Historie" FontSize="18" FontWeight="Bold" Foreground="#CDD6F4"/>
-                    <TextBlock Foreground="#6C7086" FontSize="11" Margin="0,3,0,0"
+                    <TextBlock Text="📅  Joby &amp; Historie" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource Brush.TextPrimary}"/>
+                    <TextBlock Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" Margin="0,3,0,0"
                                Text="Plánuj automatické spouštění testů · Procházej historii · Všechna data v SQLite"/>
                 </StackPanel>
                 <Border Grid.Column="1" x:Name="SchedulerBadge"
-                        Background="#1a3328" CornerRadius="6" Padding="12,6" VerticalAlignment="Center">
+                        Background="{DynamicResource Brush.SurfaceAlt}" CornerRadius="6" Padding="12,6" VerticalAlignment="Center">
                     <TextBlock x:Name="TxtSchedulerStatus"
                                Text="⏰ Scheduler: Zastaven"
-                               Foreground="#A6E3A1" FontSize="11" FontWeight="SemiBold"/>
+                               Foreground="{DynamicResource Brush.ButtonSuccessBg}" FontSize="11" FontWeight="SemiBold"/>
                 </Border>
             </Grid>
         </Border>
@@ -213,7 +213,7 @@
                             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                                 <TextBlock x:Name="TxtSessionDetail"
                                            Text="← Vyber session"
-                                           Foreground="#6C7086" FontFamily="Consolas"
+                                           Foreground="{DynamicResource Brush.TextSecondary}" FontFamily="Consolas"
                                            FontSize="11" TextWrapping="Wrap" Padding="4"/>
                             </ScrollViewer>
                         </Grid>
@@ -243,8 +243,8 @@
         </TabControl>
 
         <!-- Footer -->
-        <Border Grid.Row="2" Background="#252535" Padding="14,6" Margin="12,0,12,8" CornerRadius="6">
-            <TextBlock x:Name="TxtFooter" Foreground="#6C7086" FontSize="11"
+        <Border Grid.Row="2" Background="{DynamicResource Brush.SurfaceAlt}" Padding="14,6" Margin="12,0,12,8" CornerRadius="6">
+            <TextBlock x:Name="TxtFooter" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11"
                        Text="Databáze: %AppData%\ClickRecorder\clickrecorder.db"/>
         </Border>
     </Grid>

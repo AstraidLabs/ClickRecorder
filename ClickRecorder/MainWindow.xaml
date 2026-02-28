@@ -39,9 +39,9 @@
                 </StackPanel>
 
                 <!-- FlaUI badge -->
-                <Border Grid.Column="2" Background="#1a2a44" CornerRadius="6" Padding="10,5" Margin="0,0,10,0" VerticalAlignment="Center">
+                <Border Grid.Column="2" Background="{DynamicResource Brush.Surface}" CornerRadius="6" Padding="10,5" Margin="0,0,10,0" VerticalAlignment="Center">
                     <TextBlock x:Name="TxtFlaUIStatus" Text="{Binding FlaUiStatus}"
-                               Foreground="#89B4FA" FontSize="11" FontWeight="SemiBold"/>
+                               Foreground="{DynamicResource Brush.SectionAccent}" FontSize="11" FontWeight="SemiBold"/>
                 </Border>
 
                 <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
@@ -50,7 +50,7 @@
                               Checked="ThemeToggle_Checked" Unchecked="ThemeToggle_Unchecked"/>
                 </StackPanel>
 
-                <Border Grid.Column="4" x:Name="StatusPill" Background="#252535" CornerRadius="20" Padding="14,6" VerticalAlignment="Center">
+                <Border Grid.Column="4" x:Name="StatusPill" Background="{DynamicResource Brush.SurfaceAlt}" CornerRadius="20" Padding="14,6" VerticalAlignment="Center">
                     <TextBlock x:Name="TxtStatus" Text="{Binding StatusText}" FontSize="13" FontWeight="Bold" Foreground="{Binding StatusColor}"/>
                 </Border>
             </Grid>
@@ -78,10 +78,10 @@
                     <Expander.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="NAHRÁVÁNÍ" VerticalAlignment="Center"/>
-                            <Border Background="#313244" BorderBrush="#89B4FA" BorderThickness="1" CornerRadius="10" Width="18" Height="18" Margin="6,0,0,0" VerticalAlignment="Center" ToolTipService.ShowDuration="60000">
-                                <TextBlock Text="ℹ" Foreground="#89B4FA" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Cursor="Hand">
+                            <Border Background="{DynamicResource Brush.SurfaceAlt}" BorderBrush="{DynamicResource Brush.SectionAccent}" BorderThickness="1" CornerRadius="10" Width="18" Height="18" Margin="6,0,0,0" VerticalAlignment="Center" ToolTipService.ShowDuration="60000">
+                                <TextBlock Text="ℹ" Foreground="{DynamicResource Brush.SectionAccent}" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Cursor="Hand">
                                     <TextBlock.ToolTip>
-                                        <ToolTip Placement="Bottom" Background="#11111B" BorderBrush="#45475A" Foreground="#CDD6F4" Padding="10" MaxWidth="360">
+                                        <ToolTip Placement="Bottom" Background="{DynamicResource Brush.Surface}" BorderBrush="{DynamicResource Brush.Border}" Foreground="{DynamicResource Brush.TextPrimary}" Padding="10" MaxWidth="360">
                                             <TextBlock TextWrapping="Wrap" FontSize="11" Text="Návod: Vyberte režim zachytávání, klikněte na Nahrát, proveďte kroky a ukončete tlačítkem Stop. Poté můžete záznam uložit jako sekvenci nebo Test Case."/>
                                         </ToolTip>
                                     </TextBlock.ToolTip>
@@ -100,7 +100,7 @@
                                 <Button x:Name="BtnStopRecord" Content="⏹ Stop"   Style="{StaticResource BRed}"
                                         Click="BtnStopRecord_Click" HorizontalAlignment="Stretch"/>
                             </StackPanel>
-                            <TextBlock Text="Režim zachytávání" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                            <TextBlock Text="Režim zachytávání" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
                             <RadioButton Content="Podle UI elementu (FlaUI)" GroupName="CaptureMode"
                                          IsChecked="{Binding CaptureByElement}" Margin="0,0,0,2"/>
                             <RadioButton Content="Podle souřadnic" GroupName="CaptureMode"
@@ -109,8 +109,8 @@
                                     Click="BtnClear_Click" HorizontalAlignment="Stretch"/>
 
                         <TextBlock Text="TEXT INPUT" Style="{StaticResource Sec}" Margin="0,10,0,0"/>
-                        <TextBlock Text="Při nahrávání se psaný text zachytí automaticky." Foreground="#6C7086" FontSize="10" Margin="0,0,0,3" TextWrapping="Wrap"/>
-                        <TextBlock Text="Text k vyplnění" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                        <TextBlock Text="Při nahrávání se psaný text zachytí automaticky." Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3" TextWrapping="Wrap"/>
+                        <TextBlock Text="Text k vyplnění" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
                         <TextBox x:Name="TxtTextToType" Text="{Binding TextToType, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8" MinHeight="34" TextWrapping="Wrap"/>
                         <Button x:Name="BtnAddTextStep" Content="⌨ Přidat textový krok" Style="{StaticResource BBlue}"
                                 Click="BtnAddTextStep_Click" HorizontalAlignment="Stretch"/>
@@ -118,9 +118,9 @@
                         <Separator/>
 
                         <TextBlock Text="SEKVENCE / TEST CASE" Style="{StaticResource Sec}"/>
-                        <TextBlock Text="Název" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                        <TextBlock Text="Název" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
                         <TextBox x:Name="TxtSequenceName" Text="{Binding SequenceName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
-                        <TextBlock Text="Popis" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                        <TextBlock Text="Popis" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
                         <TextBox x:Name="TxtSequenceDescription" Text="{Binding SequenceDescription, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8" MinHeight="70" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
                         <Button x:Name="BtnSaveSequence" Content="💾 Uložit sekvenci" Style="{StaticResource BBlue}"
                                 Click="BtnSaveSequence_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
@@ -137,10 +137,10 @@
                     <Expander.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="NAPOJENÍ APLIKACE" VerticalAlignment="Center"/>
-                            <Border Background="#313244" BorderBrush="#89B4FA" BorderThickness="1" CornerRadius="10" Width="18" Height="18" Margin="6,0,0,0" VerticalAlignment="Center" ToolTipService.ShowDuration="60000">
-                                <TextBlock Text="ℹ" Foreground="#89B4FA" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Cursor="Hand">
+                            <Border Background="{DynamicResource Brush.SurfaceAlt}" BorderBrush="{DynamicResource Brush.SectionAccent}" BorderThickness="1" CornerRadius="10" Width="18" Height="18" Margin="6,0,0,0" VerticalAlignment="Center" ToolTipService.ShowDuration="60000">
+                                <TextBlock Text="ℹ" Foreground="{DynamicResource Brush.SectionAccent}" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Cursor="Hand">
                                     <TextBlock.ToolTip>
-                                        <ToolTip Placement="Bottom" Background="#11111B" BorderBrush="#45475A" Foreground="#CDD6F4" Padding="10" MaxWidth="360">
+                                        <ToolTip Placement="Bottom" Background="{DynamicResource Brush.Surface}" BorderBrush="{DynamicResource Brush.Border}" Foreground="{DynamicResource Brush.TextPrimary}" Padding="10" MaxWidth="360">
                                             <TextBlock TextWrapping="Wrap" FontSize="11" Text="Pro přesné nahrávání nejprve připojte cílovou aplikaci – nahrávání se omezí jen na ni a snížíte riziko chybných kliknutí."/>
                                         </ToolTip>
                                     </TextBlock.ToolTip>
@@ -150,14 +150,14 @@
                     </Expander.Header>
                     <Border Style="{StaticResource PanelContentCard}" Margin="0,4,0,0">
                         <StackPanel Margin="0,-2,0,0">
-                            <TextBlock Text="Připojit aplikaci kliknutím do oblasti aplikace." Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                            <TextBlock Text="Připojit aplikaci kliknutím do oblasti aplikace." Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
                             <Button x:Name="BtnAttachApp" Content="{Binding AttachButtonText}" Style="{StaticResource BPurple}"
                                     Click="BtnAttachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"
                                     IsEnabled="{Binding CanAttachApplication}"/>
                             <Button x:Name="BtnDetachApp" Content="🔌 Odpojit aplikaci" Style="{StaticResource BRed}"
                                     Click="BtnDetachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"
                                     IsEnabled="{Binding CanDetachApplication}"/>
-                            <TextBlock Text="{Binding AttachedAppText}" Foreground="#BAC2DE" FontSize="11" Margin="0,0,0,4" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding AttachedAppText}" Foreground="{DynamicResource Brush.TextPrimary}" FontSize="11" Margin="0,0,0,4" TextWrapping="Wrap"/>
 
                         </StackPanel>
                     </Border>
@@ -167,10 +167,10 @@
                     <Expander.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="PŘEHRÁVÁNÍ" VerticalAlignment="Center"/>
-                            <Border Background="#313244" BorderBrush="#89B4FA" BorderThickness="1" CornerRadius="10" Width="18" Height="18" Margin="6,0,0,0" VerticalAlignment="Center" ToolTipService.ShowDuration="60000">
-                                <TextBlock Text="ℹ" Foreground="#89B4FA" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Cursor="Hand">
+                            <Border Background="{DynamicResource Brush.SurfaceAlt}" BorderBrush="{DynamicResource Brush.SectionAccent}" BorderThickness="1" CornerRadius="10" Width="18" Height="18" Margin="6,0,0,0" VerticalAlignment="Center" ToolTipService.ShowDuration="60000">
+                                <TextBlock Text="ℹ" Foreground="{DynamicResource Brush.SectionAccent}" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Cursor="Hand">
                                     <TextBlock.ToolTip>
-                                        <ToolTip Placement="Bottom" Background="#11111B" BorderBrush="#45475A" Foreground="#CDD6F4" Padding="10" MaxWidth="360">
+                                        <ToolTip Placement="Bottom" Background="{DynamicResource Brush.Surface}" BorderBrush="{DynamicResource Brush.Border}" Foreground="{DynamicResource Brush.TextPrimary}" Padding="10" MaxWidth="360">
                                             <TextBlock TextWrapping="Wrap" FontSize="11" Text="Návod: Nastavte opakování a rychlost, zvolte chování při chybě a spusťte test tlačítkem Přehrát. Pokud potřebujete, běh zastavíte tlačítkem Stop."/>
                                         </ToolTip>
                                     </TextBlock.ToolTip>
@@ -185,11 +185,11 @@
                             <Grid Margin="0,0,0,6">
                                 <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0" Margin="0,0,4,0">
-                                    <TextBlock Text="Opakování" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                                    <TextBlock Text="Opakování" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
                                     <TextBox x:Name="TxtRepeat" Text="{Binding RepeatText, UpdateSourceTrigger=PropertyChanged}"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1">
-                                    <TextBlock Text="Rychlost ×" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                                    <TextBlock Text="Rychlost ×" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
                                     <TextBox x:Name="TxtSpeed" Text="{Binding SpeedText, UpdateSourceTrigger=PropertyChanged}"/>
                                 </StackPanel>
                             </Grid>
@@ -232,7 +232,7 @@
                         </Grid.RowDefinitions>
                         <DockPanel Margin="0,0,0,8">
                             <TextBlock Text="NAHRANÁ KLIKNUTÍ" Style="{StaticResource Sec}" DockPanel.Dock="Left" Margin="0"/>
-                            <TextBlock x:Name="TxtRecordCount" Text="{Binding RecordCount}" Foreground="#6C7086" FontSize="11"
+                            <TextBlock x:Name="TxtRecordCount" Text="{Binding RecordCount}" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11"
                                        HorizontalAlignment="Right" VerticalAlignment="Center"/>
                         </DockPanel>
                         <ListBox x:Name="ClickList" Grid.Row="1" ItemsSource="{Binding Clicks}"
@@ -243,9 +243,9 @@
                 <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,10,0,6">
                     <StackPanel>
                         <TextBlock Text="VYBRANÝ KROK" Style="{StaticResource Sec}" Margin="0,0,0,4"/>
-                        <TextBlock Text="Název kroku" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                        <TextBlock Text="Název kroku" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
                         <TextBox x:Name="TxtStepName" Text="{Binding SelectedStepName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
-                        <TextBlock Text="Popis kroku" Foreground="#6C7086" FontSize="10" Margin="0,0,0,3"/>
+                        <TextBlock Text="Popis kroku" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
                         <TextBox x:Name="TxtStepDescription" Text="{Binding SelectedStepDescription, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8"/>
                         <StackPanel Orientation="Horizontal">
                             <Button x:Name="BtnStepUp" Content="↑ Nahoru" Style="{StaticResource BGray}" Click="BtnStepUp_Click" Margin="0,0,6,0"/>
@@ -261,7 +261,7 @@
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel x:Name="InspectorPanel">
                             <TextBlock x:Name="TxtInspHint" Text="← Vyber záznam"
-                                       Foreground="#6C7086" FontSize="11" TextWrapping="Wrap"/>
+                                       Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" TextWrapping="Wrap"/>
 
                             <!-- Rows filled from code -->
                             <Grid x:Name="InspectorGrid" Visibility="Collapsed">
@@ -330,22 +330,22 @@
         </Grid>
 
         <!-- STATUS BAR -->
-        <Border Grid.Row="2" Background="#252535" Padding="14,6" Margin="10,0,10,8" CornerRadius="6">
+        <Border Grid.Row="2" Background="{DynamicResource Brush.SurfaceAlt}" Padding="14,6" Margin="10,0,10,8" CornerRadius="6">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock x:Name="TxtFooter" Foreground="#6C7086" FontSize="11" Text="{Binding FooterText}" VerticalAlignment="Center"/>
+                <TextBlock x:Name="TxtFooter" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" Text="{Binding FooterText}" VerticalAlignment="Center"/>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="STATISTIKY:" Foreground="#6C7086" FontSize="11" Margin="0,0,10,0"/>
-                    <TextBlock x:Name="TxtOk" Text="{Binding OkText}" Foreground="#A6E3A1" FontWeight="Bold" FontSize="11" Margin="0,0,12,0"/>
-                    <TextBlock x:Name="TxtErr" Text="{Binding ErrText}" Foreground="#F38BA8" FontWeight="Bold" FontSize="11" Margin="0,0,12,0"/>
-                    <TextBlock x:Name="TxtFlaUI" Text="{Binding FlaUiText}" Foreground="#89B4FA" FontSize="11" Margin="0,0,12,0"/>
-                    <TextBlock x:Name="TxtCoord" Text="{Binding CoordText}" Foreground="#F9E2AF" FontSize="11" Margin="0,0,12,0"/>
-                    <TextBlock x:Name="TxtDur" Text="{Binding DurationText}" Foreground="#6C7086" FontSize="11"/>
+                    <TextBlock Text="STATISTIKY:" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" Margin="0,0,10,0"/>
+                    <TextBlock x:Name="TxtOk" Text="{Binding OkText}" Foreground="{DynamicResource Brush.ButtonSuccessBg}" FontWeight="Bold" FontSize="11" Margin="0,0,12,0"/>
+                    <TextBlock x:Name="TxtErr" Text="{Binding ErrText}" Foreground="{DynamicResource Brush.ButtonDangerBg}" FontWeight="Bold" FontSize="11" Margin="0,0,12,0"/>
+                    <TextBlock x:Name="TxtFlaUI" Text="{Binding FlaUiText}" Foreground="{DynamicResource Brush.SectionAccent}" FontSize="11" Margin="0,0,12,0"/>
+                    <TextBlock x:Name="TxtCoord" Text="{Binding CoordText}" Foreground="{DynamicResource Brush.ButtonWarningBg}" FontSize="11" Margin="0,0,12,0"/>
+                    <TextBlock x:Name="TxtDur" Text="{Binding DurationText}" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11"/>
                 </StackPanel>
             </Grid>
         </Border>
