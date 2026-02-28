@@ -158,12 +158,22 @@
                     <Border Style="{StaticResource PanelContentCard}" Margin="0,4,0,0">
                         <StackPanel Margin="0,-2,0,0">
                             <TextBlock Text="Připojit aplikaci kliknutím do oblasti aplikace." Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
-                            <Button x:Name="BtnAttachApp" Content="{Binding AttachButtonText}" Style="{StaticResource BPurple}"
+                            <Button x:Name="BtnAttachApp" Style="{StaticResource BPurple}"
                                     Click="BtnAttachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"
-                                    IsEnabled="{Binding CanAttachApplication}"/>
-                            <Button x:Name="BtnDetachApp" Content="Odpojit aplikaci" Style="{StaticResource BRed}"
+                                    IsEnabled="{Binding CanAttachApplication}">
+                                <StackPanel Orientation="Horizontal">
+                                    <icons:FluentIcon Icon="PlugConnected" Width="14" Height="14" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
+                                    <TextBlock Text="{Binding AttachButtonText}" Margin="6,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="BtnDetachApp" Style="{StaticResource BRed}"
                                     Click="BtnDetachApp_Click" HorizontalAlignment="Stretch" Margin="0,0,0,6"
-                                    IsEnabled="{Binding CanDetachApplication}"/>
+                                    IsEnabled="{Binding CanDetachApplication}">
+                                <StackPanel Orientation="Horizontal">
+                                    <icons:FluentIcon Icon="PlugDisconnected" Width="14" Height="14" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
+                                    <TextBlock Text="Odpojit aplikaci" Margin="6,0,0,0"/>
+                                </StackPanel>
+                            </Button>
                             <TextBlock Text="{Binding AttachedAppText}" Foreground="{DynamicResource Brush.TextPrimary}" FontSize="11" Margin="0,0,0,4" TextWrapping="Wrap"/>
 
                         </StackPanel>
