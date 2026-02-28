@@ -20,17 +20,45 @@ namespace ClickRecorder
         }
 
         private void BtnRecord_Click(object sender, RoutedEventArgs e) => _vm.StartRecord();
-        private void BtnStopRecord_Click(object sender, RoutedEventArgs e) => _vm.StopRecord();
+        private void BtnStopRecord_Click(object sender, RoutedEventArgs e)
+        {
+            if (!_vm.StopRecord())
+            {
+                return;
+            }
+
+            if (!_vm.HasRecording)
+            {
+                return;
+            }
+
+            var dialog = new SaveRecordingDialog(_vm.SequenceName, _vm.SequenceDescription)
+            {
+                Owner = this
+            };
+
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            if (dialog.ShouldDiscard)
+            {
+                _vm.ClearRecording();
+                return;
+            }
+
+            if (dialog.ShouldSave)
+            {
+                _vm.SaveSequence(dialog.SequenceName, dialog.SequenceDescription);
+            }
+        }
         private void BtnAttachApp_Click(object sender, RoutedEventArgs e) => _vm.ArmAttachToApplication();
         private void BtnDetachApp_Click(object sender, RoutedEventArgs e) => _vm.ClearAttachedApplication();
         private async void BtnPlay_Click(object sender, RoutedEventArgs e) => await _vm.PlayAsync();
         private void BtnStopPlay_Click(object sender, RoutedEventArgs e) => _vm.StopPlay();
         private void BtnClear_Click(object sender, RoutedEventArgs e) => _vm.ClearRecording();
-        private void BtnAddTextStep_Click(object sender, RoutedEventArgs e) => _vm.AddTextStep();
-        private void BtnSaveSequence_Click(object sender, RoutedEventArgs e) => _vm.SaveSequence();
         private void BtnOpenTestCases_Click(object sender, RoutedEventArgs e) => _vm.OpenTestCases(this);
-        private void BtnSaveAsTestCase_Click(object sender, RoutedEventArgs e) => _vm.SaveAsTestCase(this);
-        private void BtnAddToTestCase_Click(object sender, RoutedEventArgs e) => _vm.AddToTestCase();
         private void BtnOpenJobs_Click(object sender, RoutedEventArgs e) => _vm.OpenJobs(this);
         private void BtnExport_Click(object sender, RoutedEventArgs e) => _vm.ExportReport();
 

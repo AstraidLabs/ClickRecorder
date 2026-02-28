@@ -196,14 +196,15 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
                 : "Nahrávám… Režim: souřadnice myši.";
     }
 
-    public void StopRecord()
+    public bool StopRecord()
     {
-        if (!_isRecording) return;
+        if (!_isRecording) return false;
         _isRecording = false;
         FlushTypingBuffer(DateTime.Now);
         _hook.Stop();
         _keyboardHook.Stop();
         SetStatus("⏸  Idle", "Brush.TextSecondary");
+        return true;
     }
 
     public void ArmAttachToApplication()
@@ -338,14 +339,25 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         FooterText = "Záznamy vymazány.";
     }
 
+    public bool HasRecording => _recorded.Count > 0;
+
     public void SaveSequence()
     {
-        if (_recorded.Count == 0) return;
         var name = string.IsNullOrWhiteSpace(SequenceName) ? $"Sekvence {DateTime.Now:dd.MM HH:mm}" : SequenceName.Trim();
         var description = SequenceDescription?.Trim() ?? string.Empty;
-        var seq = _db.SaveSequence(name, description, new List<ClickAction>(_recorded));
+        SaveSequence(name, description);
+    }
+
+    public void SaveSequence(string name, string description)
+    {
+        if (_recorded.Count == 0) return;
+        var finalName = string.IsNullOrWhiteSpace(name) ? $"Sekvence {DateTime.Now:dd.MM HH:mm}" : name.Trim();
+        var finalDescription = description?.Trim() ?? string.Empty;
+        SequenceName = finalName;
+        SequenceDescription = finalDescription;
+        var seq = _db.SaveSequence(finalName, finalDescription, new List<ClickAction>(_recorded));
         _currentSequenceId = seq.Id;
-        FooterText = $"💾 Sekvence '{name}' uložena (ID {seq.Id})";
+        FooterText = $"💾 Sekvence '{finalName}' uložena (ID {seq.Id})";
     }
 
     public void SelectStep(int selectedIndex)
