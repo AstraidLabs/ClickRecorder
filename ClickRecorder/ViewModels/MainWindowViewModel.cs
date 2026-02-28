@@ -60,6 +60,13 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
     public ObservableCollection<StepResult> Results { get; } = new();
     public ObservableCollection<string> GlobalExceptions { get; } = new();
 
+    private Brush _globalExceptionIndicatorBrush = ResolveBrush("Brush.TextSecondary");
+    public Brush GlobalExceptionIndicatorBrush
+    {
+        get => _globalExceptionIndicatorBrush;
+        set => SetProperty(ref _globalExceptionIndicatorBrush, value);
+    }
+
     private string _statusText = "⏸  Idle";
     public string StatusText { get => _statusText; set => SetProperty(ref _statusText, value); }
 
@@ -457,6 +464,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IDisposable
         _globalExData.Add(detail);
         var source = string.IsNullOrWhiteSpace(detail.Source) ? "Global" : detail.Source;
         GlobalExceptions.Add($"[{detail.CapturedAt:HH:mm:ss}] {source}: {detail.TypeName}: {detail.Message}");
+        GlobalExceptionIndicatorBrush = ResolveBrush("Brush.ButtonWarningBg");
     }
 
     private void LoadSteps(List<ClickAction> steps, string footerFmt)

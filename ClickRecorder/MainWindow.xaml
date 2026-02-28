@@ -25,6 +25,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel>
                     <TextBlock Text="Slaveclicker" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource Brush.TextPrimary}"/>
@@ -59,19 +60,48 @@
                               Checked="ThemeToggle_Checked" Unchecked="ThemeToggle_Unchecked"/>
                 </StackPanel>
 
-                <Border Grid.Column="4" x:Name="StatusPill" Background="{DynamicResource Brush.SurfaceAlt}" CornerRadius="20" Padding="14,6" VerticalAlignment="Center">
+                <Grid Grid.Column="4" Margin="0,0,10,0" VerticalAlignment="Center">
+                    <Button x:Name="BtnGlobalExceptions"
+                            Width="30" Height="30"
+                            Style="{StaticResource BGray}"
+                            Padding="0"
+                            Click="BtnGlobalExceptions_Click"
+                            ToolTip="Globální výjimky">
+                        <icons:FluentIcon Icon="Warning" Width="16" Height="16" Foreground="{Binding GlobalExceptionIndicatorBrush}"/>
+                    </Button>
+
+                    <Popup x:Name="GlobalExceptionsPopup"
+                           Placement="Bottom"
+                           PlacementTarget="{Binding ElementName=BtnGlobalExceptions}"
+                           StaysOpen="False"
+                           AllowsTransparency="True">
+                        <Border Style="{StaticResource Card}" Width="380" MaxHeight="320" Margin="0,6,0,0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="GLOBÁLNÍ VÝJIMKY" Style="{StaticResource Sec}" Margin="0,0,0,8"/>
+                                <ListBox x:Name="GlobalExList" Grid.Row="1" ItemsSource="{Binding GlobalExceptions}"
+                                         SelectionChanged="GlobalExList_SelectionChanged"/>
+                            </Grid>
+                        </Border>
+                    </Popup>
+                </Grid>
+
+                <Border Grid.Column="5" x:Name="StatusPill" Background="{DynamicResource Brush.SurfaceAlt}" CornerRadius="20" Padding="14,6" VerticalAlignment="Center">
                     <TextBlock x:Name="TxtStatus" Text="{Binding StatusText}" FontSize="13" FontWeight="Bold" Foreground="{Binding StatusColor}"/>
                 </Border>
             </Grid>
         </Border>
 
-        <!-- MAIN: 4 columns -->
+        <!-- MAIN: left tools + center workflow + right inspector -->
         <Grid Grid.Row="1" Margin="10,10,10,4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="280"/>   <!-- recording + playback -->
-                <ColumnDefinition Width="280"/>   <!-- recorded + inspector -->
-                <ColumnDefinition Width="*"/>     <!-- exception detail -->
-                <ColumnDefinition Width="300"/>   <!-- results -->
+                <ColumnDefinition Width="*"/>     <!-- recorded + results -->
+                <ColumnDefinition Width="320"/>   <!-- inspector -->
             </Grid.ColumnDefinitions>
 
             <!-- ── COL 0: Recording + Playback panels ─────────────────────── -->
@@ -236,14 +266,11 @@
                 </Expander>
             </Grid>
 
-            <!-- ── COL 1: Recorded list + selected element inspector ─────── -->
+            <!-- ── COL 1: Recorded clicks + test results (full width center) ─────── -->
             <Grid Grid.Column="1" Margin="0,0,8,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="160"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <Border Style="{StaticResource Card}">
@@ -262,61 +289,8 @@
                     </Grid>
                 </Border>
 
-                <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,10,0,6">
-                    <StackPanel>
-                        <TextBlock Text="VYBRANÝ KROK" Style="{StaticResource Sec}" Margin="0,0,0,4"/>
-                        <TextBlock Text="Název kroku" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
-                        <TextBox x:Name="TxtStepName" Text="{Binding SelectedStepName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
-                        <TextBlock Text="Popis kroku" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
-                        <TextBox x:Name="TxtStepDescription" Text="{Binding SelectedStepDescription, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8"/>
-                        <StackPanel Orientation="Horizontal">
-                            <Button x:Name="BtnStepUp" Content="Nahoru" Style="{StaticResource BGray}" Click="BtnStepUp_Click" Margin="0,0,6,0"/>
-                            <Button x:Name="BtnStepDown" Content="Dolů" Style="{StaticResource BGray}" Click="BtnStepDown_Click" Margin="0,0,6,0"/>
-                            <Button x:Name="BtnApplyStep" Content="Uložit krok" Style="{StaticResource BBlue}" Click="BtnApplyStep_Click"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-
-                <TextBlock Grid.Row="3" Text="ELEMENT INSPEKTOR" Style="{StaticResource Sec}" Margin="0,10,0,6"/>
-
-                <Border Grid.Row="4" Style="{StaticResource Card}">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <StackPanel x:Name="InspectorPanel">
-                            <TextBlock x:Name="TxtInspHint" Text="← Vyber záznam"
-                                       Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" TextWrapping="Wrap"/>
-
-                            <!-- Rows filled from code -->
-                            <Grid x:Name="InspectorGrid" Visibility="Collapsed">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="90"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/><RowDefinition/><RowDefinition/>
-                                    <RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/>
-                                </Grid.RowDefinitions>
-                            </Grid>
-                        </StackPanel>
-                    </ScrollViewer>
-                </Border>
-            </Grid>
-
-            <!-- ── COL 2: Global exceptions ──────────────────────────────── -->
-            <Border Grid.Column="2" Style="{StaticResource Card}" Margin="0,0,8,0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Text="GLOBÁLNÍ VÝJIMKY" Style="{StaticResource Sec}"/>
-                    <ListBox x:Name="GlobalExList" Grid.Row="1" ItemsSource="{Binding GlobalExceptions}"
-                             SelectionChanged="GlobalExList_SelectionChanged"/>
-                </Grid>
-            </Border>
-
-            <!-- ── COL 3: Test results ────────────────────────────────────── -->
-            <Border Grid.Column="3" Style="{StaticResource Card}">
+                <!-- ── Center bottom: Test results under recorded clicks ───────────────── -->
+                <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,10,0,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -354,6 +328,54 @@
                     </ListBox>
                 </Grid>
             </Border>
+
+            </Grid>
+
+            <!-- ── COL 2: Selected step + inspector on the right (last) ───────────────── -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,10">
+                    <StackPanel>
+                        <TextBlock Text="VYBRANÝ KROK" Style="{StaticResource Sec}" Margin="0,0,0,4"/>
+                        <TextBlock Text="Název kroku" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtStepName" Text="{Binding SelectedStepName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+                        <TextBlock Text="Popis kroku" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="10" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtStepDescription" Text="{Binding SelectedStepDescription, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="BtnStepUp" Content="Nahoru" Style="{StaticResource BGray}" Click="BtnStepUp_Click" Margin="0,0,6,0"/>
+                            <Button x:Name="BtnStepDown" Content="Dolů" Style="{StaticResource BGray}" Click="BtnStepDown_Click" Margin="0,0,6,0"/>
+                            <Button x:Name="BtnApplyStep" Content="Uložit krok" Style="{StaticResource BBlue}" Click="BtnApplyStep_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Grid.Row="1" Text="ELEMENT INSPEKTOR" Style="{StaticResource Sec}" Margin="0,0,0,6"/>
+
+                <Border Grid.Row="2" Style="{StaticResource Card}">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="InspectorPanel">
+                            <TextBlock x:Name="TxtInspHint" Text="← Vyber záznam"
+                                       Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" TextWrapping="Wrap"/>
+
+                            <Grid x:Name="InspectorGrid" Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/><RowDefinition/><RowDefinition/>
+                                    <RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/>
+                                </Grid.RowDefinitions>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
         </Grid>
 
         <!-- STATUS BAR -->
