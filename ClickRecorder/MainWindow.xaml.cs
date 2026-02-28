@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using ClickRecorder.Models;
+using ClickRecorder.Services;
 using ClickRecorder.ViewModels;
 using ClickRecorder.Views;
 
@@ -15,6 +16,7 @@ namespace ClickRecorder
         {
             InitializeComponent();
             DataContext = _vm;
+            Loaded += (_, _) => ThemeToggle.IsChecked = App.ThemeService.CurrentTheme == AppTheme.Dark;
         }
 
         private void BtnRecord_Click(object sender, RoutedEventArgs e) => _vm.StartRecord();
@@ -72,6 +74,23 @@ namespace ClickRecorder
                 Owner = this
             };
             detailWindow.ShowDialog();
+        }
+
+
+        private void ThemeToggle_Checked(object sender, RoutedEventArgs e)
+        {
+            if (Application.Current is { } app)
+            {
+                App.ThemeService.ApplyTheme(app, AppTheme.Dark);
+            }
+        }
+
+        private void ThemeToggle_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (Application.Current is { } app)
+            {
+                App.ThemeService.ApplyTheme(app, AppTheme.Light);
+            }
         }
 
         public void NotifyGlobalException(ExceptionDetail detail) => _vm.NotifyGlobalException(detail);
