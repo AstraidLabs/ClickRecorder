@@ -27,35 +27,35 @@ namespace ClickRecorder.Services
             string verdictClass = s.FailureCount == 0 ? "ok" : "err";
             var sb = new StringBuilder();
 
-            sb.Append($"""
+            sb.Append($$"""
 <!DOCTYPE html>
 <html lang="cs">
 <head>
 <meta charset="UTF-8"/>
 <title>ClickRecorder</title>
 <style>
-*{{box-sizing:border-box;margin:0;padding:0}}
-body{{font-family:'Segoe UI',sans-serif;background:{Color("Brush.Background", "midnightblue")};color:{Color("Brush.TextPrimary", "white")};padding:24px;font-size:13px}}
-h1{{font-size:20px;margin-bottom:4px}}
-.sub{{color:{Color("Brush.TextSecondary", "silver")};font-size:12px;margin-bottom:20px}}
-.cards{{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}}
-.card{{background:{Color("Brush.SurfaceAlt", "dimgray")};border-radius:8px;padding:14px 18px;min-width:120px}}
-.card .v{{font-size:26px;font-weight:700;margin-bottom:3px}}
-.card .l{{font-size:11px;color:{Color("Brush.TextSecondary", "silver")}}}
-.ok{{color:{Color("Brush.ButtonSuccessBg", "limegreen")}}}.err{{color:{Color("Brush.ButtonDangerBg", "crimson")}}}.warn{{color:{Color("Brush.ButtonWarningBg", "orange")}}}.info{{color:{Color("Brush.SectionAccent", "mediumpurple")}}}
-h2{{font-size:14px;margin:20px 0 10px;color:{Color("Brush.SectionAccent", "mediumpurple")};font-weight:600}}
-table{{width:100%;border-collapse:collapse;background:{Color("Brush.Surface", "black")};border-radius:8px;overflow:hidden;font-size:12px}}
-th{{background:{Color("Brush.SurfaceAlt", "dimgray")};padding:9px 12px;text-align:left;color:{Color("Brush.SectionAccent", "mediumpurple")};font-weight:600;white-space:nowrap}}
-td{{padding:8px 12px;border-top:1px solid {Color("Brush.BorderSubtle", "gray")};vertical-align:top}}
-tr:hover td{{background:{Color("Brush.SurfaceAlt", "dimgray")}}}
-.badge{{display:inline-block;padding:2px 7px;border-radius:4px;font-weight:700;font-size:11px}}
-.bok{{background:{Color("Brush.SurfaceAlt", "dimgray")};color:{Color("Brush.ButtonSuccessBg", "limegreen")}}}.berr{{background:{Color("Brush.SurfaceAlt", "dimgray")};color:{Color("Brush.ButtonDangerBg", "crimson")}}}
-.bflaui{{background:{Color("Brush.SurfaceAlt", "dimgray")};color:{Color("Brush.SectionAccent", "mediumpurple")}}}.bcoord{{background:{Color("Brush.SurfaceAlt", "dimgray")};color:{Color("Brush.ButtonWarningBg", "orange")}}}
-details{{margin-top:5px}}summary{{cursor:pointer;color:{Color("Brush.SectionAccent", "mediumpurple")};font-size:11px;user-select:none}}
-pre{{margin-top:6px;background:{Color("Brush.Surface", "black")};padding:10px;border-radius:6px;white-space:pre-wrap;
-     word-break:break-all;color:{Color("Brush.TextPrimary", "white")};line-height:1.55;font-size:11px}}
-.inner{{margin-top:6px;border-left:3px solid {Color("Brush.ButtonDangerBg", "crimson")};padding-left:10px}}
-code{{font-family:Consolas,monospace;background:{Color("Brush.SurfaceAlt", "dimgray")};padding:1px 5px;border-radius:3px}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:{{Color("Brush.Background", "midnightblue")}};color:{{Color("Brush.TextPrimary", "white")}};padding:24px;font-size:13px}
+h1{font-size:20px;margin-bottom:4px}
+.sub{color:{{Color("Brush.TextSecondary", "silver")}};font-size:12px;margin-bottom:20px}
+.cards{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.card{background:{{Color("Brush.SurfaceAlt", "dimgray")}};border-radius:8px;padding:14px 18px;min-width:120px}
+.card .v{font-size:26px;font-weight:700;margin-bottom:3px}
+.card .l{font-size:11px;color:{{Color("Brush.TextSecondary", "silver")}}}
+.ok{color:{{Color("Brush.ButtonSuccessBg", "limegreen")}}}.err{color:{{Color("Brush.ButtonDangerBg", "crimson")}}}.warn{color:{{Color("Brush.ButtonWarningBg", "orange")}}}.info{color:{{Color("Brush.SectionAccent", "mediumpurple")}}}
+h2{font-size:14px;margin:20px 0 10px;color:{{Color("Brush.SectionAccent", "mediumpurple")}};font-weight:600}
+table{width:100%;border-collapse:collapse;background:{{Color("Brush.Surface", "black")}};border-radius:8px;overflow:hidden;font-size:12px}
+th{background:{{Color("Brush.SurfaceAlt", "dimgray")}};padding:9px 12px;text-align:left;color:{{Color("Brush.SectionAccent", "mediumpurple")}};font-weight:600;white-space:nowrap}
+td{padding:8px 12px;border-top:1px solid {{Color("Brush.BorderSubtle", "gray")}};vertical-align:top}
+tr:hover td{background:{{Color("Brush.SurfaceAlt", "dimgray")}}}
+.badge{display:inline-block;padding:2px 7px;border-radius:4px;font-weight:700;font-size:11px}
+.bok{background:{{Color("Brush.SurfaceAlt", "dimgray")}};color:{{Color("Brush.ButtonSuccessBg", "limegreen")}}}.berr{background:{{Color("Brush.SurfaceAlt", "dimgray")}};color:{{Color("Brush.ButtonDangerBg", "crimson")}}}
+.bflaui{background:{{Color("Brush.SurfaceAlt", "dimgray")}};color:{{Color("Brush.SectionAccent", "mediumpurple")}}}.bcoord{background:{{Color("Brush.SurfaceAlt", "dimgray")}};color:{{Color("Brush.ButtonWarningBg", "orange")}}}
+details{margin-top:5px}summary{cursor:pointer;color:{{Color("Brush.SectionAccent", "mediumpurple")}};font-size:11px;user-select:none}
+pre{margin-top:6px;background:{{Color("Brush.Surface", "black")}};padding:10px;border-radius:6px;white-space:pre-wrap;
+    word-break:break-all;color:{{Color("Brush.TextPrimary", "white")}};line-height:1.55;font-size:11px}
+.inner{margin-top:6px;border-left:3px solid {{Color("Brush.ButtonDangerBg", "crimson")}};padding-left:10px}
+code{font-family:Consolas,monospace;background:{{Color("Brush.SurfaceAlt", "dimgray")}};padding:1px 5px;border-radius:3px}
 </style>
 </head>
 <body>
