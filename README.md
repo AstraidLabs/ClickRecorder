@@ -1,4 +1,4 @@
-# 🖱️ ClickRecorder – WPF Automatický Tester Klikání
+# 🖱️ D3Energy.UI.Automation – WPF Automatický Tester Klikání
 
 ## Popis
 WPF aplikace pro nahrávání sekvencí kliknutí myší a jejich automatické přehrávání.
@@ -22,20 +22,20 @@ Zachycuje chyby při přehrávání a zobrazuje podrobný log.
 ## Spuštění
 
 ```bash
-cd ClickRecorder
+cd D3Energy.UI.Automation
 dotnet build
-dotnet run --project ClickRecorder
+dotnet run --project D3Energy.UI.Automation
 ```
 
-Nebo otevři `ClickRecorder.sln` ve **Visual Studio 2022**.
+Nebo otevři `D3Energy.UI.Automation.sln` ve **Visual Studio 2022**.
 
 ## Struktura projektu
 
 ```
-ClickRecorder/
-├── ClickRecorder.sln
-└── ClickRecorder/
-    ├── ClickRecorder.csproj
+D3Energy.UI.Automation/
+├── D3Energy.UI.Automation.sln
+└── D3Energy.UI.Automation/
+    ├── D3Energy.UI.Automation.csproj
     ├── App.xaml / App.xaml.cs
     ├── MainWindow.xaml / MainWindow.xaml.cs      ← UI + logika
     ├── Models/

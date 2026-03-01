@@ -34,7 +34,7 @@
 1. Pravým klikem na projekt → **Manage NuGet Packages...**
 2. Záložka **Browse**.
 3. Vyhledej: `FluentIcons.Wpf`
-4. Nainstaluj do projektu `ClickRecorder`.
+4. Nainstaluj do projektu `D3Energy.UI.Automation`.
 
 Volitelně také:
 - `CommunityToolkit.Mvvm`
@@ -62,7 +62,7 @@ dotnet add package CommunityToolkit.Mvvm
 ## `App.xaml`
 
 ```xml
-<Application x:Class="ClickRecorder.App"
+<Application x:Class="D3Energy.UI.Automation.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:icons="clr-namespace:FluentIcons.Wpf;assembly=FluentIcons.Wpf"
@@ -114,12 +114,12 @@ dotnet add package CommunityToolkit.Mvvm
 ## `MainWindow.xaml`
 
 ```xml
-<Window x:Class="ClickRecorder.MainWindow"
+<Window x:Class="D3Energy.UI.Automation.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:icons="clr-namespace:FluentIcons.Wpf;assembly=FluentIcons.Wpf"
-        xmlns:vm="clr-namespace:ClickRecorder.ViewModels"
-        Title="ClickRecorder" Height="500" Width="900"
+        xmlns:vm="clr-namespace:D3Energy.UI.Automation.ViewModels"
+        Title="D3Energy.UI.Automation" Height="500" Width="900"
         TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType">
 
@@ -217,7 +217,7 @@ Converter dává smysl až u složitější mapovací logiky nebo opakovaného p
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace ClickRecorder.ViewModels;
+namespace D3Energy.UI.Automation.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
