@@ -1,0 +1,72 @@
+<Window x:Class="D3Energy.UI.Automation.Views.TicketDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:D3Energy.UI.Automation.Helpers"
+        xmlns:icons="clr-namespace:FluentIcons.Wpf;assembly=FluentIcons.Wpf"
+        Title="Bug Ticket" Height="680" Width="720"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource Brush.Background}" ResizeMode="CanResize">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Text="Bug Ticket" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource Brush.TextPrimary}"/>
+            <TextBlock Text="Zkopíruj a vlož do Redmine / Jira / GitHub Issues"
+                       Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" Margin="0,3,0,0"/>
+        </StackPanel>
+
+        <!-- Optional fields -->
+        <Grid Grid.Row="1" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                <TextBlock Text="Aplikace pod testem" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" Margin="0,0,0,3"/>
+                <TextBox x:Name="TxtApp" Background="{DynamicResource Brush.Surface}" Foreground="{DynamicResource Brush.TextPrimary}"
+                         BorderBrush="{DynamicResource Brush.Border}" Padding="7,5" FontSize="12"
+                         TextChanged="OnFieldChanged"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="Verze" Foreground="{DynamicResource Brush.TextSecondary}" FontSize="11" Margin="0,0,0,3"/>
+                <TextBox x:Name="TxtVersion" Background="{DynamicResource Brush.Surface}" Foreground="{DynamicResource Brush.TextPrimary}"
+                         BorderBrush="{DynamicResource Brush.Border}" Padding="7,5" FontSize="12"
+                         TextChanged="OnFieldChanged"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Ticket text -->
+        <TextBox Grid.Row="2"
+                 x:Name="TxtTicket"
+                 Background="{DynamicResource Brush.Surface}"
+                 Foreground="{DynamicResource Brush.TextPrimary}"
+                 BorderBrush="{DynamicResource Brush.Border}"
+                 FontFamily="Consolas"
+                 FontSize="12"
+                 Padding="10"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"
+                 IsReadOnly="False"/>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,12,0,0" HorizontalAlignment="Right">
+            <Button x:Name="BtnCopy" Content="Kopírovat do schránky"
+                    Click="BtnCopy_Click"
+                    Style="{StaticResource BBlue}"
+                    FontWeight="Bold" FontSize="13"
+                    Padding="18,9"
+                    Margin="0,0,10,0"/>
+            <Button Content="Zavřít" Click="BtnClose_Click"
+                    Style="{StaticResource BGray}"
+                    FontSize="13" Padding="14,9"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,43 @@
+<Window x:Class="D3Energy.UI.Automation.Views.SaveRecordingDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Dokončení nahrávání"
+        Width="460" Height="300"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{DynamicResource Brush.Background}">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Chcete uložit nebo zahodit tento záznam?"
+                   Foreground="{DynamicResource Brush.TextPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   TextWrapping="Wrap" Margin="0,0,0,10"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,12">
+            <Button Content="Uložit" Style="{StaticResource BBlue}" Width="110" Margin="0,0,8,0" Click="BtnChooseSave_Click"/>
+            <Button Content="Zahodit" Style="{StaticResource BOrange}" Width="110" Margin="0,0,8,0" Click="BtnDiscard_Click"/>
+            <Button Content="Zrušit" Style="{StaticResource BGray}" Width="110" Click="BtnCancel_Click"/>
+        </StackPanel>
+
+        <Border Grid.Row="2" x:Name="SaveForm" Visibility="Collapsed"
+                BorderBrush="{DynamicResource Brush.Border}" BorderThickness="1" CornerRadius="8" Padding="12">
+            <StackPanel>
+                <TextBlock Text="Název" Foreground="{DynamicResource Brush.TextSecondary}" Margin="0,0,0,4"/>
+                <TextBox x:Name="TxtName" MinHeight="34" Margin="0,0,0,8"/>
+                <TextBlock Text="Popis" Foreground="{DynamicResource Brush.TextSecondary}" Margin="0,0,0,4"/>
+                <TextBox x:Name="TxtDescription" MinHeight="72" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button x:Name="BtnSave" Content="Uložit záznam" Style="{StaticResource BGreen}" Width="140"
+                    Visibility="Collapsed" Click="BtnSave_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
